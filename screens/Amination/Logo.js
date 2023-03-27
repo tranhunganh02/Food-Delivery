@@ -26,10 +26,11 @@ export default function App({navigation}) {
                   toValue: 5,
                   duration: 1000,
                   useNativeDriver: true,
+                  
          }),
     ]).start();
     setTimeout(() => {
-       navigation.navigate('Auth')           
+       navigation.navigate('SignIn')           
     }, 3200);
   }, []);
 
