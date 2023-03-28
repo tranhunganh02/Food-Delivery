@@ -40,7 +40,7 @@ export default StyleSheet.create({
           height: windowHeight * 0.64,
      },
      input:{
-          height: 300,
+          height: 350,
           width: "100%",
           justifyContent: "space-evenly",
      },
@@ -50,7 +50,7 @@ export default StyleSheet.create({
           justifyContent: "space-evenly",
      },
      text:{
-          color: "#9796A1", fontWeight: "300", fontSize: 20
+          color: "#9796A1", fontWeight: "300", fontSize: 20,paddingBottom:5
      },
      inputText:{
           width: "100%",
@@ -63,7 +63,7 @@ export default StyleSheet.create({
           backgroundColor: "#fff",
      },
      actionContainer:{
-          height: windowHeight * 0.2,
+          height: windowHeight * 0.21,
           width: "100%",
           justifyContent: "space-evenly",
           alignItems: "center",
@@ -77,7 +77,7 @@ export default StyleSheet.create({
           backgroundColor: "#DC7255",
      },
      socialContainer:{
-          marginTop:10,
+          marginTop:150,
           width: windowWidth * 0.8,
           height: windowHeight * 0.18,
           justifyContent: "center",
