@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from "react-native";
+
 import { Avatar } from "@rneui/themed";
 import React from "react";
 import {
@@ -16,9 +17,26 @@ import {
   AntDesign,
   Ionicons,
 } from "@expo/vector-icons";
+import ButtonPickImage from "../../features/pickImage";
+import { storage } from "../../firebase";
+import getUser from "../../features/getUser";
+import { useState } from "react";
+import { useEffect } from "react";
 const height = Dimensions.get("window").height;
 const windowWidth = Dimensions.get("window").width;
+
 export default function Index() {
+  const [user, setUser] = useState({});
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const userData = await getUser("bDKl87RgMKXCqylrKHylcdiEZay2");
+      setUser(userData);
+    };
+   
+    fetchUser();
+  }, []);
+
   return (
     <View style={{ flex: 1, alignItems: "center" }}>
       <StatusBar barStyle={"dark-content"} />
@@ -27,13 +45,13 @@ export default function Index() {
           size={125}
           rounded
           source={{
-            uri: "https://cdn.pixabay.com/photo/2016/11/21/12/42/beard-1845166_1280.jpg",
+            uri: user.image,
           }}
         />
-        <TouchableOpacity style={styles.headerButton}>
-          <FontAwesome name="exchange" size={24} color="#E8E8E8" />
-        </TouchableOpacity>
-        <Text style={styles.headerText}>Mohamed Lanh Buồi</Text>
+        <ButtonPickImage
+          idUser={"bDKl87RgMKXCqylrKHylcdiEZay2"}
+        ></ButtonPickImage>
+        <Text style={styles.headerText}>Hùng Anh lỏd</Text>
         <Text style={{ bottom: 10 }}>0905113115116</Text>
       </View>
       <View

@@ -5,12 +5,12 @@ import { NavigationContainer } from '@react-navigation/native';
 import React, {useRef, useEffect, useState} from 'react';
 import Home from './screens/home/Index';
 import Logo from './screens/Amination/Logo';
-import Product from './screens/Product/Index';
 import Profile from './screens/Profile/Index';
 import Favorite from './screens/Favorite/Index';
 import SignIn from './screens/auth/SignIn';
 import SignUp from './screens/auth/SignUp';
 import Cart from './screens/Cart/Index';
+import Product from './screens/product/Index'
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
