@@ -13,7 +13,7 @@ import { Ionicons, MaterialIcons,Entypo,AntDesign, FontAwesome } from "@expo/vec
 import a from "../home/a";
 const windowHeight = Dimensions.get("window").height;
 const windowWidth = Dimensions.get("window").width;
-export default function Index({ navigation, route }) {
+export  default function Product ({ navigation, route }) {
   const [quantity, setQuantity] = useState(0*0);
 
   useEffect(()=>{
