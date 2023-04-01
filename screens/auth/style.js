@@ -50,7 +50,7 @@ export default StyleSheet.create({
           justifyContent: "space-evenly",
      },
      text:{
-          color: "#9796A1", fontWeight: "300", fontSize: 20
+          color: "#9796A1", fontWeight: "300", fontSize: 20,paddingBottom:5
      },
      inputText:{
           width: "100%",

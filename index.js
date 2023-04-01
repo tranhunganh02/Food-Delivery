@@ -23,7 +23,6 @@ import Product from './screens/Product/Product';
 const Stack = createNativeStackNavigator();
 
 const Index = () => {
-
   return (
     <NavigationContainer>
         <Stack.Navigator initialRouteName="BottomTab" screenOptions={{headerShown: false}}>
@@ -38,9 +37,8 @@ const Index = () => {
             <Stack.Screen name="Address" component={Address} />
         </Stack.Navigator>
     </NavigationContainer>
-  )
-}
-
+  );
+};
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -53,7 +51,6 @@ function BottomTab() {
       activeColor="white"
       inactiveColor="white"
     >
-    
       <Tab.Screen
         name="Home"
         component={Home}
@@ -65,23 +62,22 @@ function BottomTab() {
           ),
         }}      
       />
-       <Tab.Screen
+      <Tab.Screen
         name="Favorite"
         component={Favorite}
         options={{
-          tabBarLabel: '',
-          tabBarColor: '#fff',
+          tabBarLabel: "",
+          tabBarColor: "#fff",
           tabBarIcon: () => (
             <MaterialIcons name="favorite-border" size={28} color="black" />
           ),
         }}
-        
       />
       <Tab.Screen
         name="Profile"
         component={Profile}
         options={{
-          tabBarLabel: '',
+          tabBarLabel: "",
           tabBarIcon: ({ color }) => (
             <AntDesign name="user" size={28} color="black" />
           ),
@@ -94,9 +90,9 @@ function BottomTab() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
   },
 });
 export default Index;

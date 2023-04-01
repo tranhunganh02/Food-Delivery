@@ -8,12 +8,23 @@ import {
   Image,
   KeyboardAvoidingView,
 } from "react-native";
+<<<<<<< HEAD
 import React,{useLayoutEffect, useState} from "react";
 import { FontAwesome5 } from "@expo/vector-icons";
+=======
+import React, { useState } from "react";
+import { FontAwesome5, MaterialCommunityIcons } from "@expo/vector-icons";
+>>>>>>> dfbe2050669cc775f9120790ff6670af82fe1b6d
 import style from "./style";
 const windowHeight = Dimensions.get("window").height;
 const windowWidth = Dimensions.get("window").width;
+import { useForm, Controller } from "react-hook-form";
+import AuthInput from "../../component/AuthInput";
+import { colors } from "react-native-elements";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../../firebase";
 const SignIn = ({ navigation }) => {
+<<<<<<< HEAD
 
   useLayoutEffect(()=>{
     navigation.setOptions({
@@ -24,6 +35,43 @@ const SignIn = ({ navigation }) => {
      const [hiddenPass, setHiddenPass] = useState(true);
      const [getEmail, setEmail] = useState('');
      const [getPass, setPass] = useState('');
+=======
+  const [hiddenPass, setHiddenPass] = useState(true);
+  const [getEmail, setEmail] = useState("");
+  const [getPass, setPass] = useState("");
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+  const Test = () => {
+    alert("Please enter");
+  };
+  const onPressSignIn=(data) => 
+  {
+    signInWithEmailAndPassword(auth, data.email, data.password)
+      .then((userCredential) => {
+        // Signed in
+        const user = userCredential.user;
+        if(auth.currentUser.emailVerified)
+        {
+         navigation.navigate('BottomTab')
+        }
+        else{
+            alert(
+            "Email Not Verified",
+            "Please verify your email to continue",
+          );
+        }
+        
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+      });
+    
+  }
+>>>>>>> dfbe2050669cc775f9120790ff6670af82fe1b6d
   return (
     <View style={style.container}>
       <View style={style.Cricle1}></View>
@@ -38,6 +86,7 @@ const SignIn = ({ navigation }) => {
             <Text style={{ fontSize: 30, fontWeight: "bold" }}>Sign In</Text>
           </View>
           <View style={style.input}>
+<<<<<<< HEAD
            <View style={{height:'auto'}}>
             <Text style={style.text}>E-mail</Text>
               <TextInput placeholder="Enter your email" 
@@ -57,6 +106,66 @@ const SignIn = ({ navigation }) => {
                               onPress={() => setHiddenPass(!hiddenPass)}>
               <Image resizeMethod='auto' source={require('../../assets/icon/Hide.png')} />
             </TouchableOpacity>
+=======
+            <View>
+              <Text style={style.text}>E-mail</Text>
+              <AuthInput
+                name="email"
+                placeholder="Email"
+                control={control}
+                rules={{ required: "Email is required" }}
+                style={style.inputText}
+              />
+            </View>
+            <View>
+              <Text style={style.text}>Password</Text>
+
+              <AuthInput
+                name="password"
+                placeholder="Password"
+                control={control}
+                rules={{
+                  required: "Password is required",
+                  minLength: {
+                    value: 8,
+                    message: "Password should be minimum 8 characters long",
+                  },
+                }}
+                secureTextEntry={hiddenPass ? true : false}
+                right={
+                  <TouchableOpacity
+                    style={{
+                      width: "10%",
+                      justifyContent: "center",
+                      position: "relative",
+                      bottom: 10,
+                      right: 0,
+                    }}
+                    onPress={() => setHiddenPass(!hiddenPass)}
+                  >
+                    <Image
+                      resizeMethod="auto"
+                      source={require("../../assets/icon/Hide.png")}
+                    />
+                  </TouchableOpacity>
+                }
+              />
+              <TouchableOpacity
+                style={{
+                  width: "10%",
+                  justifyContent: "center",
+                  position: "absolute",
+                  right: 30,
+                  bottom: 10,
+                }}
+                onPress={() => setHiddenPass(!hiddenPass)}
+              >
+                <Image
+                  resizeMethod="auto"
+                  source={require("../../assets/icon/Hide.png")}
+                />
+              </TouchableOpacity>
+>>>>>>> dfbe2050669cc775f9120790ff6670af82fe1b6d
             </View>
           </View>
         </KeyboardAvoidingView>
@@ -64,10 +173,10 @@ const SignIn = ({ navigation }) => {
           <TouchableOpacity>
             <Text style={{}}>Forgot password?</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={style.buttonAction}
-               onPress={()=> {
-                    navigation.navigate('BottomTab')
-               }}
+          <TouchableOpacity
+            style={style.buttonAction}
+            
+            onPress={handleSubmit(onPressSignIn)}
           >
             <Text style={{ color: "#fff", fontWeight: "400", fontSize: 25 }}>
               Login
