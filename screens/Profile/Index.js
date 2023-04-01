@@ -31,7 +31,7 @@ export default function Index() {
   useEffect(() => {
     const fetchUser = async () => {
       const userData = await getUser("bDKl87RgMKXCqylrKHylcdiEZay2");
-      setUser(userData);
+      setUser(userData);k
     };
    
     fetchUser();
