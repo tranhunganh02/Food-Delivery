@@ -62,11 +62,19 @@ export default function Index() {
           alignItems: "center",
         }}
       >
-        <TouchableOpacity style={styles.ActionButton}>
+        <TouchableOpacity style={styles.ActionButton}
+        onPress={()=>{
+          navigation.navigate('Information')
+        }}
+        >
           <AntDesign name="profile" size={27} color="black" />
           <Text style={styles.actionText}>Information</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.ActionButton}>
+        <TouchableOpacity style={styles.ActionButton}
+          onPress={() =>{
+            navigation.navigate('Address')
+          }}
+        >
           <FontAwesome name="address-book-o" size={27} color="black" />
           <Text style={styles.actionText}>Address</Text>
         </TouchableOpacity>
@@ -74,7 +82,11 @@ export default function Index() {
           <Ionicons name="chatbox-ellipses-outline" size={27} color="black" />
           <Text style={styles.actionText}>Contact admin</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.ActionButton}>
+        <TouchableOpacity style={styles.ActionButton}
+          onPress={()=>{
+            
+          }}
+        >
           <SimpleLineIcons name="logout" size={27} color="black" />
           <Text style={styles.actionText}>Logout</Text>
         </TouchableOpacity>
