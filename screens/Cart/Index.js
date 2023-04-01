@@ -98,7 +98,11 @@ const Index = ({ navigation }) => {
           <Text style={{ fontWeight: "400", fontSize: 15 }}>Price</Text>
           <Text>{getTotal} VND</Text>
         </View>
-        <TouchableOpacity style={styles.checkOutButton}>
+        <TouchableOpacity style={styles.checkOutButton}
+          onPress={() =>{
+            navigation.navigate('CheckOut')
+          }}
+        >
           <Text style={{ color:'#fff' }}>Check Out</Text>
         </TouchableOpacity>
       </View>

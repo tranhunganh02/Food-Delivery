@@ -59,7 +59,7 @@ export default function Index({ navigation }) {
         style={{
           backgroundColor: "#fff",
           height: 60,
-          width: windowWidth * 0.8,
+          width: windowWidth * 0.78,
           borderRadius: 20,
           justifyContent: "center",
         }}
@@ -75,17 +75,20 @@ export default function Index({ navigation }) {
           style={{ left: 45, color: "#3D405B" }}
         />
        <TouchableOpacity
-        style={{position: "absolute", right:-45,}}
+        style={{position: "absolute",
+         right:-45,
+         width:'auto'}}
         onPress={()=>{
           navigation.navigate('CartDetails')
         }}
        >
-          <Ionicons name="cart-outline" size={34} color="black"/>
+          <Ionicons name="cart-outline" size={35} color="black"/>
           <Text
             style={{
               backgroundColor: "red",
               position:'absolute',
               color:'#fff',
+              padding:1.5
             }}
           >
             {10}

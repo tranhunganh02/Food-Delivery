@@ -7,10 +7,13 @@ import Home from './screens/home/Index';
 import Logo from './screens/Amination/Logo';
 import Product from './screens/Product/Index';
 import Profile from './screens/Profile/Index';
+import Information from './screens/Profile/Information';
+import Address from './screens/Profile/Address';
 import Favorite from './screens/Favorite/Index';
 import SignIn from './screens/auth/SignIn';
 import SignUp from './screens/auth/SignUp';
 import Cart from './screens/Cart/Index';
+import CheckOut from './screens/Checkout/Index';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -29,6 +32,9 @@ const Index = () => {
             <Stack.Screen name="Logo" component={Logo}   options={{presentation: 'fullScreenModal'}}     />
             <Stack.Screen name="ProductDetails" component={Product} />
             <Stack.Screen name="CartDetails" component={Cart} />
+            <Stack.Screen name="CheckOut" component={CheckOut} />
+            <Stack.Screen name="Information" component={Information} />
+            <Stack.Screen name="Address" component={Address} />
         </Stack.Navigator>
     </NavigationContainer>
   )
