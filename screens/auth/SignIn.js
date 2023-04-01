@@ -38,7 +38,7 @@ const SignIn = ({ navigation }) => {
         const user = userCredential.user;
         if(auth.currentUser.emailVerified)
         {
-         navigation.navigate('Home')
+         navigation.navigate('BottomTab')
         }
         else{
             alert(

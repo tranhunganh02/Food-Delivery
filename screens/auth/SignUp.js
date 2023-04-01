@@ -14,7 +14,10 @@ import style from "./style";
 import AuthInput from "../../component/AuthInput";
 import { useForm } from "react-hook-form";
 import { auth, dbFirestore } from "../../firebase";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  sendEmailVerification,
+} from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 import { useState } from "react";
 const windowHeight = Dimensions.get("window").height;
@@ -26,28 +29,23 @@ const SignUp = ({ navigation }) => {
     formState: { errors },
   } = useForm();
   const [hiddenPass, setHiddenPass] = useState(true);
-  const onPressSignUp= (data) => {
-    
- 
-
-  createUserWithEmailAndPassword(auth, data.email, data.password)
-    .then(async (userCredential) => {
-      await setDoc(doc(dbFirestore, "users", userCredential.user.uid), {
-        name: data.fullname,
-        state: "CA",
-        country: "USA",
-      }).then(
-        ()=>  
-        
-        {
-          navigation.navigate('SignIn')
-        }
-      )
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-  }
+  const onPressSignUp = (data) => {
+    createUserWithEmailAndPassword(auth, data.email, data.password)
+      .then(async (userCredential) => {
+        sendEmailVerification(auth.currentUser).then(async () => {
+          await setDoc(doc(dbFirestore, "users", userCredential.user.uid), {
+            name: data.fullname,
+            state: "CA",
+            country: "USA",
+          }).then(() => {
+            navigation.navigate("SignIn");
+          });
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
   return (
     <View style={style.container}>
       <View style={style.Cricle1}></View>
@@ -71,9 +69,8 @@ const SignUp = ({ navigation }) => {
                 rules={{ required: "Fullname is required" }}
                 style={style.inputText}
               />
-              </View>
-              <View>
-
+            </View>
+            <View>
               <Text style={style.text}>E-mail</Text>
               <AuthInput
                 name="email"
