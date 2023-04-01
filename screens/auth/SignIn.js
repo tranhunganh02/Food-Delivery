@@ -8,12 +8,19 @@ import {
   Image,
   KeyboardAvoidingView,
 } from "react-native";
-import React,{useState} from "react";
+import React,{useLayoutEffect, useState} from "react";
 import { FontAwesome5 } from "@expo/vector-icons";
 import style from "./style";
 const windowHeight = Dimensions.get("window").height;
 const windowWidth = Dimensions.get("window").width;
 const SignIn = ({ navigation }) => {
+
+  useLayoutEffect(()=>{
+    navigation.setOptions({
+      headerShown:'false'
+    })
+  })
+
      const [hiddenPass, setHiddenPass] = useState(true);
      const [getEmail, setEmail] = useState('');
      const [getPass, setPass] = useState('');
@@ -31,12 +38,15 @@ const SignIn = ({ navigation }) => {
             <Text style={{ fontSize: 30, fontWeight: "bold" }}>Sign In</Text>
           </View>
           <View style={style.input}>
+           <View style={{height:'auto'}}>
             <Text style={style.text}>E-mail</Text>
-            <TextInput placeholder="Enter your email" 
-               style={style.inputText} 
-               value={getEmail}
-               onChangeText={(text) => setEmail(text)}
-            />
+              <TextInput placeholder="Enter your email" 
+                style={style.inputText} 
+                value={getEmail}
+                onChangeText={(text) => setEmail(text)}
+              />
+           </View>
+            <View>
             <Text style={style.text}>Password</Text>
             <TextInput placeholder="Password" style={style.inputText} 
                 value={getPass}
@@ -47,6 +57,7 @@ const SignIn = ({ navigation }) => {
                               onPress={() => setHiddenPass(!hiddenPass)}>
               <Image resizeMethod='auto' source={require('../../assets/icon/Hide.png')} />
             </TouchableOpacity>
+            </View>
           </View>
         </KeyboardAvoidingView>
         <View style={style.actionContainer}>

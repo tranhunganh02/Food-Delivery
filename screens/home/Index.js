@@ -8,12 +8,13 @@ import {
   FlatList,
   Image,
   SafeAreaView,
-  ScrollView
+  ScrollView,
+  StatusBar
 } from "react-native";
 import React, { useLayoutEffect } from "react";
 import { Avatar } from "@rneui/themed";
 import { Feather } from "@expo/vector-icons";
-import { AntDesign } from "@expo/vector-icons";
+import { AntDesign, Ionicons} from "@expo/vector-icons";
 import a from "./a";
 export default function Index({ navigation }) {
   const windowHeight = Dimensions.get("window").height;
@@ -25,21 +26,23 @@ export default function Index({ navigation }) {
   });
 
   return (
-    <SafeAreaView style={{ alignItems: "center", flex: 1, backgroundColor:'#C9C9D0'}}>
+    <SafeAreaView style={{ alignItems: "center", flex: 1, backgroundColor:'#D6DBCF'}}>
+      {/* <SafeAreaView style={{ alignItems: "center", flex: 1, backgroundColor:'#FFFBE9'}}> */}
+            <StatusBar barStyle={"dark-content"} />
       <ScrollView style={{  }}
         showsVerticalScrollIndicator={false}
       >
       <View
         style={{
-          backgroundColor: "#F4F1DF",
-          height: windowHeight * 0.15,
+          backgroundColor: "#D6DBCF",
+          height: windowHeight * 0.12,
           width: windowWidth*0.9,
           marginBottom: 25,
           flexDirection:'row',
           justifyContent:'space-around',
           alignItems:'center',
           borderRadius: 25,
-          marginTop: 35,
+          marginTop: 26,
           padding:5
         }}
       >
@@ -54,9 +57,9 @@ export default function Index({ navigation }) {
       </View>
       <View
         style={{
-          backgroundColor: "#ECE8E8",
+          backgroundColor: "#fff",
           height: 60,
-          width: windowWidth * 0.9,
+          width: windowWidth * 0.8,
           borderRadius: 20,
           justifyContent: "center",
         }}
@@ -65,12 +68,29 @@ export default function Index({ navigation }) {
           name="search"
           size={28}
           color="black"
-          style={{ position: "absolute", left: 5 }}
+          style={{ position: "absolute", left: 10 }}
         />
         <TextInput
           placeholder="What are you craving"
           style={{ left: 45, color: "#3D405B" }}
         />
+       <TouchableOpacity
+        style={{position: "absolute", right:-45,}}
+        onPress={()=>{
+          navigation.navigate('CartDetails')
+        }}
+       >
+          <Ionicons name="cart-outline" size={34} color="black"/>
+          <Text
+            style={{
+              backgroundColor: "red",
+              position:'absolute',
+              color:'#fff',
+            }}
+          >
+            {10}
+          </Text>  
+       </TouchableOpacity>
       </View>
       <View
         style={{
@@ -159,12 +179,11 @@ export default function Index({ navigation }) {
                 onPress={()=>{
                   navigation.navigate(
                     'ProductDetails',{
-                      params:{
                         id: item.key,
                         name: item.name,
                         image: item.image,
                         price: item.price}
-                    })
+                    )
                 }}
                 style={{
                   width: windowWidth * 0.62,
@@ -225,12 +244,11 @@ export default function Index({ navigation }) {
                 onPress={()=>{
                   navigation.navigate(
                     'ProductDetails',{
-                      params:{
                         id: item.key,
                         name: item.name,
                         image: item.image,
                         price: item.price}
-                    })
+                    )
                 }}
                 style={{
                   width: windowWidth * 0.62,
@@ -244,7 +262,7 @@ export default function Index({ navigation }) {
                  source={{ uri: item.image }}
                  style={{ height: windowHeight*0.28, width:'100%', borderTopLeftRadius: 20, borderTopRightRadius:20 }}
                 ></Image>
-                <View style={{flex:2, height:'auto', justifyContent:'center', padding:10, alignContent:'space-between', flexWrap:'wrap'}} >
+                <View style={{flex:2, height:'auto', justifyContent:'center', padding:15, alignContent:'space-between', flexWrap:'wrap'}} >
                     <Text style={{fontWeight:'bold', fontSize:18, }}>{item.name}</Text>
                     <Text>{new Intl.NumberFormat('de-DE').format(item.price)} VND</Text>
                     <View><AntDesign name="star" size={24} color="#6CA86C" /><Text>4.5</Text></View>

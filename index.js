@@ -5,11 +5,12 @@ import { NavigationContainer } from '@react-navigation/native';
 import React, {useRef, useEffect, useState} from 'react';
 import Home from './screens/home/Index';
 import Logo from './screens/Amination/Logo';
-import Product from './screens/product/Index';
+import Product from './screens/Product/Index';
 import Profile from './screens/Profile/Index';
 import Favorite from './screens/Favorite/Index';
 import SignIn from './screens/auth/SignIn';
 import SignUp from './screens/auth/SignUp';
+import Cart from './screens/Cart/Index';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -21,14 +22,13 @@ const Index = () => {
 
   return (
     <NavigationContainer>
-        <Stack.Navigator initialRouteName="SignIn" screenOptions={{headerShown: false}}>
+        <Stack.Navigator initialRouteName="BottomTab" screenOptions={{headerShown: false}}>
             <Stack.Screen name="SignIn" component={SignIn}  />
             <Stack.Screen name="SignUp" component={SignUp}  />
             <Stack.Screen name="BottomTab" component={BottomTab} />
-            <Stack.Screen name="Logo" component={Logo} />
-            <Stack.Screen name="ProductDetails" component={Product} 
-              options={{presentation: 'fullScreenModal'}}    
-            />
+            <Stack.Screen name="Logo" component={Logo}   options={{presentation: 'fullScreenModal'}}     />
+            <Stack.Screen name="ProductDetails" component={Product} />
+            <Stack.Screen name="CartDetails" component={Cart} />
         </Stack.Navigator>
     </NavigationContainer>
   )
@@ -40,9 +40,11 @@ const Tab = createMaterialBottomTabNavigator();
 function BottomTab() {
   return (
     <Tab.Navigator
-      barStyle={{backgroundColor: '#C9C9D0'}}
+      // barStyle={{backgroundColor: '#DAE2B6', paddingTop:10}}
+      barStyle={{backgroundColor: '#8E9288',  paddingTop:10}}
       initialRouteName="Home"
-      activeColor="tomato"
+      activeColor="white"
+      inactiveColor="white"
     >
     
       <Tab.Screen
@@ -50,7 +52,7 @@ function BottomTab() {
         component={Home}
         options={{
           tabBarLabel: '',
-          tabBarColor: '#fff',
+          tabBarColor: 'white',
           tabBarIcon: () => (
             <AntDesign name="home" size={28} color="black" />
           ),
