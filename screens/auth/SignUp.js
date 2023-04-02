@@ -13,7 +13,7 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import style from "./style";
 import AuthInput from "../../component/AuthInput";
 import { useForm } from "react-hook-form";
-import { auth, dbFirestore } from "../../firebase";
+import { auth, dbFirestore, dbStore } from "../../firebase";
 import {
   createUserWithEmailAndPassword,
   sendEmailVerification,
@@ -33,7 +33,7 @@ const SignUp = ({ navigation }) => {
     createUserWithEmailAndPassword(auth, data.email, data.password)
       .then(async (userCredential) => {
         sendEmailVerification(auth.currentUser).then(async () => {
-          await setDoc(doc(dbFirestore, "users", userCredential.user.uid), {
+          await setDoc(doc(dbStore, "users", userCredential.user.uid), {
             name: data.fullname,
             state: "CA",
             country: "USA",

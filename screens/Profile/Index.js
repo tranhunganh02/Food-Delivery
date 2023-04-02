@@ -17,42 +17,74 @@ import {
   AntDesign,
   Ionicons,
 } from "@expo/vector-icons";
-import ButtonPickImage from "../../features/pickImage";
-import { storage } from "../../firebase";
+import ButtonPickImage from "../../features/pickImageUser";
+import { auth, storage } from "../../firebase";
 import getUser from "../../features/getUser";
 import { useState } from "react";
 import { useEffect } from "react";
+import { signOut } from "firebase/auth";
 const height = Dimensions.get("window").height;
 const windowWidth = Dimensions.get("window").width;
 
-export default function Index() {
+export default function Index({ navigation }) {
   const [user, setUser] = useState({});
+  const [loggedIn, setLoggedIn] = useState(false);
 
   useEffect(() => {
-    const fetchUser = async () => {
-      const userData = await getUser("bDKl87RgMKXCqylrKHylcdiEZay2");
-      setUser(userData);k
-    };
-   
-    fetchUser();
-  }, []);
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      setLoggedIn(!!user);
+    });
+
+    if (loggedIn) {
+      const fetchUser = async () => {
+        const userData = await getUser(auth.currentUser.uid);
+        setUser(userData);
+      };
+      fetchUser();
+    }
+    return unsubscribe;
+  }, [user, loggedIn]);
 
   return (
     <View style={{ flex: 1, alignItems: "center" }}>
       <StatusBar barStyle={"dark-content"} />
       <View style={styles.headerContainer}>
-        <Avatar
-          size={125}
-          rounded
-          source={{
-            uri: user.image,
-          }}
-        />
-        <ButtonPickImage
-          idUser={"bDKl87RgMKXCqylrKHylcdiEZay2"}
-        ></ButtonPickImage>
-        <Text style={styles.headerText}>Hùng Anh lỏd</Text>
-        <Text style={{ bottom: 10 }}>0905113115116</Text>
+        {loggedIn ? (
+          <Avatar
+            size={125}
+            rounded
+            source={{
+              uri: user.image
+                ? user.image
+                : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRY3R_8hlZCdl3FOthlfWXOOLlf3Ngqp6sQvtXQhSs&s",
+            }}
+          />
+        ) : (
+          <Avatar
+            size={125}
+            rounded
+            source={{
+              uri: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRY3R_8hlZCdl3FOthlfWXOOLlf3Ngqp6sQvtXQhSs&s",
+            }}
+          />
+        )}
+
+        {loggedIn ? (
+          <ButtonPickImage idUser={auth.currentUser.uid} />
+        ) : (
+          <Text></Text>
+        )}
+        {loggedIn ? (
+          <View>
+            <Text style={styles.headerText}>{user.name}</Text>
+            <Text style={{ bottom: 10 }}>0905113115116</Text>
+          </View>
+        ) : (
+          <View>
+            <Text style={styles.headerText}>No name</Text>
+            <Text style={{ bottom: 10 }}>0905113115116</Text>
+          </View>
+        )}
       </View>
       <View
         style={{
@@ -62,17 +94,19 @@ export default function Index() {
           alignItems: "center",
         }}
       >
-        <TouchableOpacity style={styles.ActionButton}
-        onPress={()=>{
-          navigation.navigate('Information')
-        }}
+        <TouchableOpacity
+          style={styles.ActionButton}
+          onPress={() => {
+            navigation.navigate("Information");
+          }}
         >
           <AntDesign name="profile" size={27} color="black" />
           <Text style={styles.actionText}>Information</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.ActionButton}
-          onPress={() =>{
-            navigation.navigate('Address')
+        <TouchableOpacity
+          style={styles.ActionButton}
+          onPress={() => {
+            navigation.navigate("Address");
           }}
         >
           <FontAwesome name="address-book-o" size={27} color="black" />
@@ -82,14 +116,30 @@ export default function Index() {
           <Ionicons name="chatbox-ellipses-outline" size={27} color="black" />
           <Text style={styles.actionText}>Contact admin</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.ActionButton}
-          onPress={()=>{
-            
-          }}
-        >
-          <SimpleLineIcons name="logout" size={27} color="black" />
-          <Text style={styles.actionText}>Logout</Text>
-        </TouchableOpacity>
+        {loggedIn ? (
+          <TouchableOpacity
+            style={styles.ActionButton}
+            onPress={() => {
+              signOut(auth).then(() => {
+                alert("You have been signed out");
+                navigation.navigate("BottomTab");
+              });
+            }}
+          >
+            <SimpleLineIcons name="logout" size={27} color="black" />
+            <Text style={styles.actionText}>Logout</Text>
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity
+            style={styles.ActionButton}
+            onPress={() => {
+              navigation.navigate("SignIn");
+            }}
+          >
+            <SimpleLineIcons name="login" size={27} color="black" />
+            <Text style={styles.actionText}>SignIn</Text>
+          </TouchableOpacity>
+        )}
       </View>
     </View>
   );

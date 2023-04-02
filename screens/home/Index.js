@@ -24,7 +24,7 @@ export default function Index({ navigation }) {
       headerShown: false,
     });
   });
-
+       
   return (
     <SafeAreaView style={{ alignItems: "center", flex: 1, backgroundColor:'#D6DBCF'}}>
       {/* <SafeAreaView style={{ alignItems: "center", flex: 1, backgroundColor:'#FFFBE9'}}> */}

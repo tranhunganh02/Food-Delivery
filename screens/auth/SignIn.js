@@ -8,13 +8,8 @@ import {
   Image,
   KeyboardAvoidingView,
 } from "react-native";
-<<<<<<< HEAD
 import React,{useLayoutEffect, useState} from "react";
 import { FontAwesome5 } from "@expo/vector-icons";
-=======
-import React, { useState } from "react";
-import { FontAwesome5, MaterialCommunityIcons } from "@expo/vector-icons";
->>>>>>> dfbe2050669cc775f9120790ff6670af82fe1b6d
 import style from "./style";
 const windowHeight = Dimensions.get("window").height;
 const windowWidth = Dimensions.get("window").width;
@@ -24,18 +19,6 @@ import { colors } from "react-native-elements";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../firebase";
 const SignIn = ({ navigation }) => {
-<<<<<<< HEAD
-
-  useLayoutEffect(()=>{
-    navigation.setOptions({
-      headerShown:'false'
-    })
-  })
-
-     const [hiddenPass, setHiddenPass] = useState(true);
-     const [getEmail, setEmail] = useState('');
-     const [getPass, setPass] = useState('');
-=======
   const [hiddenPass, setHiddenPass] = useState(true);
   const [getEmail, setEmail] = useState("");
   const [getPass, setPass] = useState("");
@@ -71,7 +54,6 @@ const SignIn = ({ navigation }) => {
       });
     
   }
->>>>>>> dfbe2050669cc775f9120790ff6670af82fe1b6d
   return (
     <View style={style.container}>
       <View style={style.Cricle1}></View>
@@ -86,27 +68,6 @@ const SignIn = ({ navigation }) => {
             <Text style={{ fontSize: 30, fontWeight: "bold" }}>Sign In</Text>
           </View>
           <View style={style.input}>
-<<<<<<< HEAD
-           <View style={{height:'auto'}}>
-            <Text style={style.text}>E-mail</Text>
-              <TextInput placeholder="Enter your email" 
-                style={style.inputText} 
-                value={getEmail}
-                onChangeText={(text) => setEmail(text)}
-              />
-           </View>
-            <View>
-            <Text style={style.text}>Password</Text>
-            <TextInput placeholder="Password" style={style.inputText} 
-                value={getPass}
-                onChangeText={(text) => setPass(text)} 
-                secureTextEntry={hiddenPass? true : false}
-            />
-            <TouchableOpacity style={{width:'10%',  justifyContent:'center', position:'absolute', bottom:35, right:30}}
-                              onPress={() => setHiddenPass(!hiddenPass)}>
-              <Image resizeMethod='auto' source={require('../../assets/icon/Hide.png')} />
-            </TouchableOpacity>
-=======
             <View>
               <Text style={style.text}>E-mail</Text>
               <AuthInput
@@ -165,7 +126,6 @@ const SignIn = ({ navigation }) => {
                   source={require("../../assets/icon/Hide.png")}
                 />
               </TouchableOpacity>
->>>>>>> dfbe2050669cc775f9120790ff6670af82fe1b6d
             </View>
           </View>
         </KeyboardAvoidingView>
