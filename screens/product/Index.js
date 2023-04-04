@@ -7,6 +7,7 @@ import {
   StatusBar,
   StyleSheet,
   FlatList,
+  SafeAreaView,
 } from "react-native";
 import React, { useEffect, useLayoutEffect, useState } from "react";
 import { Ionicons, MaterialIcons,Entypo,AntDesign, FontAwesome } from "@expo/vector-icons";
@@ -20,17 +21,18 @@ export default function Index({ navigation, route }) {
     setQuantity(0)
   },[route.params.id])
   return (
-    <View style={{ flex: 1, alignItems: "center", backgroundColor:'#FAF8F8' }}>
+    <SafeAreaView style={{ flex: 1, alignItems: "center", backgroundColor:'#FBF9F9' }}>
       <StatusBar barStyle={"dark-content"} />
       <View style={{ height: "auto", width: windowWidth }}>
         <View
           style={{
-            height: windowHeight * 0.185,
+            height: windowHeight * 0.178,
             width: windowWidth,
             flexDirection: "row",
             justifyContent: "space-between",
-            padding: 20,
+            paddingHorizontal: 20,
             alignItems: "center",
+            top:-25
           }}
         >
           <TouchableOpacity
@@ -211,7 +213,7 @@ export default function Index({ navigation, route }) {
           <Text style={{ color: "#fff", fontSize: 18 }}>Add to  cart</Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </SafeAreaView>
   );
 }
 
@@ -220,7 +222,7 @@ const styles = StyleSheet.create({
   Image: {},
   InformationContainer: {
     width: windowWidth,
-    height: windowHeight * 0.15,
+    height: windowHeight * 0.18,
     bottom: 50,
     padding: 25,
     borderBottomWidth: 0.3,

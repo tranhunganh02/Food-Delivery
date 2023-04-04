@@ -137,7 +137,7 @@ const styles = StyleSheet.create({
     },
   },
   FoodContainer: {
-    height: windowHeight * 0.65,
+    height: windowHeight * 0.55,
     width: "100%",
   },
   checkOutContainer: {

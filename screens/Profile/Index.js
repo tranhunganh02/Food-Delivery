@@ -9,7 +9,7 @@ import {
   StyleSheet,
 } from "react-native";
 import { Avatar } from "@rneui/themed";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   FontAwesome,
   SimpleLineIcons,
@@ -19,6 +19,7 @@ import {
 const height = Dimensions.get("window").height;
 const windowWidth = Dimensions.get("window").width;
 export default function Index({navigation}) {
+
   return (
     <View style={{ flex: 1, alignItems: "center" }}>
       <StatusBar barStyle={"dark-content"} />
@@ -38,7 +39,7 @@ export default function Index({navigation}) {
       </View>
       <View
         style={{
-          height: height * 0.4,
+          height: height * 0.5,
           width: "100%",
           justifyContent: "center",
           alignItems: "center",
@@ -64,6 +65,18 @@ export default function Index({navigation}) {
           <Ionicons name="chatbox-ellipses-outline" size={27} color="black" />
           <Text style={styles.actionText}>Contact admin</Text>
         </TouchableOpacity>
+        {
+          global.users.role ==1 ?
+            <TouchableOpacity style={styles.ActionButton}
+            onPress={()=>{
+              navigation.navigate('ListFood')
+            }}
+            >
+            <Ionicons name="fast-food-outline" size={27} color="black" />
+            <Text style={styles.actionText}>List Food</Text>
+          </TouchableOpacity>
+          : null
+        }
         <TouchableOpacity style={styles.ActionButton}
           onPress={()=>{
             
@@ -100,7 +113,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   ActionButton: {
-    height: height * 0.058,
+    height: height * 0.065,
     marginBottom: 23,
     width: windowWidth * 0.8,
     borderBottomWidth: 1,

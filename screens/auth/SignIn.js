@@ -16,9 +16,7 @@ const windowWidth = Dimensions.get("window").width;
 const SignIn = ({ navigation }) => {
 
   useLayoutEffect(()=>{
-    navigation.setOptions({
-      headerShown:'false'
-    })
+   
   })
 
      const [hiddenPass, setHiddenPass] = useState(true);
