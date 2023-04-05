@@ -53,9 +53,10 @@ function BottomTab() {
   return (
     <Tab.Navigator
       // barStyle={{backgroundColor: '#DAE2B6', paddingTop:10}}
-      barStyle={{backgroundColor: '#8E9288',  paddingTop:10}}
+      barStyle={{backgroundColor: '#8E9288', 
+      height:70}}
       initialRouteName="Home"
-      activeColor="white"
+      activeColor="black"
       inactiveColor="white"
     >
     

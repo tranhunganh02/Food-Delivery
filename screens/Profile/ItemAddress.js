@@ -7,7 +7,7 @@ export default function ItemAddress({navigation, id, name, phoneNumber, adress, 
   return (
      <ListItem.Swipeable
      style={{
-          width:windowWidth*0.9,
+          width:windowWidth*0.93,
           justifyContent: 'center',
           marginBottom:10
      }}

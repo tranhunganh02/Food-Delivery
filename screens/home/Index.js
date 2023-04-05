@@ -10,11 +10,12 @@ import {
   SafeAreaView,
   ScrollView,
   StatusBar,
+  Modal
 } from "react-native";
-import React, { useEffect, useLayoutEffect } from "react";
+import ModalFavorite from "./ModalFavorite";
+import React, { useEffect, useState } from "react";
 import { Avatar } from "@rneui/themed";
-import { Feather } from "@expo/vector-icons";
-import { AntDesign, Ionicons } from "@expo/vector-icons";
+import { Entypo, Ionicons, Feather, AntDesign, MaterialIcons } from "@expo/vector-icons";
 import a from "./a";
 export default function Index({ navigation }) {
   const windowHeight = Dimensions.get("window").height;
@@ -24,10 +25,25 @@ export default function Index({ navigation }) {
       role:1
     }
   })
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [modalText, setModalText] = useState('');
+
+  const toggleModal = () => {
+    setIsModalVisible(!isModalVisible);
+  };
+
+  const showSuccessMessage = (message) => {
+    setModalText(message);
+    setIsModalVisible(true);
+
+    setTimeout(() => {
+      setIsModalVisible(false);
+    }, 2000);
+  };
 
   return (
     <SafeAreaView
-      style={{ alignItems: "center", flex: 1, backgroundColor: "#D6DBCF" }}
+      style={{ alignItems: "center", flex: 1, }}
     >
       {/* <SafeAreaView style={{ alignItems: "center", flex: 1, backgroundColor:'#FFFBE9'}}> */}
       <StatusBar barStyle={"dark-content"} />
@@ -110,7 +126,7 @@ export default function Index({ navigation }) {
         </View>
         <View
           style={{
-            height: windowHeight * 0.13,
+            height: windowHeight * 0.19,
             width: windowWidth * 0.9,
           }}
         >
@@ -130,7 +146,7 @@ export default function Index({ navigation }) {
               <AntDesign
                 name="arrowright"
                 size={24}
-                color="#65AE98"
+                color="#F56844"
                 style={{ position: "absolute", right: 5, top: -3 }}
               />
             </TouchableOpacity>
@@ -143,16 +159,31 @@ export default function Index({ navigation }) {
               return (
                 <TouchableOpacity
                   style={{
-                    justifyContent: "center",
+                    justifyContent: 'space-around',
                     alignItems: "center",
                     height: "auto",
-                    borderWidth: 0.4,
-                    borderRadius: 20,
-                    width: windowWidth * 0.25,
+                    borderRadius: 35,
+                    width: windowWidth * 0.178,
                     marginRight: 10,
                     backgroundColor: "#fff",
+                    height:windowHeight*0.115,
+                    marginRight:21,
+                    padding:6,
+                    shadowColor: 'black',
+                          shadowOffset: {
+                            width: 0.2,
+                            height: 0.2,
+                          },
+                          shadowOpacity:0.1,
                   }}
                 >
+                  <Image
+                  style={{
+                    height:40,
+                    width:40
+                  }}
+                  source={{uri: item.image}}
+                  ></Image>
                   <Text>{item.title}</Text>
                 </TouchableOpacity>
               );
@@ -161,7 +192,7 @@ export default function Index({ navigation }) {
         </View>
         <View
           style={{
-            height: windowHeight * 0.49,
+            height: windowHeight * 0.43,
             width: windowWidth * 0.9,
             marginTop: 20,
           }}
@@ -183,7 +214,7 @@ export default function Index({ navigation }) {
               <AntDesign
                 name="arrowright"
                 size={24}
-                color="#65AE98"
+                color="#F56844"
                 style={{ position: "absolute", right: 5, top: -3 }}
               />
             </TouchableOpacity>
@@ -204,7 +235,7 @@ export default function Index({ navigation }) {
                     });
                   }}
                   style={{
-                    width: windowWidth * 0.62,
+                    width: windowWidth * 0.7,
                     marginRight: 10,
                     backgroundColor: "#fff",
                     borderRadius: 20,
@@ -214,32 +245,102 @@ export default function Index({ navigation }) {
                   <Image
                     source={{ uri: item.image }}
                     style={{
-                      height: windowHeight * 0.28,
+                      height: windowHeight * 0.23,
                       width: "100%",
                       borderTopLeftRadius: 20,
                       borderTopRightRadius: 20,
                     }}
-                  ></Image>
+                  >
+                  </Image>
                   <View
                     style={{
-                      flex: 2,
-                      height: "auto",
-                      justifyContent: "center",
-                      padding: 15,
-                      alignContent: "space-between",
-                      flexWrap: "wrap",
+                      position: "absolute",
+                      top:15,
+                      left:20,
+                      width:windowWidth*0.2,
+                      height:windowHeight*0.04,
+                      backgroundColor:'#fff',
+                      borderRadius:30,
+                      flexDirection:'row',
+                      justifyContent: 'center',
+                      alignItems:'center'
                     }}
                   >
-                    <Text style={{ fontWeight: "bold", fontSize: 18 }}>
-                      {item.name}
-                    </Text>
-                    <Text>
-                      {new Intl.NumberFormat("de-DE").format(item.price)} VND
-                    </Text>
-                    <View>
-                      <AntDesign name="star" size={24} color="#6CA86C" />
-                      <Text>4.5</Text>
-                    </View>
+                    <Text
+                    style={{
+                      fontWeight:"bold"
+                    }}
+                    >4.5</Text>
+                    <Entypo name="star" size={18} color="#FFDF5C" 
+                      style={{top:-1, marginLeft:3}}
+                    />
+                    <Text
+                      style={{
+                        fontSize:11,
+                        color:'grey'
+                      }}
+                    >{'(+25)'}</Text>
+                  </View>
+                  <TouchableOpacity
+                    style={{
+                      position: "absolute",
+                      top:15,
+                      right:20,
+                      width:windowWidth*0.09,
+                      height:windowHeight*0.04,
+                      backgroundColor:'#FE724C',
+                      borderRadius:30,
+                      justifyContent: 'center',
+                      alignItems:'center'
+                    }}
+                    onPress={() => {
+                      showSuccessMessage('Success!')
+                    }}
+                  >
+                    <MaterialIcons name="favorite" size={24} color="#fff" />
+                  </TouchableOpacity>
+                  <View
+                    style={{
+                      height: "auto",
+                      padding: 15,
+                    }}
+                  >
+                    <View style={{
+                      flexDirection:'row',
+                      height: 30,
+                      justifyContent: 'space-between',
+                      alignItems:'center'
+                    }}>
+                      <Text style={{ fontWeight: "bold", fontSize: 18 }}>
+                        {item.name}
+                      </Text>
+                      <Text>
+                        {new Intl.NumberFormat("de-DE").format(item.price)}đ
+                      </Text>
+                      </View>
+                      <TouchableOpacity
+                        style={{
+                          width:windowWidth*0.24,
+                          height:windowHeight*0.04,
+                          marginTop:5,
+                          backgroundColor:'#F6F6F6',
+                          justifyContent: 'center',
+                          alignItems:'center',
+                          borderRadius:10,
+                          shadowColor: 'black',
+                          shadowOffset: {
+                            width: 0.2,
+                            height: 0.5,
+                          },
+                          shadowOpacity:0.25,
+                        }}
+                      >
+                        <Text
+                          style={{
+                            color:'#8A8E9B'
+                          }}
+                        >PIZZA</Text>
+                      </TouchableOpacity>
                   </View>
                 </TouchableOpacity>
               );
@@ -248,7 +349,7 @@ export default function Index({ navigation }) {
         </View>
         <View
           style={{
-            height: windowHeight * 0.49,
+            height: windowHeight * 0.43,
             width: windowWidth * 0.9,
             marginTop: 15,
           }}
@@ -270,7 +371,7 @@ export default function Index({ navigation }) {
               <AntDesign
                 name="arrowright"
                 size={24}
-                color="#65AE98"
+                color="#F56844"
                 style={{ position: "absolute", right: 5, top: -3 }}
               />
             </TouchableOpacity>
@@ -291,7 +392,7 @@ export default function Index({ navigation }) {
                     });
                   }}
                   style={{
-                    width: windowWidth * 0.62,
+                    width: windowWidth * 0.7,
                     marginRight: 10,
                     backgroundColor: "#fff",
                     borderRadius: 20,
@@ -301,32 +402,104 @@ export default function Index({ navigation }) {
                   <Image
                     source={{ uri: item.image }}
                     style={{
-                      height: windowHeight * 0.28,
+                      height: windowHeight * 0.23,
                       width: "100%",
                       borderTopLeftRadius: 20,
                       borderTopRightRadius: 20,
                     }}
-                  ></Image>
+                  >
+                  </Image>
                   <View
                     style={{
-                      flex: 2,
-                      height: "auto",
-                      justifyContent: "center",
-                      padding: 15,
-                      alignContent: "space-between",
-                      flexWrap: "wrap",
+                      position: "absolute",
+                      top:15,
+                      left:20,
+                      width:windowWidth*0.2,
+                      height:windowHeight*0.04,
+                      backgroundColor:'#fff',
+                      borderRadius:30,
+                      flexDirection:'row',
+                      justifyContent: 'center',
+                      alignItems:'center'
                     }}
                   >
-                    <Text style={{ fontWeight: "bold", fontSize: 18 }}>
-                      {item.name}
-                    </Text>
-                    <Text>
-                      {new Intl.NumberFormat("de-DE").format(item.price)} VND
-                    </Text>
-                    <View>
-                      <AntDesign name="star" size={24} color="#6CA86C" />
-                      <Text>4.5</Text>
-                    </View>
+                    <Text
+                    style={{
+                      fontWeight:"bold"
+                    }}
+                    >4.5</Text>
+                    <Entypo name="star" size={18} color="#FFDF5C" 
+                      style={{top:-1, marginLeft:3}}
+                    />
+                    <Text
+                      style={{
+                        fontSize:11,
+                        color:'grey'
+                      }}
+                    >{'(+25)'}</Text>
+                  </View>
+                  <View
+                    style={{
+                      position: "absolute",
+                      top:15,
+                      right:20,
+                      width:windowWidth*0.09,
+                      height:windowHeight*0.04,
+                      backgroundColor:'#FE724C',
+                      borderRadius:30,
+                      justifyContent: 'center',
+                      alignItems:'center'
+                    }}
+                  >
+                    <MaterialIcons name="favorite" size={24} color="#fff" />
+                    {/* <ModalFavorite 
+                      isModalVisible={false}
+                      toggleModal={toggleModal}
+                      modalText={modalText}
+                    /> */}
+                  </View>
+                  <View
+                    style={{
+                      height: "auto",
+                      padding: 15,
+                    }}
+                  >
+                    <View style={{
+                      flexDirection:'row',
+                      height: 30,
+                      justifyContent: 'space-between',
+                      alignItems:'center'
+                    }}>
+                      <Text style={{ fontWeight: "bold", fontSize: 18 }}>
+                        {item.name}
+                      </Text>
+                      <Text>
+                        {new Intl.NumberFormat("de-DE").format(item.price)}đ
+                      </Text>
+                      </View>
+                      <TouchableOpacity
+                        style={{
+                          width:windowWidth*0.24,
+                          height:windowHeight*0.04,
+                          marginTop:5,
+                          backgroundColor:'#F6F6F6',
+                          justifyContent: 'center',
+                          alignItems:'center',
+                          borderRadius:10,
+                          shadowColor: 'black',
+                          shadowOffset: {
+                            width: 0.2,
+                            height: 0.5,
+                          },
+                          shadowOpacity:0.25,
+                        }}
+                      >
+                        <Text
+                          style={{
+                            color:'#8A8E9B'
+                          }}
+                        >PIZZA</Text>
+                      </TouchableOpacity>
                   </View>
                 </TouchableOpacity>
               );

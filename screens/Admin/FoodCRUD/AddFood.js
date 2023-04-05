@@ -234,11 +234,12 @@ const AddFood = ({navigation}) => {
 const styles =  StyleSheet.create({
   headerContainer: {
     height: windowHeight * 0.08,
-    width: "100%",
+    width: "95%",
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
     marginTop: 15,
+    paddingHorizontal:25
   },
   headerButton: {
     justifyContent: "center",

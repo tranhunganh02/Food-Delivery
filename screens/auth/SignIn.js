@@ -51,7 +51,7 @@ const SignIn = ({ navigation }) => {
                 onChangeText={(text) => setPass(text)} 
                 secureTextEntry={hiddenPass? true : false}
             />
-            <TouchableOpacity style={{width:'10%',  justifyContent:'center', position:'absolute', bottom:35, right:30}}
+            <TouchableOpacity style={{width:'10%',  justifyContent:'center', position:'absolute', bottom:15, right:30}}
                               onPress={() => setHiddenPass(!hiddenPass)}>
               <Image resizeMethod='auto' source={require('../../assets/icon/Hide.png')} />
             </TouchableOpacity>

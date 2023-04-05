@@ -34,7 +34,7 @@ export default function Index({navigation}) {
         <TouchableOpacity style={styles.headerButton}>
           <FontAwesome name="exchange" size={24} color="#E8E8E8" />
         </TouchableOpacity>
-        <Text style={styles.headerText}>Mohamed Lanh Buồi</Text>
+        <Text style={styles.headerText}>Mohamed Lanh </Text>
         <Text style={{ bottom: 10 }}>0905113115116</Text>
       </View>
       <View
@@ -79,7 +79,7 @@ export default function Index({navigation}) {
         }
         <TouchableOpacity style={styles.ActionButton}
           onPress={()=>{
-            
+            navigation.navigate('SignIn')
           }}
         >
           <SimpleLineIcons name="logout" size={27} color="black" />
