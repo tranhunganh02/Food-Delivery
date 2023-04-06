@@ -18,6 +18,7 @@ const AuthInput = ({
         <>
           <View style={{position:'relative'}}>
             <TextInput
+            autoCapitalize={false}
               value={value}
               onChangeText={onChange}
               onBlur={onBlur}
