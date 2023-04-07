@@ -5,6 +5,7 @@ import {
   View,
   TouchableOpacity,
   StatusBar,
+  ScrollView,
 } from "react-native";
 import {
   Ionicons,
@@ -12,13 +13,46 @@ import {
   MaterialCommunityIcons,
   AntDesign,
 } from "@expo/vector-icons";
-
-import React from "react";
+import a from "./a";
+import React, { useEffect, useState } from "react";
 import SelectDropdown from "react-native-select-dropdown";
+import axios from "axios"
+import ItemAddress from "./ItemAddress";
 const windowHeight = Dimensions.get("window").height;
 const windowWidth = Dimensions.get("window").width;
-const countries = ["Egypt", "Canada", "Australia", "Ireland"];
+
 const Address = ({navigation}) => {
+
+  const host = "https://provinces.open-api.vn/api/";
+  var callAPI = async () => {
+    return axios.get('https://provinces.open-api.vn/api/?depth=1')
+        .then((response) => {
+          setCity([...city, response.data])
+        });
+  }
+  var callApiDistrict = async (api) => {
+    return axios.get(api)
+        .then((response) => {
+            console.log(response.data);
+        });
+  }
+  var callApiWard = async (api) => {
+    return await axios.get(api)
+        .then((response) => {
+          console.log(response.data.ward);
+        });
+}
+const [books, updateBooks] = React.useState([]);
+async function fetchBooks() {
+  const response = await fetch('https://provinces.open-api.vn/api/?depth=1');
+  const json = await response.json();
+  updateBooks(json.data);
+  }
+  function ex (){
+    fetchBooks()
+    console.log(books);
+  }
+  const [listAddress, setListAddress] = useState(a.user)
   return (
     <View
       style={{
@@ -26,7 +60,7 @@ const Address = ({navigation}) => {
         paddingHorizontal: 20,
         alignItems: "center",
         justifyContent: "space-between",
-        paddingVertical: 5,
+        paddingVertical: 10,
       }}
     >
       <StatusBar barStyle={"dark-content"} />
@@ -37,7 +71,7 @@ const Address = ({navigation}) => {
             navigation.goBack();
           }}
         >
-          <Ionicons name="ios-arrow-back" size={20} color="black" />
+          <Ionicons name="ios-arrow-back" size={24} color="black" />
         </TouchableOpacity>
         <Text>Your address</Text>
         <TouchableOpacity
@@ -45,28 +79,23 @@ const Address = ({navigation}) => {
             styles.headerButton,
             { justifyContent: "center", alignItems: "center" },
           ]}
+          onPress={() => {
+            ex()
+          }}
         >
-          <AntDesign name="pluscircleo" size={20} color="black" />
+          <AntDesign name="plus" size={24} color="black" />
         </TouchableOpacity>
       </View>
-      <View>
-        <SelectDropdown
-          data={countries}
-          onSelect={(selectedItem, index) => {
-            console.log(selectedItem, index);
-          }}
-          buttonTextAfterSelection={(selectedItem, index) => {
-            // text represented after item is selected
-            // if data array is an array of objects then return selectedItem.property to render after item is selected
-            return selectedItem;
-          }}
-          rowTextForSelection={(item, index) => {
-            // text represented for each item in dropdown
-            // if data array is an array of objects then return item.property to represent item in dropdown
-            return item;
-          }}
-        />
-      </View>
+     <ScrollView
+     style={{
+      width:'90%',
+      height: windowHeight*0.4
+     }}
+     >
+      {listAddress.map((item, index) => (
+            <ItemAddress navigation={navigation} key={index} name={item.name} id={item.id} phoneNumber={item.phoneNumber} city={item.city} district={item.district} ward={item.ward} specificAddress={item.specificAddress}/>
+        ))}
+     </ScrollView>
     </View>
   );
 };

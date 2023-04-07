@@ -13,6 +13,9 @@ import SignIn from './screens/auth/SignIn';
 import SignUp from './screens/auth/SignUp';
 import Cart from './screens/Cart/Index';
 import CheckOut from './screens/Checkout/Index';
+import  AddFood  from './screens/Admin/FoodCRUD/AddFood'
+import  ListFood  from './screens/Admin/FoodCRUD/ListFood'
+import UpdateFood from './screens/Admin/FoodCRUD/UpdateFood'
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -35,6 +38,9 @@ const Index = () => {
             <Stack.Screen name="CheckOut" component={CheckOut} />
             <Stack.Screen name="Information" component={Information} />
             <Stack.Screen name="Address" component={Address} />
+            <Stack.Screen name='ListFood' component={ListFood} />
+            <Stack.Screen name='AddFood' component={AddFood} />
+            <Stack.Screen name='UpdateFood' component={UpdateFood} />
         </Stack.Navigator>
     </NavigationContainer>
   );
@@ -46,9 +52,10 @@ function BottomTab() {
   return (
     <Tab.Navigator
       // barStyle={{backgroundColor: '#DAE2B6', paddingTop:10}}
-      barStyle={{backgroundColor: '#8E9288',  paddingTop:10}}
+      barStyle={{backgroundColor: '#8E9288', 
+      height:70}}
       initialRouteName="Home"
-      activeColor="white"
+      activeColor="black"
       inactiveColor="white"
     >
       <Tab.Screen

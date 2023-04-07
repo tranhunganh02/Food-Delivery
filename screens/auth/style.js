@@ -100,7 +100,7 @@ export default StyleSheet.create({
           borderRadius: 30,
           flexDirection: "row",
           alignItems: "center",
-          width: windowWidth * 0.35,
+          width: windowWidth * 0.38,
           height: 55,
           justifyContent: "space-evenly",
      }

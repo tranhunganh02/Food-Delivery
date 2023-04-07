@@ -7,6 +7,7 @@ import {
   StatusBar,
   StyleSheet,
   FlatList,
+  SafeAreaView,
 } from "react-native";
 import React, { useEffect, useLayoutEffect, useState } from "react";
 import { Ionicons, MaterialIcons,Entypo,AntDesign, FontAwesome } from "@expo/vector-icons";
@@ -20,17 +21,18 @@ export  default function Product ({ navigation, route }) {
     setQuantity(0)
   },[route.params.id])
   return (
-    <View style={{ flex: 1, alignItems: "center", backgroundColor:'#FAF8F8' }}>
+    <SafeAreaView style={{ flex: 1, alignItems: "center", backgroundColor:'#FBF9F9' }}>
       <StatusBar barStyle={"dark-content"} />
       <View style={{ height: "auto", width: windowWidth }}>
         <View
           style={{
-            height: windowHeight * 0.185,
+            height: windowHeight * 0.15,
             width: windowWidth,
             flexDirection: "row",
             justifyContent: "space-between",
-            padding: 20,
+            paddingHorizontal: 20,
             alignItems: "center",
+            top:-25
           }}
         >
           <TouchableOpacity
@@ -41,7 +43,7 @@ export  default function Product ({ navigation, route }) {
               width: windowWidth * 0.13,
               height: windowHeight * 0.06,
               shadowColor: "#000",
-              shadowOpacity: 0.5,
+              shadowOpacity: 0.2,
               shadowRadius: 50,
               shadowOffset: {
                 height: 0.5,
@@ -75,13 +77,13 @@ export  default function Product ({ navigation, route }) {
               backgroundColor:'#fff'
             }}
           >
-            <MaterialIcons name="favorite" size={30} color="red" />
+            <MaterialIcons name="favorite" size={30} color="#FE724C" />
           </TouchableOpacity>
         </View>
         <Image
           style={{
             width: "100%",
-            height: windowHeight * 0.33,
+            height: windowHeight * 0.3,
             bottom: 50,
           }}
           source={{ uri: route.params.image }}
@@ -112,28 +114,30 @@ export  default function Product ({ navigation, route }) {
               width: windowWidth * 0.26,
               height: windowHeight * 0.05,
               flexDirection: "row",
-              borderWidth: 0.45,
               borderRadius:20,
-              borderColor:'#BFBFBF',
               justifyContent:'space-around',
               alignItems :'center',
             }}
           >
+           
             <TouchableOpacity
-              onPress={()=>{
-                setQuantity(quantity+1)
-              }}
-            >
-              <AntDesign name="plus" size={24} color="black" />
-            </TouchableOpacity>
-            <Text>{quantity}</Text>
-            <TouchableOpacity
+            style={{
+              borderRadius:30
+            }}
               onPress={()=>{
                 if(quantity>1)
                 setQuantity(quantity-1)
               }}
             >
-              <AntDesign name="minus" size={24} color="black" />
+              <AntDesign name="minuscircleo" size={30} color="#FE724C" />
+            </TouchableOpacity>
+            <Text>{quantity}</Text>
+            <TouchableOpacity
+              onPress={()=>{
+                setQuantity(quantity+1)
+              }}
+            >
+              <AntDesign name="pluscircle" size={30} color="#FE724C" />
             </TouchableOpacity>
           </View>
         </View>
@@ -180,7 +184,7 @@ export  default function Product ({ navigation, route }) {
                 </Text>
               </View>
               <TouchableOpacity style={styles.otherDishesContainerCart}>
-                <FontAwesome name="cart-plus" size={30} color="black" />
+                <FontAwesome name="cart-plus" size={30} color="#fff" />
               </TouchableOpacity>
             </TouchableOpacity>
           );
@@ -208,10 +212,10 @@ export  default function Product ({ navigation, route }) {
             navigation.navigate('CartDetails')
           }}
         >
-          <Text style={{ color: "#fff", fontSize: 18 }}>Add to  cart</Text>
+          <Text style={{ color: "#fff", fontSize: 18 }}>Add to cart</Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </SafeAreaView>
   );
 }
 
@@ -220,7 +224,7 @@ const styles = StyleSheet.create({
   Image: {},
   InformationContainer: {
     width: windowWidth,
-    height: windowHeight * 0.15,
+    height: windowHeight * 0.18,
     bottom: 50,
     padding: 25,
     borderBottomWidth: 0.3,
@@ -249,7 +253,7 @@ const styles = StyleSheet.create({
     top: -50,
   },
   otherDishesContainerCart: {
-    backgroundColor: "#C9FA26",
+    backgroundColor: "#FE724C",
     alignItems: "center",
     justifyContent: "center",
     width: windowWidth * 0.13,
@@ -274,7 +278,7 @@ const styles = StyleSheet.create({
     borderRadius: 45,
     width: windowWidth * 0.33,
     height: windowHeight * 0.07,
-    backgroundColor: "#000",
+    backgroundColor: "#FE724C",
     justifyContent: "center",
     alignItems: "center",
   },

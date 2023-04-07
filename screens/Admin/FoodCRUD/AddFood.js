@@ -13,6 +13,13 @@ import {
 } from 'react-native';
 import { Ionicons, AntDesign } from '@expo/vector-icons';
 import React, {useRef, useState} from 'react';
+import insertProduct from '../../../features/insertProduct';
+import { useForm } from 'react-hook-form';
+import PickImagePruct from '../../../features/pickImageProduct';
+import { MediaTypeOptions, launchImageLibraryAsync } from 'expo-image-picker';
+import PickImageProduct from '../../../features/pickImageProduct';
+import uploadImage from '../../../features/uploadImage';
+import { async } from '@firebase/util';
 const windowWidth = Dimensions.get('window').width
 const windowHeight = Dimensions.get('window').height
 const category = [
@@ -34,6 +41,16 @@ const AddFood = ({navigation}) => {
   const [data, setData] = useState(category);
   const [selectedCategory, setSelectedCategory] = useState('');
   const searchRef = useRef();
+  const insert = async( ) => {
+    let imageURL = await uploadImage({image: imagePicker._j,folder: "Product"});
+    const dataProduct ={name: name,price: price, selectedCategory: selectedCategory,image: imageURL};
+    insertProduct(dataProduct);
+    setImagePicker(null)
+  }
+  const chooseImage =( )=> {
+   let url= PickImagePruct();
+   setImagePicker(url);
+  }
   const onSearch = search => {
     if (search !== '') {
       let tempData = data.filter(item => {
@@ -107,6 +124,7 @@ const AddFood = ({navigation}) => {
           paddingLeft: 15,
           paddingRight: 15,
         }}
+        onPress={chooseImage}
       >
         <Text>Choose image</Text>
       </TouchableOpacity>
@@ -210,6 +228,7 @@ const AddFood = ({navigation}) => {
           alignItems:'center',
           marginTop:100
         }}
+        onPress={insert}
       >
         <Text style={{
           color:'#fff',
@@ -220,13 +239,27 @@ const AddFood = ({navigation}) => {
       <View
         style={styles.showImage}
       >
-        <Image
-        style={{
-          width:"100%",
-          height:'100%',
-        }}
-          source={{uri:'https://c0.wallpaperflare.com/preview/879/772/974/coca-cola-the-coca-cola-company-bottle-drink.jpg'}}
-        ></Image>
+        {imagePicker? (
+           <Image
+           style={{
+             width:"100%",
+             height:'100%',
+           }}
+             source={{uri:
+              imagePicker._j}}
+           ></Image>
+        ):
+        (
+          <Image
+          style={{
+            width:"100%",
+            height:'100%',
+          }}
+            source={{uri:
+              'https://c0.wallpaperflare.com/preview/879/772/974/coca-cola-the-coca-cola-company-bottle-drink.jpg'}}
+          ></Image>
+        )}
+       
       </View>
     </SafeAreaView>
   );
