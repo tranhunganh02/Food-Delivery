@@ -16,12 +16,20 @@ import {
    
    import React, { useEffect, useState } from "react";
    import Item from "./Item";
-   import a from '../../home/a.js'
+import fetchProduct from "../../../features/Product/fetchProduct";
+  //  import a from '../../home/a.js'
    const windowHeight = Dimensions.get("window").height;
    const windowWidth = Dimensions.get("window").width;
 
    const List = ({navigation}) => {
-    const [listFood, setListFood] = useState(a.item[2].product);
+    const [listFood, setListFood] = useState([]);
+    useEffect(() =>{
+      async function fetchData() {
+        const data = await fetchProduct();
+        setListFood(data);
+      }
+      fetchData(); 
+    },[listFood])
      return (
        <View
          style={{
@@ -61,7 +69,7 @@ import {
            width:windowWidth*0.85
          }}>
            {listFood.map((item, index) => (
-            <Item navigation={navigation} key={index} id={item.key} name={item.name} price={item.price} image={item.image} quantity={item.quantity}/>
+            <Item navigation={navigation} key={index} id={item.id} name={item.data.name} price={item.data.price} image={item.data.image} quantity={item.data.quantity}/>
         ))}
          </ScrollView>
        </View>

@@ -14,7 +14,7 @@ import style from "./style";
 const windowHeight = Dimensions.get("window").height;
 const windowWidth = Dimensions.get("window").width;
 import { useForm, Controller } from "react-hook-form";
-import AuthInput from "../../component/AuthInput";
+import AuthInput from "../../component/User/AuthInput";
 import { colors } from "react-native-elements";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../firebase";

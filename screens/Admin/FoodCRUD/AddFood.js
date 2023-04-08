@@ -13,13 +13,9 @@ import {
 } from 'react-native';
 import { Ionicons, AntDesign } from '@expo/vector-icons';
 import React, {useRef, useState} from 'react';
-import insertProduct from '../../../features/insertProduct';
-import { useForm } from 'react-hook-form';
-import PickImagePruct from '../../../features/pickImageProduct';
-import { MediaTypeOptions, launchImageLibraryAsync } from 'expo-image-picker';
-import PickImageProduct from '../../../features/pickImageProduct';
+import insertProduct from '../../../features/Product/insertProduct';
 import uploadImage from '../../../features/uploadImage';
-import { async } from '@firebase/util';
+import PickImageProduct from '../../../features/Product/pickImageProduct';
 const windowWidth = Dimensions.get('window').width
 const windowHeight = Dimensions.get('window').height
 const category = [
@@ -42,13 +38,13 @@ const AddFood = ({navigation}) => {
   const [selectedCategory, setSelectedCategory] = useState('');
   const searchRef = useRef();
   const insert = async( ) => {
-    let imageURL = await uploadImage({image: imagePicker._j,folder: "Product"});
+    let imageURL = await uploadImage({image: imagePicker,folder: "Product"});
     const dataProduct ={name: name,price: price, selectedCategory: selectedCategory,image: imageURL};
     insertProduct(dataProduct);
     setImagePicker(null)
   }
-  const chooseImage =( )=> {
-   let url= PickImagePruct();
+  const chooseImage = async ( )=> {
+   let url=await PickImageProduct();
    setImagePicker(url);
   }
   const onSearch = search => {
@@ -110,6 +106,7 @@ const AddFood = ({navigation}) => {
         value={price}
         onChangeText={(number) => (setPrice(number))}
       />
+       
       <TouchableOpacity
         style={{
           width: '80%',
@@ -239,26 +236,8 @@ const AddFood = ({navigation}) => {
       <View
         style={styles.showImage}
       >
-        {imagePicker? (
-           <Image
-           style={{
-             width:"100%",
-             height:'100%',
-           }}
-             source={{uri:
-              imagePicker._j}}
-           ></Image>
-        ):
-        (
-          <Image
-          style={{
-            width:"100%",
-            height:'100%',
-          }}
-            source={{uri:
-              'https://c0.wallpaperflare.com/preview/879/772/974/coca-cola-the-coca-cola-company-bottle-drink.jpg'}}
-          ></Image>
-        )}
+        {imagePicker && <Image source={{ uri: imagePicker }} style={{ width: 200, height: 200 }} />}
+       
        
       </View>
     </SafeAreaView>

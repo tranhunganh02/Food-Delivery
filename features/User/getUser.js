@@ -1,5 +1,5 @@
 import { doc, getDoc } from "firebase/firestore";
-import { dbStore } from "../firebase"; // your Firebase configuration file
+import { dbStore } from "../../firebase"; // your Firebase configuration file
 async function getUser  (idUser) {
   try {
     const docRef = doc(dbStore, "users", idUser);

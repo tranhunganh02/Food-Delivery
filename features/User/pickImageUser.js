@@ -15,7 +15,7 @@ import {
   uploadBytesResumable,
 } from "firebase/storage";
 
-import { dbStore, storage } from "../firebase";
+import { dbStore, storage } from "../../firebase";
 import { FontAwesome } from "@expo/vector-icons";
 import { StyleSheet } from "react-native";
 import { doc, updateDoc } from "firebase/firestore";

@@ -11,7 +11,7 @@ import {
 import React from "react";
 import { FontAwesome5 } from "@expo/vector-icons";
 import style from "./style";
-import AuthInput from "../../component/AuthInput";
+import AuthInput from "../../component/User/AuthInput";
 import { useForm } from "react-hook-form";
 import { auth, dbFirestore, dbStore } from "../../firebase";
 import {

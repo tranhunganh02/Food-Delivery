@@ -2,8 +2,10 @@ import { StyleSheet, Text, View, Button, TouchableOpacity, Dimensions, Image } f
 import React from 'react'
 import { ListItem, Icon } from '@rneui/themed';
 import { Feather, MaterialIcons } from '@expo/vector-icons';
+import { dbStore } from '../../../firebase';
+import { deleteDoc, doc } from 'firebase/firestore';
 const windowWidth = Dimensions.get('window').width
-export default function Item({navigation, id, name, price, image, }) {
+export default function Item({navigation, id, name, price, image }) {
   return (
      <ListItem.Swipeable
      style={{
@@ -25,7 +27,9 @@ export default function Item({navigation, id, name, price, image, }) {
          }}
          onPress={()=>{
           
-          navigation.navigate('UpdateFood')
+          navigation.navigate('UpdateFood',{
+            id: id
+          })
          }}
        >
          <MaterialIcons name="system-update-alt" size={24} color="black" />
@@ -39,7 +43,9 @@ export default function Item({navigation, id, name, price, image, }) {
           alignItems: 'center',
           height:"100%"
          }}
-          onPress={action}
+          onPress={async ()=> { await deleteDoc(doc(dbStore, "products", id )).then(()=>{
+            alert("Xoa dc r, M lam modal di :))")
+          }); }}
         >
            <Feather name="trash-2" size={35} color="red" />
         </TouchableOpacity>

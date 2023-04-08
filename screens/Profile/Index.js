@@ -17,9 +17,9 @@ import {
   AntDesign,
   Ionicons,
 } from "@expo/vector-icons";
-import ButtonPickImage from "../../features/pickImageUser";
+import ButtonPickImage from "../../features/User/pickImageUser";
 import { auth, storage } from "../../firebase";
-import getUser from "../../features/getUser";
+import getUser from "../../features/User/getUser";
 import { signOut } from "firebase/auth";
 const height = Dimensions.get("window").height;
 const windowWidth = Dimensions.get("window").width;
