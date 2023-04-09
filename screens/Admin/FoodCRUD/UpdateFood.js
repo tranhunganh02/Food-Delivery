@@ -16,6 +16,9 @@ import getProduct from "../../../features/Product/getProduct";
 import PickImageProduct from "../../../features/Product/pickImageProduct";
 import updateProduct from "../../../features/Product/updateProduct";
 import uploadImage from "../../../features/uploadImage";
+import { useForm } from "react-hook-form";
+import AuthInput from "../../../component/User/AuthInput";
+import ValidateInput from "../../../component/Product/ValidateInput";
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
 const category = [
@@ -37,7 +40,14 @@ const UpdateFood = ({ navigation,route}) => {
   const [clicked, setClicked] = useState(false);
   const [data, setData] = useState(category);
   const [selectedCategory, setSelectedCategory] = useState("");
+  const [isPickedImage,setIsPickedImage] = useState(false);
   const searchRef = useRef();
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+    setValue
+  } = useForm();
   const onSearch = (search) => {
     if (search !== "") {
       let tempData = data.filter((item) => {
@@ -51,24 +61,35 @@ const UpdateFood = ({ navigation,route}) => {
   useEffect(()=>{
     async function getEachProduct(){
       const data = await getProduct(route.params.id);
-  
-      setNameFood(data.name);
-      setPriceFood(data.price);
+        
+      setValue('name',data.name);
+      setValue('price',data.price);
       setSelectedCategory(data.selectedCategory);
       setImagePicker(data.image);
       // console.log(data);
     }
     getEachProduct();
   },[])
-  const update =async ()=> 
+  const update =async (data)=> 
   {
-    let imageURL = await uploadImage({image: imagePicker,folder: "Product"});
-    const dataProduct ={name: nameFood,price: priceFood, selectedCategory: selectedCategory,image: imageURL,id: route.params.id};
-    updateProduct(dataProduct);
+    if(isPickedImage)
+    {
+      let imageURL = await uploadImage({image: imagePicker,folder: "Product"});
+      setImagePicker(imageURL);
+    }
+    const moreProps = { selectedCategory: selectedCategory,image:imagePicker,id: route.params.id};
+    const finalData= Object.assign({},data,moreProps);
+    updateProduct(finalData);
+   
+    
   }
   async function changeImage(){
     let url= await PickImageProduct();
-   setImagePicker(url);
+    if(url)
+    {
+      setIsPickedImage(true);
+      setImagePicker(url);
+    }
   }
   return (
     <SafeAreaView
@@ -124,18 +145,24 @@ const UpdateFood = ({ navigation,route}) => {
           marginTop: 15,
         }}
       >
-        <TextInput
-          style={styles.input}
-          placeholder="Food name"
-          value={nameFood}
-          onChangeText={setNameFood}
+        <ValidateInput
+        name="name"
+        placeholder="Food name"
+        control={control}
+        rules={{ required: "Food name is required" }}
         />
-        <TextInput
+        <ValidateInput
+        name="price"
+        placeholder="Price"
+        control={control}
+        rules={{ required: "Price is required" }}
+        />
+        {/* <TextInput
           style={styles.input}
           placeholder="Price"
           value={priceFood}
           onChangeText={(number) => setPriceFood(number)}
-        />
+        /> */}
         <TouchableOpacity
           style={{
             width: "80%",
@@ -257,13 +284,14 @@ const UpdateFood = ({ navigation,route}) => {
             alignItems: "center",
             marginTop: 100,
           }}
+          onPress={handleSubmit(update)}
         >
           <Text
             style={{
               color: "#fff",
               fontSize: 20,
             }}
-            onPress={update}
+            
           >
             Update
           </Text>

@@ -16,6 +16,9 @@ import React, {useRef, useState} from 'react';
 import insertProduct from '../../../features/Product/insertProduct';
 import uploadImage from '../../../features/uploadImage';
 import PickImageProduct from '../../../features/Product/pickImageProduct';
+import ValidateInput from '../../../component/Product/ValidateInput';
+import { useForm } from 'react-hook-form';
+
 const windowWidth = Dimensions.get('window').width
 const windowHeight = Dimensions.get('window').height
 const category = [
@@ -29,23 +32,37 @@ const category = [
                 {name: 'Noodles', id: '8',},
               ];
 const AddFood = ({navigation}) => {
-  const [name, setName] = useState("");
-  const [price, setPrice] = useState("");
   const [imagePicker, setImagePicker] = useState("");
   const [search, setSearch] = useState('');
   const [clicked, setClicked] = useState(false);
   const [data, setData] = useState(category);
   const [selectedCategory, setSelectedCategory] = useState('');
+  const [isPickedImage,setIsPickedImage] = useState(false);
   const searchRef = useRef();
-  const insert = async( ) => {
-    let imageURL = await uploadImage({image: imagePicker,folder: "Product"});
-    const dataProduct ={name: name,price: price, selectedCategory: selectedCategory,image: imageURL};
-    insertProduct(dataProduct);
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+    setValue
+  } = useForm();
+  const insert = async(data ) => {
+    if(isPickedImage)
+    {
+      let imageURL = await uploadImage({image: imagePicker,folder: "Product"});
+      setImagePicker(imageURL);
+    }
+    const moreProps = { selectedCategory: selectedCategory,image:imagePicker};
+    const finalData= Object.assign({},data,moreProps);
+    insertProduct(finalData);
     setImagePicker(null)
   }
   const chooseImage = async ( )=> {
    let url=await PickImageProduct();
-   setImagePicker(url);
+   if(url)
+    {
+      setIsPickedImage(true);
+      setImagePicker(url);
+    }
   }
   const onSearch = search => {
     if (search !== '') {
@@ -94,17 +111,17 @@ const AddFood = ({navigation}) => {
                     width:windowWidth,
                     marginTop:20,
                   }}>
-      <TextInput
-        style={styles.input}
+      <ValidateInput
+        name="name"
         placeholder="Food name"
-        value={name}
-        onChangeText={setName}
+        control={control}
+        rules={{ required: "Food name is required" }}
       />
-      <TextInput
-        style={styles.input}
+      <ValidateInput
+        name="price"
         placeholder="Price"
-        value={price}
-        onChangeText={(number) => (setPrice(number))}
+        control={control}
+        rules={{ required: "Price is required" }}
       />
        
       <TouchableOpacity
@@ -225,7 +242,7 @@ const AddFood = ({navigation}) => {
           alignItems:'center',
           marginTop:100
         }}
-        onPress={insert}
+        onPress={handleSubmit(insert)}
       >
         <Text style={{
           color:'#fff',
