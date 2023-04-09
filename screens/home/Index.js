@@ -16,7 +16,13 @@ import { Avatar } from "@rneui/themed";
 import { Feather } from "@expo/vector-icons";
 import { AntDesign, Ionicons} from "@expo/vector-icons";
 import a from "./a";
+import { useEffect } from "react";
+import { useState } from "react";
+import { auth } from "../../firebase";
+import getUser from "../../features/getUser";
 export default function Index({ navigation }) {
+  const [user, setUser] = useState({});
+  const [loggedIn, setLoggedIn] = useState(false);
   const windowHeight = Dimensions.get("window").height;
   const windowWidth = Dimensions.get("window").width;
   useLayoutEffect(() => {
@@ -24,7 +30,21 @@ export default function Index({ navigation }) {
       headerShown: false,
     });
   });
-       
+  
+    useEffect(() => {
+      const unsubscribe = auth.onAuthStateChanged((user) => {
+        setLoggedIn(!!user);
+      });
+  
+      if (loggedIn) {
+        const fetchUser = async () => {
+          const userData = await getUser(auth.currentUser.uid);
+          setUser(userData);
+        };
+        fetchUser();
+      }
+      return unsubscribe;
+    }, [user, loggedIn]);
   return (
     <SafeAreaView style={{ alignItems: "center", flex: 1, backgroundColor:'#D6DBCF'}}>
       {/* <SafeAreaView style={{ alignItems: "center", flex: 1, backgroundColor:'#FFFBE9'}}> */}
@@ -46,10 +66,11 @@ export default function Index({ navigation }) {
           padding:5
         }}
       >
+        
         <Avatar
         size={64}
         rounded
-        source={{uri: 'https://cdn.pixabay.com/photo/2019/11/03/20/11/portrait-4599553__340.jpg'}}
+        source={{uri: user.image? user.image: 'https://cdn.pixabay.com/photo/2019/11/03/20/11/portrait-4599553__340.jpg'}}
         />
         <Text style={{fontWeight:'300', fontSize: 20, flex:3, right:-10, width:'85%', }}>
             Welcome back, Pin! Order food now!!!
