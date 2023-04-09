@@ -23,8 +23,7 @@ export default function ItemAddress({navigation, id, name, phoneNumber, adress, 
            height:100
          }}
          onPress={()=>{
-          
-          // navigation.navigate('UpdateFood')
+          // navigation.navigate('Update Address')
          }}
        >
          <MaterialIcons name="system-update-alt" size={24} color="black" />

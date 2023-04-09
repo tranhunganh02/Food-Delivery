@@ -18,8 +18,7 @@ import {
 } from "@expo/vector-icons";
 const height = Dimensions.get("window").height;
 const windowWidth = Dimensions.get("window").width;
-export default function Index({navigation}) {
-
+export default function Index({ navigation }) {
   return (
     <View style={{ flex: 1, alignItems: "center" }}>
       <StatusBar barStyle={"dark-content"} />
@@ -45,41 +44,70 @@ export default function Index({navigation}) {
           alignItems: "center",
         }}
       >
-        <TouchableOpacity style={styles.ActionButton}
-        onPress={()=>{
-          navigation.navigate('Information')
-        }}
+        <TouchableOpacity
+          style={styles.ActionButton}
+          onPress={() => {
+            navigation.navigate("Information");
+          }}
         >
           <AntDesign name="profile" size={27} color="black" />
           <Text style={styles.actionText}>Information</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.ActionButton}
-          onPress={() =>{
-            navigation.navigate('Address')
+        <TouchableOpacity
+          style={styles.ActionButton}
+          onPress={() => {
+            navigation.navigate("Address");
           }}
         >
           <FontAwesome name="address-book-o" size={27} color="black" />
           <Text style={styles.actionText}>Address</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.ActionButton}>
-          <Ionicons name="chatbox-ellipses-outline" size={27} color="black" />
-          <Text style={styles.actionText}>Contact admin</Text>
-        </TouchableOpacity>
-        {
-          global.users.role ==1 ?
-            <TouchableOpacity style={styles.ActionButton}
-            onPress={()=>{
-              navigation.navigate('ListFood')
-            }}
+        {global.users.role == 1 ? (
+          <>
+            <TouchableOpacity
+              style={styles.ActionButton}
+              onPress={() => {
+                navigation.navigate("Chat");
+              }}
             >
-            <Ionicons name="fast-food-outline" size={27} color="black" />
-            <Text style={styles.actionText}>List Food</Text>
-          </TouchableOpacity>
-          : null
-        }
-        <TouchableOpacity style={styles.ActionButton}
-          onPress={()=>{
-            navigation.navigate('SignIn')
+              <Ionicons
+                name="chatbox-ellipses-outline"
+                size={27}
+                color="black"
+              />
+              <Text style={styles.actionText}>Support</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.ActionButton}
+              onPress={() => {
+                navigation.navigate("ListFood");
+              }}
+            >
+              <Ionicons name="fast-food-outline" size={27} color="black" />
+              <Text style={styles.actionText}>List Food</Text>
+            </TouchableOpacity>
+          </>
+        ) : (
+          <>
+            <TouchableOpacity
+              style={styles.ActionButton}
+              onPress={() => {
+                navigation.navigate("Chat");
+              }}
+            >
+              <Ionicons
+                name="chatbox-ellipses-outline"
+                size={27}
+                color="black"
+              />
+              <Text style={styles.actionText}>Contact admin</Text>
+            </TouchableOpacity>
+          </>
+        )}
+        <TouchableOpacity
+          style={styles.ActionButton}
+          onPress={() => {
+            navigation.navigate("SignIn");
           }}
         >
           <SimpleLineIcons name="logout" size={27} color="black" />

@@ -38,7 +38,10 @@ const Item = ({
       ></Image>
       <View style={{
           justifyContent:'space-around',
-          height:60
+          alignItems:'flex-start',
+          height:windowHeight*0.1,
+          width:windowWidth*0.3,
+          flexWrap:'wrap',
       }}>
         <Text>{name}</Text>
         <Text style={{fontWeight:'600'}}>{new Intl.NumberFormat("de-DE").format(price)} VND</Text>

@@ -61,7 +61,7 @@ const AddFood = ({navigation}) => {
         >
           <Ionicons name="ios-arrow-back" size={24} color="black" />
         </TouchableOpacity>
-        <Text>Your address</Text>
+        <Text>Add food</Text>
         <TouchableOpacity
           style={[
             styles.headerButton,

@@ -26,14 +26,32 @@ export default {
           icon: "No",
           title: "Noodles",
           key: "4",
-          image:'https://cdn-icons-png.flaticon.com/64/3041/3041130.png'
+          image:'https://cdn-icons-png.flaticon.com/512/3041/3041130.png'
         },
         {
           icon: "No",
           title: "Breakfast",
           key: "5",
-          image:'https://cdn-icons-png.flaticon.com/64/3480/3480823.png'
+          image:'https://cdn-icons-png.flaticon.com/512/3480/3480823.png'
         },
+        {
+          icon: "No",
+          title: "Lunch",
+          key: "6",
+          image:'https://cdn-icons-png.flaticon.com/512/2515/2515189.png'
+        },
+        {
+          icon: "No",
+          title: "Dinner",
+          key: "7",
+          image:'https://cdn-icons-png.flaticon.com/512/3778/3778588.png'
+        },
+        {
+          icon: "No",
+          title: "Rice",
+          key: "8",
+          image:'https://cdn-icons-png.flaticon.com/512/9126/9126627.png'
+        }
       ],
     },
     {

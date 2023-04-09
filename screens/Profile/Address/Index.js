@@ -13,7 +13,7 @@ import {
   MaterialCommunityIcons,
   AntDesign,
 } from "@expo/vector-icons";
-import a from "./a";
+import a from "../a";
 import React, { useEffect, useState } from "react";
 import SelectDropdown from "react-native-select-dropdown";
 import axios from "axios"
@@ -23,34 +23,10 @@ const windowWidth = Dimensions.get("window").width;
 
 const Address = ({navigation}) => {
 
-  const host = "https://provinces.open-api.vn/api/";
-  var callAPI = async () => {
-    return axios.get('https://provinces.open-api.vn/api/?depth=1')
-        .then((response) => {
-          setCity([...city, response.data])
-        });
-  }
-  var callApiDistrict = async (api) => {
-    return axios.get(api)
-        .then((response) => {
-            console.log(response.data);
-        });
-  }
-  var callApiWard = async (api) => {
-    return await axios.get(api)
-        .then((response) => {
-          console.log(response.data.ward);
-        });
-}
-const [books, updateBooks] = React.useState([]);
 async function fetchBooks() {
   const response = await fetch('https://provinces.open-api.vn/api/?depth=1');
   const json = await response.json();
   updateBooks(json.data);
-  }
-  function ex (){
-    fetchBooks()
-    console.log(books);
   }
   const [listAddress, setListAddress] = useState(a.user)
   return (
@@ -80,7 +56,7 @@ async function fetchBooks() {
             { justifyContent: "center", alignItems: "center" },
           ]}
           onPress={() => {
-            ex()
+            navigation.navigate('Create Address')
           }}
         >
           <AntDesign name="plus" size={24} color="black" />
