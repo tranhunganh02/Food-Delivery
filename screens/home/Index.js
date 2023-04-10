@@ -18,9 +18,11 @@ import { Avatar } from "@rneui/themed";
 import { Entypo, Ionicons, Feather, AntDesign, MaterialIcons } from "@expo/vector-icons";
 import a from "./a";
 import { useLayoutEffect } from "react";
+import fetchProduct from "../../features/Product/fetchProduct";
 export default function Index({ navigation }) {
   const windowHeight = Dimensions.get("window").height;
   const windowWidth = Dimensions.get("window").width;
+  const [listNewData,setListNewData] =useState([]);
   useLayoutEffect(() => {
     navigation.setOptions({
       headerShown: false,
@@ -31,7 +33,12 @@ export default function Index({ navigation }) {
     global.users={
       role:1
     }
-  })
+    async function fetchData(){
+       const data= await fetchProduct({limitProduct: 3});
+       setListNewData(data);
+    }
+    fetchData();
+  },[listNewData])
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [modalText, setModalText] = useState('');
 
@@ -155,6 +162,7 @@ export default function Index({ navigation }) {
                 size={24}
                 color="#F56844"
                 style={{ position: "absolute", right: 5, top: -3 }}
+               
               />
             </TouchableOpacity>
           </View>
@@ -229,16 +237,16 @@ export default function Index({ navigation }) {
           <FlatList
             showsHorizontalScrollIndicator={false}
             horizontal={true}
-            data={a.item[1].product}
+            data={listNewData}
             renderItem={({ item }) => {
               return (
                 <TouchableOpacity
                   onPress={() => {
                     navigation.navigate("ProductDetails", {
-                      id: item.key,
-                      name: item.name,
-                      image: item.image,
-                      price: item.price,
+                      id: item.id,
+                      name: item.data.name,
+                      image: item.data.image,
+                      price: item.data.price,
                     });
                   }}
                   style={{
@@ -250,7 +258,7 @@ export default function Index({ navigation }) {
                   }}
                 >
                   <Image
-                    source={{ uri: item.image }}
+                    source={{ uri: item.data.image}}
                     style={{
                       height: windowHeight * 0.23,
                       width: "100%",
@@ -319,10 +327,10 @@ export default function Index({ navigation }) {
                       alignItems:'center'
                     }}>
                       <Text style={{ fontWeight: "bold", fontSize: 18 }}>
-                        {item.name}
+                        {item.data.name}
                       </Text>
                       <Text>
-                        {new Intl.NumberFormat("de-DE").format(item.price)}đ
+                        {new Intl.NumberFormat("de-DE").format(item.data.price)}đ
                       </Text>
                       </View>
                       <TouchableOpacity
@@ -346,10 +354,11 @@ export default function Index({ navigation }) {
                           style={{
                             color:'#8A8E9B'
                           }}
-                        >PIZZA</Text>
+                        >{item.data.selectedCategory}</Text>
                       </TouchableOpacity>
                   </View>
                 </TouchableOpacity>
+                
               );
             }}
           />

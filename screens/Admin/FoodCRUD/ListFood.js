@@ -17,6 +17,7 @@ import {
    import React, { useEffect, useState } from "react";
    import Item from "./Item";
 import fetchProduct from "../../../features/Product/fetchProduct";
+import getAllProduct from "../../../features/Product/getAllProduct";
   //  import a from '../../home/a.js'
    const windowHeight = Dimensions.get("window").height;
    const windowWidth = Dimensions.get("window").width;
@@ -25,7 +26,7 @@ import fetchProduct from "../../../features/Product/fetchProduct";
     const [listFood, setListFood] = useState([]);
     useEffect(() =>{
       async function fetchData() {
-        const data = await fetchProduct();
+        const data = await getAllProduct();
         setListFood(data);
       }
       fetchData(); 

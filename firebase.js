@@ -9,16 +9,24 @@ import {getStorage} from "firebase/storage";
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+// const firebaseConfig = {
+//   apiKey: "AIzaSyAQ3bi-4waxZGaSldJvks00rVq7mKK7rQ0",
+//   authDomain: "food-delivery-daf8c.firebaseapp.com",
+//   projectId: "food-delivery-daf8c",
+//   storageBucket: "food-delivery-daf8c.appspot.com",
+//   messagingSenderId: "596005918238",
+//   appId: "1:596005918238:web:9b7d157e42ca21fc50c00f",
+//   measurementId: "G-R1G6XK8G2X"
+// };
 const firebaseConfig = {
-  apiKey: "AIzaSyAQ3bi-4waxZGaSldJvks00rVq7mKK7rQ0",
-  authDomain: "food-delivery-daf8c.firebaseapp.com",
-  projectId: "food-delivery-daf8c",
-  storageBucket: "food-delivery-daf8c.appspot.com",
-  messagingSenderId: "596005918238",
-  appId: "1:596005918238:web:9b7d157e42ca21fc50c00f",
-  measurementId: "G-R1G6XK8G2X"
+  apiKey: "AIzaSyAD9JizL-GOPBo7KR5--LcuFdWI-EXZyX0",
+  authDomain: "crud-adc39.firebaseapp.com",
+  projectId: "crud-adc39",
+  storageBucket: "crud-adc39.appspot.com",
+  messagingSenderId: "639219578320",
+  appId: "1:639219578320:web:ed71411eb52599bb4d35d5",
+  measurementId: "G-HNY2LCRT4X",
 };
-
 // Initialize Firebase
 const app=initializeApp(firebaseConfig);
 const auth = getAuth(app);

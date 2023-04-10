@@ -51,7 +51,7 @@ const AddFood = ({navigation}) => {
       let imageURL = await uploadImage({image: imagePicker,folder: "Product"});
       setImagePicker(imageURL);
     }
-    const moreProps = { selectedCategory: selectedCategory,image:imagePicker};
+    const moreProps = { selectedCategory: selectedCategory,image:imagePicker,created_at: Date.now()};
     const finalData= Object.assign({},data,moreProps);
     insertProduct(finalData);
     setImagePicker(null)
