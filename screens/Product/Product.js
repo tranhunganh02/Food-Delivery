@@ -12,13 +12,17 @@ import {
 import React, { useEffect, useLayoutEffect, useState } from "react";
 import { Ionicons, MaterialIcons,Entypo,AntDesign, FontAwesome } from "@expo/vector-icons";
 import a from "../home/a";
+import AddProductToCart from "../../features/User/AddProductToCart";
 const windowHeight = Dimensions.get("window").height;
 const windowWidth = Dimensions.get("window").width;
 export  default function Product ({ navigation, route }) {
   const [quantity, setQuantity] = useState(0*0);
-
+  const addCart=async () => {
+    const data={quantity: quantity,idProduct: route.params.id,isDelivered : false,created_at: Date.now()};
+    await AddProductToCart(data)
+  }
   useEffect(()=>{
-    setQuantity(0)
+    setQuantity(1)
   },[route.params.id])
   return (
     <SafeAreaView style={{ flex: 1, alignItems: "center", backgroundColor:'#FBF9F9' }}>
@@ -208,9 +212,7 @@ export  default function Product ({ navigation, route }) {
           </Text>
         </View>
         <TouchableOpacity style={styles.bottomButton}
-          onPress={()=>{
-            navigation.navigate('CartDetails')
-          }}
+          onPress={addCart}
         >
           <Text style={{ color: "#fff", fontSize: 18 }}>Add to cart</Text>
         </TouchableOpacity>
