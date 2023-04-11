@@ -20,7 +20,7 @@ import CheckOut from './screens/Checkout/Index';
 import AddFood  from './screens/Admin/FoodCRUD/AddFood'
 import ListFood  from './screens/Admin/FoodCRUD/ListFood'
 import UpdateFood from './screens/Admin/FoodCRUD/UpdateFood'
-//import Chat from './screens/Chat/Index'
+import Chat from './screens/Profile/Chat/Index'
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -46,7 +46,7 @@ const Index = () => {
             <Stack.Screen name='ListFood' component={ListFood} />
             <Stack.Screen name='AddFood' component={AddFood} />
             <Stack.Screen name='UpdateFood' component={UpdateFood} />
-            {/* <Stack.Screen name='Chat' component={Chat} /> */}
+            <Stack.Screen name='Chat' component={Chat} />
         </Stack.Navigator>
     </NavigationContainer>
   )

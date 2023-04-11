@@ -26,7 +26,7 @@ export default function Index({ navigation, route }) {
       <View style={{ height: "auto", width: windowWidth }}>
         <View
           style={{
-            height: windowHeight * 0.15,
+            height: windowHeight * 0.12,
             width: windowWidth,
             flexDirection: "row",
             justifyContent: "space-between",
@@ -83,7 +83,7 @@ export default function Index({ navigation, route }) {
         <Image
           style={{
             width: "100%",
-            height: windowHeight * 0.3,
+            height: windowHeight * 0.28,
             bottom: 50,
           }}
           source={{ uri: route.params.image }}
@@ -224,7 +224,7 @@ const styles = StyleSheet.create({
   Image: {},
   InformationContainer: {
     width: windowWidth,
-    height: windowHeight * 0.18,
+    height: windowHeight * 0.195,
     bottom: 50,
     padding: 25,
     borderBottomWidth: 0.3,
@@ -240,7 +240,7 @@ const styles = StyleSheet.create({
     marginBottom:35
   },
   informationFooter:{
-    height: "46%",
+    height: "49%",
     width:'100%',
     flexDirection:'row',
     justifyContent: 'space-between',
