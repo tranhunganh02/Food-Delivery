@@ -1,10 +1,7 @@
 import {
     collection,
     getDocs,
-    limit,
-    onSnapshot,
     query,
-    where,
   } from "firebase/firestore";
   import { useState } from "react";
   import { dbStore } from "../../firebase";

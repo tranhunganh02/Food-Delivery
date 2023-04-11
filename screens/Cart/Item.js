@@ -13,7 +13,10 @@ const Item = ({
   deleteSelectedElement,
 }) => {
   const [getQuantity, setQuantity] = useState(quantity);
-
+  const getPrice = (priceProduct,quantityProduct) => {
+    return priceProduct*quantityProduct;
+  }
+  
   return (
     <View
       style={{
@@ -38,7 +41,7 @@ const Item = ({
       ></Image>
       <View style={{}}>
         <Text>{name}</Text>
-        <Text style={{fontWeight:'600'}}>{new Intl.NumberFormat("de-DE").format(price)} VND</Text>
+        <Text style={{fontWeight:'600'}}>{new Intl.NumberFormat("de-DE").format(getPrice(price,getQuantity))} VND</Text>
       </View>
       <View style={{alignItems:'center'}}>
         <TouchableOpacity
@@ -70,6 +73,7 @@ const Item = ({
       </TouchableOpacity>
     </View>
   );
+ 
 };
 
 const styles = StyleSheet.create({

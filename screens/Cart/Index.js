@@ -8,13 +8,14 @@ import {
   Image,
   SwipeView,
 } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import { Ionicons, FontAwesome, Entypo } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native";
 const windowHeight = Dimensions.get("window").height;
 const windowWidth = Dimensions.get("window").width;
 import a from "../home/a";
 import Item from "./Item";
+import getProductInCart from "../../features/User/getProductInCart";
 const Index = ({ navigation }) => {
   // const [TEMP_DATA, setTEMP_DATA] = useState(a.item[2].product);
   // const deleteSelectedElement = (id, name) => {
@@ -35,14 +36,18 @@ const Index = ({ navigation }) => {
   //        ])
   //    }
   const [getTotal, setTotal] = useState(0);
-  const getTotolFood = () => {
-    for (var key in a.item[2].product) {
-      setTotal(getTotal + key.price);
-    }
-  };
+  const [listProduct,setListProduct] = useState({});
   useEffect(() => {
-    getTotolFood();
-  }, [a]);
+    
+    async function getProduct(){
+    const data=  await getProductInCart();
+      setListProduct(data);
+    }
+    getProduct();
+    // getTotalFood();
+  }, []);
+  useLayoutEffect(()=>{
+  },[])
   return (
     <View
       style={{
@@ -77,15 +82,15 @@ const Index = ({ navigation }) => {
         <FlatList
           showsHorizontalScrollIndicator={false}
           showsVerticalScrollIndicator={false}
-          data={a.item[2].product}
-          renderItem={({ item }) => {
+          data={listProduct}
+          renderItem={({ item}) => {
             return (
               <Item
                 id={item.key}
-                name={item.name}
-                price={item.price}
-                quantity={item.quantity}
-                image={item.image}
+                name={item['name']}
+                price={item['price']}
+                quantity={item['quantity']}
+                image={item['image']}
                 windowHeight={windowHeight}
                 windowWidth={windowWidth} //deleteSelectedElement={deleteSelectedElement}
               />
@@ -99,8 +104,8 @@ const Index = ({ navigation }) => {
           <Text>{getTotal} VND</Text>
         </View>
         <TouchableOpacity style={styles.checkOutButton}
-          onPress={() =>{
-            navigation.navigate('CheckOut')
+          onPress={() =>{    
+            navigation.navigate('CheckOut')      
           }}
         >
           <Text style={{ color:'#fff' }}>Check Out</Text>

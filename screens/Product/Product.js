@@ -18,7 +18,8 @@ const windowWidth = Dimensions.get("window").width;
 export  default function Product ({ navigation, route }) {
   const [quantity, setQuantity] = useState(0*0);
   const addCart=async () => {
-    const data={quantity: quantity,idProduct: route.params.id,isDelivered : false,created_at: Date.now()};
+    const data={quantity: quantity,idProduct: route.params.id,isDelivered : false,created_at: Date.now(),image: route.params.image,price: route.params.price,name: route.params.name};
+   
     await AddProductToCart(data)
   }
   useEffect(()=>{
