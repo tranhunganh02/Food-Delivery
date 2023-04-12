@@ -6,10 +6,9 @@ import React, {useRef, useEffect, useState} from 'react';
 import Home from './screens/home/Index';
 import Logo from './screens/Amination/Logo';
 import Product from './screens/Product/Index';
-
 import Profile from './screens/Profile/Index';
 import Information from './screens/Profile/Information';
-
+import Chat from './screens/Profile/Chat/Index'
 import Address from './screens/Profile/Address/Index';
 import CreateAddress from './screens/Profile/Address/CreateAddress.js';
 import Favorite from './screens/Favorite/Index';
@@ -20,7 +19,8 @@ import CheckOut from './screens/Checkout/Index';
 import AddFood  from './screens/Admin/FoodCRUD/AddFood'
 import ListFood  from './screens/Admin/FoodCRUD/ListFood'
 import UpdateFood from './screens/Admin/FoodCRUD/UpdateFood'
-import Chat from './screens/Profile/Chat/Index'
+import ListChat from './screens/Admin/Chat/ListChat'
+import ChatCustomer from './screens/Admin/Chat/Chat'
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -47,6 +47,8 @@ const Index = () => {
             <Stack.Screen name='AddFood' component={AddFood} />
             <Stack.Screen name='UpdateFood' component={UpdateFood} />
             <Stack.Screen name='Chat' component={Chat} />
+            <Stack.Screen name='Support' component={ListChat} />
+            <Stack.Screen name='ChatCustomer' component={ChatCustomer} />
         </Stack.Navigator>
     </NavigationContainer>
   )

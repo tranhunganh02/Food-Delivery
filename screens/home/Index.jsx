@@ -22,7 +22,7 @@ export default function Index({ navigation }) {
   const windowWidth = Dimensions.get("window").width;
   useEffect(()=>{
     global.users={
-      role:0
+      role:1
     }
   })
   const [isModalVisible, setIsModalVisible] = useState(false);

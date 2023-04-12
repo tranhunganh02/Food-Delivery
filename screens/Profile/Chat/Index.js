@@ -14,6 +14,7 @@ import { Ionicons, Feather, FontAwesome } from "@expo/vector-icons";
 import { Avatar } from "@rneui/themed";
 import { auth, dbRealTime } from "../../../firebase";
 import { set, ref, child, get, serverTimestamp } from "firebase/database";
+import { ImageBackground } from "react-native";
 const height = Dimensions.get("window").height;
 const width = Dimensions.get("window").width;
 export default function Index({navigation,}) {
@@ -23,7 +24,7 @@ export default function Index({navigation,}) {
   //get message history
   function getMessage() {
     const dbRef = ref(dbRealTime);
-    get(child(dbRef, `ChatRoom/${1}`))
+    get(child(dbRef, `ChatRoom/${'t0MbXkc480ZZ8ZgsidDTSYcykZg1'}`))
       .then((snapshot) => {
         if (snapshot.exists()) {
           let a = [];
@@ -50,8 +51,8 @@ export default function Index({navigation,}) {
 
       let idChat = currentdate.getTime()
       // import module crypto-jshi
-      set(ref(dbRealTime, `ChatRoom/${1}/${idChat}`), {
-        idUser: 'user2',
+      set(ref(dbRealTime, `ChatRoom/${'t0MbXkc480ZZ8ZgsidDTSYcykZg1'}/${idChat}`), {
+        idUser: 't0MbXkc480ZZ8ZgsidDTSYcykZg1',
         message: inputChat,
         timeStamp: timeNow,
         photoURL: 'https://cdn.pixabay.com/photo/2019/11/03/20/11/portrait-4599553__340.jpg',
@@ -127,10 +128,11 @@ export default function Index({navigation,}) {
         </View>
       </View>
       {/* chat */}
-      <View
+      <ImageBackground
+      source={require('../../../assets/BackGroundFood.png')}
         style={{
           height: height * 0.765,
-          width: "100%",
+          width: width,
           padding:10
         }}
       >
@@ -144,7 +146,7 @@ export default function Index({navigation,}) {
                             return (
                                 <View key={item.id} style={[
                               //     item.idUser === auth.currentUser.uid ?
-                                     item.idUser === 'user1' ?
+                                     item.idUser === 't0MbXkc480ZZ8ZgsidDTSYcykZg1' ?
                                       styles.sender
                                       :
                                       [styles.reciever]
@@ -170,7 +172,7 @@ export default function Index({navigation,}) {
                 :
                     null
                 }
-      </View>
+      </ImageBackground>
       <View
         style={{
           height: height * 0.08,
@@ -238,7 +240,7 @@ const styles = StyleSheet.create({
      },
      reciever:{
        padding: 15,
-       backgroundColor: "#4D8D6E",
+       backgroundColor: "#4E9F6E",
        alignSelf:'flex-start',
        borderRadius:25,
        marginBottom: 15,
@@ -248,7 +250,7 @@ const styles = StyleSheet.create({
      },
      sender:{
        padding: 15,
-       backgroundColor: "#ECECEC",
+       backgroundColor: "#CBC1C1",
        alignSelf:'flex-end',
        borderRadius:25,
        marginBottom: 15,

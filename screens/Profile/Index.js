@@ -67,7 +67,7 @@ export default function Index({ navigation }) {
             <TouchableOpacity
               style={styles.ActionButton}
               onPress={() => {
-                navigation.navigate("Chat");
+                navigation.navigate("Support");
               }}
             >
               <Ionicons
