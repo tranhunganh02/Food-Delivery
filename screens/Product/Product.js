@@ -18,14 +18,13 @@ const windowWidth = Dimensions.get("window").width;
 export  default function Product ({ navigation, route }) {
   const [quantity, setQuantity] = useState(0*0);
   const addCart=async () => {
-    const data={quantity: quantity,idProduct: route.params.id,isDelivered : false,created_at: Date.now(),image: route.params.image,price: route.params.price,name: route.params.name};
-   
+    const data={quantity: quantity,idProduct: route.params.id,isDelivered : false,created_at: Date.now()};
     await AddProductToCart(data)
   }
   useEffect(()=>{
     setQuantity(1)
   },[route.params.id])
-  return (
+  return (     
     <SafeAreaView style={{ flex: 1, alignItems: "center", backgroundColor:'#FBF9F9' }}>
       <StatusBar barStyle={"dark-content"} />
       <View style={{ height: "auto", width: windowWidth }}>

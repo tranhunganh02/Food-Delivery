@@ -10,17 +10,15 @@ import { auth, dbStore } from "../../firebase";
 
 const AddProductToCart = async (data) => {
   const docRef = doc(dbStore, "carts", auth.currentUser.uid);
+
   const docSnap = await getDoc(docRef);
   if (docSnap.data()[data["idProduct"]]) {
     await setDoc(
       doc(dbStore, "carts", auth.currentUser.uid),
       {
         [data["idProduct"]]: {
-          data: {
-            quantity:
-              docSnap.data()[data["idProduct"]]["data"]["quantity"] +
-              data["quantity"],
-          },
+          quantity:
+            docSnap.data()[data["idProduct"]]["quantity"] + data["quantity"],
         },
       },
       { merge: true }

@@ -33,6 +33,7 @@ const SignUp = ({ navigation }) => {
     createUserWithEmailAndPassword(auth, data.email, data.password)
       .then(async (userCredential) => {
         sendEmailVerification(auth.currentUser).then(async () => {
+          await setDoc(doc(dbStore,"carts",userCredential.user.uid),{});
           await setDoc(doc(dbStore, "users", userCredential.user.uid), {
             name: data.fullname,
             state: "CA",

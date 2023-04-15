@@ -19,14 +19,15 @@ import {getStorage} from "firebase/storage";
 //   measurementId: "G-R1G6XK8G2X"
 // };
 const firebaseConfig = {
-  apiKey: "AIzaSyAD9JizL-GOPBo7KR5--LcuFdWI-EXZyX0",
-  authDomain: "crud-adc39.firebaseapp.com",
-  projectId: "crud-adc39",
-  storageBucket: "crud-adc39.appspot.com",
-  messagingSenderId: "639219578320",
-  appId: "1:639219578320:web:ed71411eb52599bb4d35d5",
-  measurementId: "G-HNY2LCRT4X",
+  apiKey: "AIzaSyDDkAFxzUVx-oAfHc_dbViV7P4bS9CulYM",
+  authDomain: "opportune-ego-356015.firebaseapp.com",
+  projectId: "opportune-ego-356015",
+  storageBucket: "opportune-ego-356015.appspot.com",
+  messagingSenderId: "497297310678",
+  appId: "1:497297310678:web:18c28826a9495f307e9a77",
+  measurementId: "G-QFEJTET1ZN"
 };
+
 // Initialize Firebase
 const app=initializeApp(firebaseConfig);
 const auth = getAuth(app);

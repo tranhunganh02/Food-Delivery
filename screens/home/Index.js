@@ -34,7 +34,7 @@ export default function Index({ navigation }) {
       role:1
     }
     async function fetchData(){
-       const data= await fetchProduct({limitProduct: 3});
+       const data= await fetchProduct({limitProduct: 5});
        setListNewData(data);
     }
     fetchData();
