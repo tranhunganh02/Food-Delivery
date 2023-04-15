@@ -7,15 +7,19 @@ import Home from './screens/home/Index';
 import Logo from './screens/Amination/Logo';
 import Profile from './screens/Profile/Index';
 import Information from './screens/Profile/Information';
-import Address from './screens/Profile/Address';
+import Chat from './screens/Profile/Chat/Index'
+import Address from './screens/Profile/Address/Index';
+import CreateAddress from './screens/Profile/Address/CreateAddress.js';
 import Favorite from './screens/Favorite/Index';
 import SignIn from './screens/auth/SignIn';
 import SignUp from './screens/auth/SignUp';
 import Cart from './screens/Cart/Index';
 import CheckOut from './screens/Checkout/Index';
-import  AddFood  from './screens/Admin/FoodCRUD/AddFood'
-import  ListFood  from './screens/Admin/FoodCRUD/ListFood'
+import AddFood  from './screens/Admin/FoodCRUD/AddFood'
+import ListFood  from './screens/Admin/FoodCRUD/ListFood'
 import UpdateFood from './screens/Admin/FoodCRUD/UpdateFood'
+import ListChat from './screens/Admin/Chat/ListChat'
+import ChatCustomer from './screens/Admin/Chat/Chat'
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -28,7 +32,7 @@ const Stack = createNativeStackNavigator();
 const Index = () => {
   return (
     <NavigationContainer>
-        <Stack.Navigator initialRouteName="SignIn" screenOptions={{headerShown: false}}>
+        <Stack.Navigator initialRouteName="BottomTab" screenOptions={{headerShown: false}}>
             <Stack.Screen name="SignIn" component={SignIn}  />
             <Stack.Screen name="SignUp" component={SignUp}  />
             <Stack.Screen name="BottomTab" component={BottomTab} />
@@ -38,9 +42,13 @@ const Index = () => {
             <Stack.Screen name="CheckOut" component={CheckOut} />
             <Stack.Screen name="Information" component={Information} />
             <Stack.Screen name="Address" component={Address} />
+            <Stack.Screen name="Create Address" component={CreateAddress} />
             <Stack.Screen name='ListFood' component={ListFood} />
             <Stack.Screen name='AddFood' component={AddFood} />
             <Stack.Screen name='UpdateFood' component={UpdateFood} />
+            <Stack.Screen name='Chat' component={Chat} />
+            <Stack.Screen name='Support' component={ListChat} />
+            <Stack.Screen name='ChatCustomer' component={ChatCustomer} />
         </Stack.Navigator>
     </NavigationContainer>
   );
@@ -65,7 +73,7 @@ function BottomTab() {
           tabBarLabel: '',
           tabBarColor: 'white',
           tabBarIcon: () => (
-            <AntDesign name="home" size={28} color="black" />
+            <AntDesign name="home" size={25} color="black" />
           ),
         }}      
       />
@@ -76,7 +84,7 @@ function BottomTab() {
           tabBarLabel: "",
           tabBarColor: "#fff",
           tabBarIcon: () => (
-            <MaterialIcons name="favorite-border" size={28} color="black" />
+            <MaterialIcons name="favorite-border" size={25} color="black" />
           ),
         }}
       />
@@ -86,7 +94,7 @@ function BottomTab() {
         options={{
           tabBarLabel: "",
           tabBarIcon: ({ color }) => (
-            <AntDesign name="user" size={28} color="black" />
+            <AntDesign name="user" size={25} color="black" />
           ),
         }}
       />

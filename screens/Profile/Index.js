@@ -138,26 +138,50 @@ export default function Index({ navigation }) {
             <Text style={styles.actionText}>SignIn</Text>
           </TouchableOpacity>
         )}
-        {
-          global.users.role ==1 ?
-            <TouchableOpacity style={styles.ActionButton}
-            onPress={()=>{
-              navigation.navigate('ListFood')
-            }}
+       
+        {global.users.role == 1 ? (
+          <>
+            <TouchableOpacity
+              style={styles.ActionButton}
+              onPress={() => {
+                navigation.navigate("Support");
+              }}
             >
-            <Ionicons name="fast-food-outline" size={27} color="black" />
-            <Text style={styles.actionText}>List Food</Text>
-          </TouchableOpacity>
-          : null
-        }
-        <TouchableOpacity style={styles.ActionButton}
-          onPress={()=>{
-            navigation.navigate('SignIn')
-          }}
-        >
-          <SimpleLineIcons name="logout" size={27} color="black" />
-          <Text style={styles.actionText}>Logout</Text>
-        </TouchableOpacity>
+              <Ionicons
+                name="chatbox-ellipses-outline"
+                size={27}
+                color="black"
+              />
+              <Text style={styles.actionText}>Support</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.ActionButton}
+              onPress={() => {
+                navigation.navigate("ListFood");
+              }}
+            >
+              <Ionicons name="fast-food-outline" size={27} color="black" />
+              <Text style={styles.actionText}>List Food</Text>
+            </TouchableOpacity>
+          </>
+        ) : (
+          <>
+            <TouchableOpacity
+              style={styles.ActionButton}
+              onPress={() => {
+                navigation.navigate("Chat");
+              }}
+            >
+              <Ionicons
+                name="chatbox-ellipses-outline"
+                size={27}
+                color="black"
+              />
+              <Text style={styles.actionText}>Contact admin</Text>
+            </TouchableOpacity>
+          </>
+        )}
+       
       </View>
     </View>
   );
