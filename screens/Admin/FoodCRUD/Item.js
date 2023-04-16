@@ -3,7 +3,7 @@ import React from 'react'
 import { ListItem, Icon } from '@rneui/themed';
 import { Feather, MaterialIcons } from '@expo/vector-icons';
 const windowWidth = Dimensions.get('window').width
-export default function Item({navigation, id, name, price, image, }) {
+export default function Item({navigation, id, name, price, image, onPress}) {
   return (
      <ListItem.Swipeable
      style={{
@@ -39,7 +39,7 @@ export default function Item({navigation, id, name, price, image, }) {
           alignItems: 'center',
           height:"100%"
          }}
-          onPress={action}
+          onPress={onPress}
         >
            <Feather name="trash-2" size={35} color="red" />
         </TouchableOpacity>

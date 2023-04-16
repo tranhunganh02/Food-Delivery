@@ -160,7 +160,7 @@ export default function Index({navigation,}) {
                                     right={-5}
                                     size={35}
                                     source={{
-                                      uri : item.photoURL
+                                      uri : 'https://cdn.pixabay.com/photo/2019/11/03/20/11/portrait-4599553__340.jpg'
                                     }}
                                   />
                                 </View>

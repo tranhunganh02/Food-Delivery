@@ -10,40 +10,49 @@ import {
   SafeAreaView,
   ScrollView,
   StatusBar,
-  Modal
+  Modal,
 } from "react-native";
 import ModalFavorite from "./ModalFavorite";
 import React, { useEffect, useState } from "react";
 import { Avatar } from "@rneui/themed";
-import { Entypo, Ionicons, Feather, AntDesign, MaterialIcons } from "@expo/vector-icons";
+import {
+  Entypo,
+  Ionicons,
+  Feather,
+  AntDesign,
+  MaterialIcons,
+} from "@expo/vector-icons";
 import a from "./a";
+import { FAB } from "@rneui/themed";
+const windowHeight = Dimensions.get("window").height;
+const windowWidth = Dimensions.get("window").width;
 export default function Index({ navigation }) {
-  const windowHeight = Dimensions.get("window").height;
-  const windowWidth = Dimensions.get("window").width;
-  useEffect(()=>{
-    global.users={
-      role:1
-    }
-  })
+  useEffect(() => {
+    global.users = {
+      role: 1,
+    };
+  });
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [modalText, setModalText] = useState('');
-
+  const [modalText, setModalText] = useState("");
+  const [loadingVisible, setLoadingVisible] = useState(false);
   const toggleModal = () => {
     setIsModalVisible(!isModalVisible);
   };
 
-  const showSuccessMessage = (message) => {
-    setModalText(message);
+  const showSuccessFavorite = () => {
     setIsModalVisible(true);
-
+    setLoadingVisible(true);
     setTimeout(() => {
-      setIsModalVisible(false);
-    }, 2000);
+      setLoadingVisible(false);
+      setTimeout(() => {
+        setIsModalVisible(false);
+      }, 1500);
+    }, 1000);
   };
 
   return (
     <SafeAreaView
-      style={{ alignItems: "center", flex: 1, }}
+      style={{ alignItems: "center", flex: 1, justifyContent: "center" }}
     >
       {/* <SafeAreaView style={{ alignItems: "center", flex: 1, backgroundColor:'#FFFBE9'}}> */}
       <StatusBar barStyle={"dark-content"} />
@@ -81,6 +90,7 @@ export default function Index({ navigation }) {
             Welcome back, Pin! Order food now!!!
           </Text>
         </View>
+
         <View
           style={{
             backgroundColor: "#fff",
@@ -114,10 +124,10 @@ export default function Index({ navigation }) {
                 borderRadius: 35,
                 borderColor: "#fff",
                 borderWidth: 1,
-                width:22,
-                height:22,
-                justifyContent:'center',
-                alignItems: 'center',
+                width: 22,
+                height: 22,
+                justifyContent: "center",
+                alignItems: "center",
               }}
             >
               <Text style={{ color: "#fff" }}>{10}</Text>
@@ -151,6 +161,31 @@ export default function Index({ navigation }) {
               />
             </TouchableOpacity>
           </View>
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={isModalVisible}
+            onRequestClose={() => {
+              Alert.alert("Modal has been closed.");
+              setIsModalVisible(!isModalVisible);
+            }}
+          >
+            <View style={styles.centeredView}>
+
+              {loadingVisible ? (<FAB loading visible={loadingVisible} size="large" />) : (
+                <>
+                  <View style={styles.modalView}>
+                    <Text>Add your favorite success</Text>
+                    <MaterialIcons
+                      name="library-add-check"
+                      size={35}
+                      color="green"
+                    />
+                  </View>
+                </>
+              )}
+            </View>
+          </Modal>
           <FlatList
             showsHorizontalScrollIndicator={false}
             horizontal={true}
@@ -159,30 +194,30 @@ export default function Index({ navigation }) {
               return (
                 <TouchableOpacity
                   style={{
-                    justifyContent: 'space-around',
+                    justifyContent: "space-around",
                     alignItems: "center",
                     height: "auto",
                     borderRadius: 35,
                     width: windowWidth * 0.195,
                     marginRight: 15,
                     backgroundColor: "#fff",
-                    height:windowHeight*0.124,
-                    marginRight:23.5,
-                    padding:6,
-                    shadowColor: 'black',
-                          shadowOffset: {
-                            width: 0.2,
-                            height: 0.2,
-                          },
-                          shadowOpacity:0.1,
+                    height: windowHeight * 0.124,
+                    marginRight: 23.5,
+                    padding: 6,
+                    shadowColor: "black",
+                    shadowOffset: {
+                      width: 0.2,
+                      height: 0.2,
+                    },
+                    shadowOpacity: 0.1,
                   }}
                 >
                   <Image
-                  style={{
-                    height:40,
-                    width:40
-                  }}
-                  source={{uri: item.image}}
+                    style={{
+                      height: 40,
+                      width: 40,
+                    }}
+                    source={{ uri: item.image }}
                   ></Image>
                   <Text>{item.title}</Text>
                 </TouchableOpacity>
@@ -209,6 +244,7 @@ export default function Index({ navigation }) {
             <Text style={{ fontWeight: "400", fontSize: 30, color: "#3D405B" }}>
               New foods
             </Text>
+
             <TouchableOpacity>
               <Text style={{ left: -35 }}>View all</Text>
               <AntDesign
@@ -250,51 +286,57 @@ export default function Index({ navigation }) {
                       borderTopLeftRadius: 20,
                       borderTopRightRadius: 20,
                     }}
-                  >
-                  </Image>
+                  ></Image>
                   <View
                     style={{
                       position: "absolute",
-                      top:15,
-                      left:20,
-                      width:windowWidth*0.2,
-                      height:windowHeight*0.04,
-                      backgroundColor:'#fff',
-                      borderRadius:30,
-                      flexDirection:'row',
-                      justifyContent: 'center',
-                      alignItems:'center'
+                      top: 15,
+                      left: 20,
+                      width: windowWidth * 0.2,
+                      height: windowHeight * 0.04,
+                      backgroundColor: "#fff",
+                      borderRadius: 30,
+                      flexDirection: "row",
+                      justifyContent: "center",
+                      alignItems: "center",
                     }}
                   >
                     <Text
-                    style={{
-                      fontWeight:"bold"
-                    }}
-                    >4.5</Text>
-                    <Entypo name="star" size={18} color="#FFDF5C" 
-                      style={{top:-1, marginLeft:3}}
+                      style={{
+                        fontWeight: "bold",
+                      }}
+                    >
+                      4.5
+                    </Text>
+                    <Entypo
+                      name="star"
+                      size={18}
+                      color="#FFDF5C"
+                      style={{ top: -1, marginLeft: 3 }}
                     />
                     <Text
                       style={{
-                        fontSize:11,
-                        color:'grey'
+                        fontSize: 11,
+                        color: "grey",
                       }}
-                    >{'(+25)'}</Text>
+                    >
+                      {"(+25)"}
+                    </Text>
                   </View>
                   <TouchableOpacity
                     style={{
                       position: "absolute",
-                      top:15,
-                      right:20,
-                      width:windowWidth*0.09,
-                      height:windowHeight*0.04,
-                      backgroundColor:'#FE724C',
-                      borderRadius:30,
-                      justifyContent: 'center',
-                      alignItems:'center'
+                      top: 15,
+                      right: 20,
+                      width: windowWidth * 0.09,
+                      height: windowHeight * 0.04,
+                      backgroundColor: "#FE724C",
+                      borderRadius: 30,
+                      justifyContent: "center",
+                      alignItems: "center",
                     }}
                     onPress={() => {
-                      showSuccessMessage('Success!')
+                      showSuccessFavorite();
                     }}
                   >
                     <MaterialIcons name="favorite" size={24} color="#fff" />
@@ -305,42 +347,46 @@ export default function Index({ navigation }) {
                       padding: 15,
                     }}
                   >
-                    <View style={{
-                      flexDirection:'row',
-                      height: 30,
-                      justifyContent: 'space-between',
-                      alignItems:'center'
-                    }}>
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        height: 30,
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                      }}
+                    >
                       <Text style={{ fontWeight: "bold", fontSize: 18 }}>
                         {item.name}
                       </Text>
                       <Text>
                         {new Intl.NumberFormat("de-DE").format(item.price)}đ
                       </Text>
-                      </View>
-                      <TouchableOpacity
+                    </View>
+                    <TouchableOpacity
+                      style={{
+                        width: windowWidth * 0.24,
+                        height: windowHeight * 0.04,
+                        marginTop: 5,
+                        backgroundColor: "#F6F6F6",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        borderRadius: 10,
+                        shadowColor: "black",
+                        shadowOffset: {
+                          width: 0.2,
+                          height: 0.5,
+                        },
+                        shadowOpacity: 0.25,
+                      }}
+                    >
+                      <Text
                         style={{
-                          width:windowWidth*0.24,
-                          height:windowHeight*0.04,
-                          marginTop:5,
-                          backgroundColor:'#F6F6F6',
-                          justifyContent: 'center',
-                          alignItems:'center',
-                          borderRadius:10,
-                          shadowColor: 'black',
-                          shadowOffset: {
-                            width: 0.2,
-                            height: 0.5,
-                          },
-                          shadowOpacity:0.25,
+                          color: "#8A8E9B",
                         }}
                       >
-                        <Text
-                          style={{
-                            color:'#8A8E9B'
-                          }}
-                        >PIZZA</Text>
-                      </TouchableOpacity>
+                        PIZZA
+                      </Text>
+                    </TouchableOpacity>
                   </View>
                 </TouchableOpacity>
               );
@@ -407,99 +453,107 @@ export default function Index({ navigation }) {
                       borderTopLeftRadius: 20,
                       borderTopRightRadius: 20,
                     }}
-                  >
-                  </Image>
+                  ></Image>
                   <View
                     style={{
                       position: "absolute",
-                      top:15,
-                      left:20,
-                      width:windowWidth*0.2,
-                      height:windowHeight*0.04,
-                      backgroundColor:'#fff',
-                      borderRadius:30,
-                      flexDirection:'row',
-                      justifyContent: 'center',
-                      alignItems:'center'
+                      top: 15,
+                      left: 20,
+                      width: windowWidth * 0.2,
+                      height: windowHeight * 0.04,
+                      backgroundColor: "#fff",
+                      borderRadius: 30,
+                      flexDirection: "row",
+                      justifyContent: "center",
+                      alignItems: "center",
                     }}
                   >
                     <Text
-                    style={{
-                      fontWeight:"bold"
-                    }}
-                    >4.5</Text>
-                    <Entypo name="star" size={18} color="#FFDF5C" 
-                      style={{top:-1, marginLeft:3}}
+                      style={{
+                        fontWeight: "bold",
+                      }}
+                    >
+                      4.5
+                    </Text>
+                    <Entypo
+                      name="star"
+                      size={18}
+                      color="#FFDF5C"
+                      style={{ top: -1, marginLeft: 3 }}
                     />
                     <Text
                       style={{
-                        fontSize:11,
-                        color:'grey'
+                        fontSize: 11,
+                        color: "grey",
                       }}
-                    >{'(+25)'}</Text>
+                    >
+                      {"(+25)"}
+                    </Text>
                   </View>
-                  <View
+                  <TouchableOpacity
                     style={{
                       position: "absolute",
-                      top:15,
-                      right:20,
-                      width:windowWidth*0.09,
-                      height:windowHeight*0.04,
-                      backgroundColor:'#FE724C',
-                      borderRadius:30,
-                      justifyContent: 'center',
-                      alignItems:'center'
+                      top: 15,
+                      right: 20,
+                      width: windowWidth * 0.09,
+                      height: windowHeight * 0.04,
+                      backgroundColor: "#FE724C",
+                      borderRadius: 30,
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                    onPress={() => {
+                      showSuccessFavorite();
                     }}
                   >
                     <MaterialIcons name="favorite" size={24} color="#fff" />
-                    {/* <ModalFavorite 
-                      isModalVisible={false}
-                      toggleModal={toggleModal}
-                      modalText={modalText}
-                    /> */}
-                  </View>
+                  </TouchableOpacity>
                   <View
                     style={{
                       height: "auto",
                       padding: 15,
                     }}
                   >
-                    <View style={{
-                      flexDirection:'row',
-                      height: 30,
-                      justifyContent: 'space-between',
-                      alignItems:'center'
-                    }}>
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        height: 30,
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                      }}
+                    >
                       <Text style={{ fontWeight: "bold", fontSize: 18 }}>
                         {item.name}
                       </Text>
                       <Text>
                         {new Intl.NumberFormat("de-DE").format(item.price)}đ
                       </Text>
-                      </View>
-                      <TouchableOpacity
+                    </View>
+                    <TouchableOpacity
+                      style={{
+                        width: windowWidth * 0.24,
+                        height: windowHeight * 0.04,
+                        marginTop: 5,
+                        backgroundColor: "#F6F6F6",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        borderRadius: 10,
+                        shadowColor: "black",
+                        shadowOffset: {
+                          width: 0.2,
+                          height: 0.5,
+                        },
+                        shadowOpacity: 0.25,
+                      }}
+                    >
+                      <Text
                         style={{
-                          width:windowWidth*0.24,
-                          height:windowHeight*0.04,
-                          marginTop:5,
-                          backgroundColor:'#F6F6F6',
-                          justifyContent: 'center',
-                          alignItems:'center',
-                          borderRadius:10,
-                          shadowColor: 'black',
-                          shadowOffset: {
-                            width: 0.2,
-                            height: 0.5,
-                          },
-                          shadowOpacity:0.25,
+                          color: "#8A8E9B",
                         }}
                       >
-                        <Text
-                          style={{
-                            color:'#8A8E9B'
-                          }}
-                        >PIZZA</Text>
-                      </TouchableOpacity>
+                        PIZZA
+                      </Text>
+                    </TouchableOpacity>
                   </View>
                 </TouchableOpacity>
               );
@@ -511,4 +565,38 @@ export default function Index({ navigation }) {
   );
 }
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  modalView: {
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 40,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    flexDirection: "row",
+    justifyContent: "space-around",
+    alignItems: "center",
+    width: windowWidth * 0.7,
+  },
+  button: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+  },
+  buttonOpen: {
+    backgroundColor: "#F194FF",
+  },
+  buttonClose: {
+    backgroundColor: "#2196F3",
+  },
+});

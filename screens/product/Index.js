@@ -20,6 +20,13 @@ export default function Index({ navigation, route }) {
   useEffect(()=>{
     setQuantity(0)
   },[route.params.id])
+
+  function addToCart(){
+    setTimeout(() => {
+      navigation.navigate('CartDetails')
+    }, 4500);
+    
+  }
   return (
     <SafeAreaView style={{ flex: 1, alignItems: "center", backgroundColor:'#FBF9F9' }}>
       <StatusBar barStyle={"dark-content"} />
@@ -208,9 +215,7 @@ export default function Index({ navigation, route }) {
           </Text>
         </View>
         <TouchableOpacity style={styles.bottomButton}
-          onPress={()=>{
-            navigation.navigate('CartDetails')
-          }}
+          onPress={addToCart()}
         >
           <Text style={{ color: "#fff", fontSize: 18 }}>Add to cart</Text>
         </TouchableOpacity>

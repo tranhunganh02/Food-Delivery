@@ -7,7 +7,7 @@ import Home from './screens/home/Index';
 import Logo from './screens/Amination/Logo';
 import Product from './screens/Product/Index';
 import Profile from './screens/Profile/Index';
-import Information from './screens/Profile/Information';
+import Information from './screens/Profile/Information/Index';
 import Chat from './screens/Profile/Chat/Index'
 import Address from './screens/Profile/Address/Index';
 import CreateAddress from './screens/Profile/Address/CreateAddress.js';

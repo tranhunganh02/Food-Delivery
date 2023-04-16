@@ -33,7 +33,7 @@ async function fetchBooks() {
     <View
       style={{
         flex: 1,
-        paddingHorizontal: 20,
+        paddingHorizontal: 25,
         alignItems: "center",
         justifyContent: "space-between",
         paddingVertical: 10,
@@ -81,7 +81,7 @@ export default Address;
 const styles = StyleSheet.create({
   headerContainer: {
     height: windowHeight * 0.145,
-    width: "100%",
+    width: "95%",
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
