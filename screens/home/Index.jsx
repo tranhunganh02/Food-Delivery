@@ -50,6 +50,8 @@ export default function Index({ navigation }) {
     }, 1000);
   };
 
+ 
+
   return (
     <SafeAreaView
       style={{ alignItems: "center", flex: 1, justifyContent: "center" }}
@@ -165,10 +167,6 @@ export default function Index({ navigation }) {
             animationType="slide"
             transparent={true}
             visible={isModalVisible}
-            onRequestClose={() => {
-              Alert.alert("Modal has been closed.");
-              setIsModalVisible(!isModalVisible);
-            }}
           >
             <View style={styles.centeredView}>
 
