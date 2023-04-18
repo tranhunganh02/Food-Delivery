@@ -21,16 +21,21 @@ const windowHeight = Dimensions.get("window").height;
 const windowWidth = Dimensions.get("window").width;
 import a from "../home/a";
 import Item from "./Item";
-const Index = ({ navigation }) => {
+import getProductCheckOut from "../../features/User/getProductCheckOut";
+import { async } from "@firebase/util";
+import getPriceProductSelected from "../../features/User/getPriceProductSelected";
+const Index = ({ navigation,route }) => {
   const [getTotal, setTotal] = useState(0);
-  const getTotolFood = () => {
-    for (var key in a.item[2].product) {
-      setTotal(getTotal + key.price);
-    }
-  };
+  const [listFood,setListFood] = useState([]);
+  const [price, setPrice] = useState(0);
   useEffect(() => {
-    getTotolFood();
-  }, [a]);
+    async function fetchProduct(){
+      let result = await  getProductCheckOut(route.params.product);
+      setListFood(result);
+      setPrice(await getPriceProductSelected(route.params.product));
+    }
+   fetchProduct();
+  }, []);
   return (
     <View
       style={{
@@ -65,7 +70,7 @@ const Index = ({ navigation }) => {
         <FlatList
           showsHorizontalScrollIndicator={false}
           showsVerticalScrollIndicator={false}
-          data={a.item[2].product}
+          data={listFood}
           renderItem={({ item }) => {
             return (
               <Item
@@ -161,7 +166,7 @@ const Index = ({ navigation }) => {
                color:'#B6B2B2',
                fontSize:18
           }}
-          >{new Intl.NumberFormat("de-DE").format(60000)}</Text>
+          >{new Intl.NumberFormat("de-DE").format(price)}</Text>
         </View>
         <View
           style={{
@@ -188,7 +193,7 @@ const Index = ({ navigation }) => {
       <View style={styles.checkOutContainer}>
         <View style={styles.checkOutTotal}>
           <Text style={{ fontWeight: "500", fontSize: 19 }}>Total</Text>
-          <Text>{new Intl.NumberFormat("de-DE").format(60000)} VND</Text>
+          <Text>{new Intl.NumberFormat("de-DE").format(price)} VND</Text>
         </View>
         <TouchableOpacity
           style={styles.checkOutButton}

@@ -13,6 +13,7 @@ import { getStorage } from "@firebase/storage";
 // const firebaseConfig = {
 //   apiKey: "AIzaSyAQ3bi-4waxZGaSldJvks00rVq7mKK7rQ0",
 //   authDomain: "food-delivery-daf8c.firebaseapp.com",
+//   databaseURL: "https://food-delivery-daf8c-default-rtdb.asia-southeast1.firebasedatabase.app",
 //   projectId: "food-delivery-daf8c",
 //   storageBucket: "food-delivery-daf8c.appspot.com",
 //   messagingSenderId: "596005918238",

@@ -13,6 +13,7 @@ import {
 import { Ionicons, AntDesign } from "@expo/vector-icons";
 import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
+import AddAddress from "../../../features/User/AddAddress";
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
 const host = "https://provinces.open-api.vn/api/";
@@ -46,6 +47,14 @@ const CreateAddress = ({ navigation }) => {
   useEffect(() => {
     callAPICity();
   }, [selectedCity, selectedDistrict]);
+  const insertAddress =( ) => {
+    
+    if(selectedCity && selectedDistrict && selectedWard && specificAddress && phoneNumber) {
+      const data ={ city: selectedCity,district: selectedDistrict ,ward: selectedWard,specificAddress : specificAddress,phoneNumber: phoneNumber}
+      AddAddress(data);
+    }
+   
+  }
   return (
     <SafeAreaView
       style={{
@@ -308,14 +317,15 @@ const CreateAddress = ({ navigation }) => {
         />
         <TouchableOpacity
           style={{
-            width: "80%",
-            height: 50,
-            backgroundColor: "#00CC00",
-            borderRadius: 10,
-            justifyContent: "center",
-            alignItems: "center",
-            marginTop: 300,
+            // width: "80%",
+            // height: 50,
+            // backgroundColor: "#00CC00",
+            // borderRadius: 10,
+            // justifyContent: "center",
+            // alignItems: "center",
+            // marginTop: 300,
           }}
+          onPress={insertAddress}
         >
           <Text
             style={{

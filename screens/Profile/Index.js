@@ -110,10 +110,6 @@ export default function Index({ navigation }) {
           <FontAwesome name="address-book-o" size={27} color="black" />
           <Text style={styles.actionText}>Address</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.ActionButton}>
-          <Ionicons name="chatbox-ellipses-outline" size={27} color="black" />
-          <Text style={styles.actionText}>Contact admin</Text>
-        </TouchableOpacity>
         {loggedIn ? (
           <TouchableOpacity
             style={styles.ActionButton}
@@ -139,7 +135,7 @@ export default function Index({ navigation }) {
           </TouchableOpacity>
         )}
        
-        {global.users.role == 1 ? (
+        {global.users.role === 1 ? (
           <>
             <TouchableOpacity
               style={styles.ActionButton}

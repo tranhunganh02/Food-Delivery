@@ -1,7 +1,7 @@
 import { Modal, Image, ImageBackground, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useEffect, useLayoutEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { dbRealTime, writeUserData, dbFireStore, auth } from '../../../firebase';
+import { dbRealTime, writeUserData, dbFireStore, auth, dbStore } from '../../../firebase';
 import { doc, collection, query, onSnapshot, where } from 'firebase/firestore';
 import { Avatar } from '@rneui/themed';
 import { Feather } from '@expo/vector-icons';
@@ -12,7 +12,7 @@ const Home = ({ navigation }) => {
 
   const [listChats, setListChats] = useState([]);
 
-  const collectionRef = collection(dbFireStore, 'users' );
+  const collectionRef = collection(dbStore, 'users' );
 
   useEffect(() => {
     const q = query(collectionRef,  where("role", "!=", 1));

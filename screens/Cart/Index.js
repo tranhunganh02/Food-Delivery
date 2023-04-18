@@ -41,6 +41,10 @@ const Index = ({ navigation }) => {
     }
   };
   const backAction = () => {
+    if(productNewState.current.length==0 ){
+      navigation.goBack();
+      return true;
+    }
     Alert.alert("Confirm Exit", "Do you want to save the state all product in your cart", [
       {
         text: "Cancel",
@@ -169,7 +173,20 @@ const Index = ({ navigation }) => {
         <TouchableOpacity
           style={styles.checkOutButton}
           onPress={() => {
-            navigation.navigate("CheckOut");
+            if( selectedProducts.current.length >0 ){
+              navigation.navigate("CheckOut",{
+                product: selectedProducts.current
+              });
+            }
+            else{
+              Alert.alert("Warning","Please choose at least one product",[{
+                text: "Got it!",
+                style: "cancel",
+              }
+               
+              ])
+            }
+            
             
           }}
         >

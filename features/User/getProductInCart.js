@@ -1,11 +1,11 @@
 import { collection, getDocs, orderBy, query } from "firebase/firestore";
-import { dbStore } from "../../firebase";
+import { auth, dbStore } from "../../firebase";
 import getProduct from "../Product/getProduct";
+import { createContext } from "react";
 
 const getProductInCart = async () => {
-  const q = query(collection(dbStore, "carts"));
+  const q = query(collection(dbStore, "carts"), auth.currentUser.uid);
   const querySnapshot = await getDocs(q);
-  
   const data = querySnapshot.docs.map((doc) => doc.data())[0];
   const productIds = Object.values(data).map((item) => item.idProduct);
 
