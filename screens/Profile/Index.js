@@ -21,33 +21,21 @@ import ButtonPickImage from "../../features/User/pickImageUser";
 import { auth, storage } from "../../firebase";
 import getUser from "../../features/User/getUser";
 import { signOut } from "firebase/auth";
+import { useContext } from "react";
+import { AppContext } from "../../component/Auth/AuthContext";
 const height = Dimensions.get("window").height;
 const windowWidth = Dimensions.get("window").width;
 
 export default function Index({ navigation }) {
-  const [user, setUser] = useState({});
-  const [loggedIn, setLoggedIn] = useState(false);
-
-  useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((user) => {
-      setLoggedIn(!!user);
-    });
-
-    if (loggedIn) {
-      const fetchUser = async () => {
-        const userData = await getUser(auth.currentUser.uid);
-        setUser(userData);
-      };
-      fetchUser();
-    }
-    return unsubscribe;
-  }, [user, loggedIn]);
+  const [userData, setUserData] = useState({});
+  const { user } = useContext(AppContext);
+  useEffect(() => {}, []);
 
   return (
     <View style={{ flex: 1, alignItems: "center" }}>
       <StatusBar barStyle={"dark-content"} />
       <View style={styles.headerContainer}>
-        {loggedIn ? (
+        {user ? (
           <Avatar
             size={125}
             rounded
@@ -67,15 +55,15 @@ export default function Index({ navigation }) {
           />
         )}
 
-        {loggedIn ? (
+        {user ? (
           <ButtonPickImage idUser={auth.currentUser.uid} />
         ) : (
           <Text></Text>
         )}
-        {loggedIn ? (
+        {user ? (
           <View>
             <Text style={styles.headerText}>{user.name}</Text>
-            <Text style={{ bottom: 10 }}>0905113115116</Text>
+            <Text style={{ bottom: 10 }}>{user.phoneNumber}</Text>
           </View>
         ) : (
           <View>
@@ -95,7 +83,11 @@ export default function Index({ navigation }) {
         <TouchableOpacity
           style={styles.ActionButton}
           onPress={() => {
-            navigation.navigate("Information");
+            if (user) {
+              navigation.navigate("Information");
+            } else {
+              navigation.navigate("SignIn");
+            }
           }}
         >
           <AntDesign name="profile" size={27} color="black" />
@@ -104,13 +96,17 @@ export default function Index({ navigation }) {
         <TouchableOpacity
           style={styles.ActionButton}
           onPress={() => {
-            navigation.navigate("Address");
+            if (user) {
+              navigation.navigate("Address");
+            } else {
+              navigation.navigate("SignIn");
+            }
           }}
         >
           <FontAwesome name="address-book-o" size={27} color="black" />
           <Text style={styles.actionText}>Address</Text>
         </TouchableOpacity>
-        {loggedIn ? (
+        {user ? (
           <TouchableOpacity
             style={styles.ActionButton}
             onPress={() => {
@@ -134,13 +130,17 @@ export default function Index({ navigation }) {
             <Text style={styles.actionText}>SignIn</Text>
           </TouchableOpacity>
         )}
-       
+
         {global.users.role === 1 ? (
           <>
             <TouchableOpacity
               style={styles.ActionButton}
               onPress={() => {
-                navigation.navigate("Support");
+                if (user) {
+                  navigation.navigate("Support");
+                } else {
+                  navigation.navigate("SignIn");
+                }
               }}
             >
               <Ionicons
@@ -153,7 +153,11 @@ export default function Index({ navigation }) {
             <TouchableOpacity
               style={styles.ActionButton}
               onPress={() => {
-                navigation.navigate("ListFood");
+                if (user) {
+                  navigation.navigate("ListFood");
+                } else {
+                  navigation.navigate("SignIn");
+                }
               }}
             >
               <Ionicons name="fast-food-outline" size={27} color="black" />
@@ -165,7 +169,11 @@ export default function Index({ navigation }) {
             <TouchableOpacity
               style={styles.ActionButton}
               onPress={() => {
-                navigation.navigate("Chat");
+                if (user) {
+                  navigation.navigate("Chat");
+                } else {
+                  navigation.navigate("SignIn");
+                }
               }}
             >
               <Ionicons
@@ -177,7 +185,6 @@ export default function Index({ navigation }) {
             </TouchableOpacity>
           </>
         )}
-       
       </View>
     </View>
   );

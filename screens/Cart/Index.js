@@ -16,11 +16,11 @@ import { TouchableOpacity } from "react-native";
 const windowHeight = Dimensions.get("window").height;
 const windowWidth = Dimensions.get("window").width;
 import Item from "./Item";
-import getProductInCart from "../../features/User/getProductInCart";
 import getPriceProductSelected from "../../features/User/getPriceProductSelected";
 import { useRef } from "react";
 import { Alert } from "react-native";
 import changeStateProduct from "../../features/Product/changeStateProduct";
+import getProductWithNameDoc from "../../features/User/getProductWithNameDoc";
 const Index = ({ navigation }) => {
   const [getTotal, setTotal] = useState(0);
   const [listProduct, setListProduct] = useState({});
@@ -62,8 +62,8 @@ const Index = ({ navigation }) => {
     return true;
   };
   useEffect(() => {
-    async function getProduct() {
-      const data = await getProductInCart();
+    async function getProduct(){
+      const data = await getProductWithNameDoc("carts");
       setListProduct(data);
       
     }

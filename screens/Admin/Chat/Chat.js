@@ -9,7 +9,7 @@ import {
   TextInput,
   StyleSheet,
 } from "react-native";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,  } from "react";
 import { Ionicons, Feather, FontAwesome } from "@expo/vector-icons";
 import { Avatar } from "@rneui/themed";
 import { auth, dbRealTime } from "../../../firebase";
@@ -21,6 +21,7 @@ export default function ChatCustomer({ navigation, route }) {
   const [inputChat, setInputChat] = useState("");
   var [historyMessage, setHistoryMessage] = React.useState([{}]);
   var currentdate = new Date();
+  const [initialScrollIndex, setInitialScrollIndex] = useState(0);
   //get message history
   function getMessage() {
     const dbRef = ref(dbRealTime);
@@ -35,6 +36,7 @@ export default function ChatCustomer({ navigation, route }) {
             });
           });
           setHistoryMessage(a);
+          
         } else {
           setHistoryMessage(null);
         }
@@ -66,7 +68,7 @@ export default function ChatCustomer({ navigation, route }) {
   }
   useEffect(() => {
     getMessage();
-  });
+  },[historyMessage]);
   return (
     <SafeAreaView style={{backgroundColor:'#fff'}}>
       <StatusBar barStyle={"dark-content"} />
@@ -139,7 +141,8 @@ export default function ChatCustomer({ navigation, route }) {
         {historyMessage != null && historyMessage.length > 0 ? (
           <FlatList
             data={historyMessage}
-            showsVerticalScrollIndicator={false}
+            showsVerticalScrollIndicator={true}
+            
             keyExtractor={(item, index) => index}
             renderItem={({ item }) => {
               return (

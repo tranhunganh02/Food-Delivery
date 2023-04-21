@@ -7,7 +7,7 @@ export default function ItemAddress({navigation, id, name, phoneNumber, adress, 
   return (
      <ListItem.Swipeable
      style={{
-          width:windowWidth*0.93,
+          width:windowWidth*0.95,
           justifyContent: 'center',
           marginBottom:10
      }}
@@ -20,7 +20,7 @@ export default function ItemAddress({navigation, id, name, phoneNumber, adress, 
            justifyContent: 'center',
            backgroundColor: '#f4f4f4',
            alignItems: 'center',
-           height:100
+           height:70
          }}
          onPress={()=>{
           // navigation.navigate('Update Address')
@@ -35,7 +35,7 @@ export default function ItemAddress({navigation, id, name, phoneNumber, adress, 
           justifyContent: 'center',
           backgroundColor: '#f4f4f4',
           alignItems: 'center',
-          height:100
+          height:70
          }}
           onPress={action}
         >
@@ -43,7 +43,8 @@ export default function ItemAddress({navigation, id, name, phoneNumber, adress, 
         </TouchableOpacity>
      )}
    >
-     <ListItem.Content>
+     <ListItem.Content style={{height:70}}>
+      
        <ListItem.Title>{name} | (+84) {phoneNumber}
        </ListItem.Title>
        <ListItem.Subtitle>

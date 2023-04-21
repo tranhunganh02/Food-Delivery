@@ -1,34 +1,11 @@
-import {
-  StyleSheet,
-  Text,
-  View,
-  Button,
-  TouchableOpacity,
-  Dimensions,
-  Image,
-} from "react-native";
-import React from "react";
-import { ListItem, Icon } from "@rneui/themed";
-import { Feather, MaterialIcons } from "@expo/vector-icons";
-import { dbStore } from "../../../firebase";
-import { deleteDoc, doc } from "firebase/firestore";
-import { Modal } from "react-native";
-import { useState } from "react";
-import RemoveModal from "../../../component/Product/RemoveModal";
-import deleteProduct from "../../../features/Product/deleteProduct";
-const windowWidth = Dimensions.get("window").width;
-export default function Item({ navigation, id, name, price, image }) {
-  const [isRemoveModalVisiable, setIsRemoveModalVisiable] = useState(false);
-  const changeModalVisible = (bool) => {
-    setIsRemoveModalVisiable(bool);
-  };
-  const confirmRemove = async (data) => {
-    if (data === "Ok") {
-      await deleteProduct(id);
-    }
-  };
+import { StyleSheet, Text, View, Button, TouchableOpacity, Dimensions, Image } from 'react-native'
+import React from 'react'
+import { ListItem, Icon } from '@rneui/themed';
+import { Feather, MaterialIcons } from '@expo/vector-icons';
+const windowWidth = Dimensions.get('window').width
+export default function Item({navigation, id, name, price, image, onPress}) {
   return (
-    <ListItem.Swipeable
+     <ListItem.Swipeable
       style={{
         height: 150,
         width: windowWidth * 0.87,
@@ -56,7 +33,6 @@ export default function Item({ navigation, id, name, price, image }) {
         </TouchableOpacity>
       )}
       rightContent={(action) => (
-        <>
           <TouchableOpacity
             style={{
               justifyContent: "center",
@@ -64,26 +40,9 @@ export default function Item({ navigation, id, name, price, image }) {
               alignItems: "center",
               height: "100%",
             }}
-            onPress={() => {
-              setIsRemoveModalVisiable(true);
-            }}
-          >
+            onPress={onPress}>
             <Feather name="trash-2" size={35} color="red" />
           </TouchableOpacity>
-          <Modal
-            transparent={true}
-            animationType="fade"
-            visible={isRemoveModalVisiable}
-            nRequestClose={() => {
-              setIsRemoveModalVisiable(false);
-            }}
-          >
-            <RemoveModal
-              changeModalVisible={changeModalVisible}
-              confirmRemove={confirmRemove}
-            />
-          </Modal>
-        </>
       )}
     >
       <Image

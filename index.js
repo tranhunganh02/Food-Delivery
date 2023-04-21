@@ -6,7 +6,7 @@ import React, {useRef, useEffect, useState} from 'react';
 import Home from './screens/home/Index';
 import Logo from './screens/Amination/Logo';
 import Profile from './screens/Profile/Index';
-import Information from './screens/Profile/Information';
+import Information from './screens/Profile/Information/Index';
 import Chat from './screens/Profile/Chat/Index'
 import Address from './screens/Profile/Address/Index';
 import CreateAddress from './screens/Profile/Address/CreateAddress.js';
@@ -25,10 +25,11 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import Product from './screens/Product/Product';
+import { useContext } from 'react';
+import { AppContext } from './component/Auth/AuthContext';
 
 
 const Stack = createNativeStackNavigator();
-
 const Index = () => {
   return (
     <NavigationContainer>

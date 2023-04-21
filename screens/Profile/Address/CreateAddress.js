@@ -9,6 +9,7 @@ import {
   StatusBar,
   Dimensions,
   SafeAreaView,
+  Pressable
 } from "react-native";
 import { Ionicons, AntDesign } from "@expo/vector-icons";
 import React, { useEffect, useRef, useState } from "react";
@@ -44,6 +45,9 @@ const CreateAddress = ({ navigation }) => {
       setWard(response.data.wards);
     });
   };
+  const InsertAdrress = (()=>{
+    console.log("city:"+selectedCity+"|district:"+selectedDistrict+"|ward:"+selectedWard+"|address:"+specificAddress+"|phone:"+phoneNumber);
+  })
   useEffect(() => {
     callAPICity();
   }, [selectedCity, selectedDistrict]);
@@ -315,29 +319,27 @@ const CreateAddress = ({ navigation }) => {
           value={phoneNumber}
           onChangeText={setPhoneNumber}
         />
-        <TouchableOpacity
-          style={{
-            // width: "80%",
-            // height: 50,
-            // backgroundColor: "#00CC00",
-            // borderRadius: 10,
-            // justifyContent: "center",
-            // alignItems: "center",
-            // marginTop: 300,
-          }}
-          onPress={insertAddress}
-        >
-          <Text
-            style={{
-              color: "#fff",
-              fontSize: 20,
-            }}
-          >
-            Insert
-          </Text>
-        </TouchableOpacity>
+       <Pressable
+        onPress={() => {
+          insertAddress
+        }}
+        style={({pressed}) => [
+          {
+            backgroundColor: pressed ? 'rgb(210, 230, 255)' : '#D6DBCF',
+            width:'80%',
+            height:45,
+            justifyContent:'center',
+            alignItems:'center',
+            borderRadius:10,
+            marginTop:10
+          },
+          styles.wrapperCustom,
+        ]}>
+        {
+          <Text style={styles.text}>Create</Text>
+        }
+      </Pressable>
       </View>
-      <View style={styles.showImage}></View>
     </SafeAreaView>
   );
 };

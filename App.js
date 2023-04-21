@@ -1,7 +1,9 @@
-
-import Index from './index';
+import { AppProvider } from "./component/Auth/AuthContext";
+import Index from "./index";
 export default function App() {
   return (
-    <Index/>
+    <AppProvider>
+      <Index />
+    </AppProvider>
   );
 }
