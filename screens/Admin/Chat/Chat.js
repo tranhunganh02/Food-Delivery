@@ -8,6 +8,7 @@ import {
   FlatList,
   TextInput,
   StyleSheet,
+  KeyboardAvoidingView
 } from "react-native";
 import React, { useState, useEffect,  } from "react";
 import { Ionicons, Feather, FontAwesome } from "@expo/vector-icons";
@@ -184,7 +185,9 @@ export default function ChatCustomer({ navigation, route }) {
           />
         ) : null}
       </View>
-      <View
+      <KeyboardAvoidingView
+         behavior={Platform.OS === "android" ? "height" : 300}
+         keyboardVerticalOffset={Platform.OS === "android" ? 100 : 0}
         style={{
           height: height * 0.08,
           width: "100%",
@@ -224,7 +227,7 @@ export default function ChatCustomer({ navigation, route }) {
             </TouchableOpacity>
           </>
         )}
-      </View>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }

@@ -22,7 +22,7 @@ const SignUp = ({ navigation }) => {
      <View style={style.Cricle2}></View>
      <View style={style.Circle3}></View>
      <View
-       style={style.form}
+       style={style.form2}
      >
        <KeyboardAvoidingView
          behavior={Platform.OS === "android" ? "padding" : 40}
@@ -34,21 +34,21 @@ const SignUp = ({ navigation }) => {
           <View
             style={style.input2}
           >
-            <Text style={style.text}>
+            <Text style={style.text2}>
               Full name
             </Text>
             <TextInput
               placeholder="Your full name"
               style={style.inputText}
             />
-            <Text style={style.text}>
+            <Text style={style.text2}>
               E-mail
             </Text>
             <TextInput
               placeholder="Enter your email"
               style={style.inputText}
             />
-            <Text style={style.text}>
+            <Text style={style.text2}>
               Password
             </Text>
             <TextInput

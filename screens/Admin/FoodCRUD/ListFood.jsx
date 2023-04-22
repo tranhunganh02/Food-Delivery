@@ -107,10 +107,7 @@ const List = ({ navigation }) => {
         ))}
       </ScrollView>
       <FAB
-      // loadingStyle={{
-      //   backgroundColor:'#000'
-      // }}
-      //color="black"
+        color="green"
         loading
         visible={loadingVisible}
         size="large"

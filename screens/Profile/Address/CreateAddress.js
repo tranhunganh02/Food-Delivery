@@ -83,21 +83,15 @@ const CreateAddress = ({ navigation }) => {
           marginTop: 20,
         }}
       >
+          <TextInput
+          style={styles.input}
+          placeholder="Enter phone number"
+          value={phoneNumber}
+          onChangeText={setPhoneNumber}
+        />
         {/* city */}
         <TouchableOpacity
-          style={{
-            width: "80%",
-            height: 50,
-            borderRadius: 10,
-            borderWidth: 0.5,
-            alignSelf: "center",
-            marginTop: 10,
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
-            paddingLeft: 15,
-            paddingRight: 15,
-          }}
+          style={[styles.dropdown, styles.input]}
           onPress={() => {
             setClickedCity(!clickedCity);
           }}
@@ -158,19 +152,7 @@ const CreateAddress = ({ navigation }) => {
         ) : null}
         {/* district */}
         <TouchableOpacity
-          style={{
-            width: "80%",
-            height: 50,
-            borderRadius: 10,
-            borderWidth: 0.5,
-            alignSelf: "center",
-            marginTop: 10,
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
-            paddingLeft: 15,
-            paddingRight: 15,
-          }}
+           style={[styles.dropdown, styles.input]}
           onPress={() => {
             setClickedDistrict(!clickedDistrict);
           }}
@@ -231,19 +213,7 @@ const CreateAddress = ({ navigation }) => {
         ) : null}
         {/* ward */}
         <TouchableOpacity
-          style={{
-            width: "80%",
-            height: 50,
-            borderRadius: 10,
-            borderWidth: 0.5,
-            alignSelf: "center",
-            marginTop: 10,
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
-            paddingLeft: 15,
-            paddingRight: 15,
-          }}
+           style={[styles.dropdown, styles.input]}
           onPress={() => {
             setClickedWard(!clickedWard);
           }}
@@ -306,12 +276,6 @@ const CreateAddress = ({ navigation }) => {
           value={specificAddress}
           onChangeText={setSpecificAddress}
         />
-        <TextInput
-          style={styles.input}
-          placeholder="Enter phone number"
-          value={phoneNumber}
-          onChangeText={setPhoneNumber}
-        />
        <Pressable
         onPress={() => {
           InsertAdrress()
@@ -320,7 +284,7 @@ const CreateAddress = ({ navigation }) => {
           {
             backgroundColor: pressed ? 'rgb(210, 230, 255)' : '#D6DBCF',
             width:'80%',
-            height:45,
+            height: windowHeight * 0.06,
             justifyContent:'center',
             alignItems:'center',
             borderRadius:10,
@@ -371,8 +335,16 @@ const styles = StyleSheet.create({
     marginTop: 10,
     paddingLeft: 15,
     borderWidth: 1,
-    height: windowHeight * 0.055,
-    color:'#000'
+    height: windowHeight * 0.065,
+    color:'#000',
+    marginBottom:15
+  },
+  dropdown:{
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingLeft: 15,
+    paddingRight: 15,
   },
   showImage: {
     width: windowWidth * 0.5,

@@ -9,7 +9,7 @@ import {
   Modal,
   Alert,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { MaterialIcons, Entypo, AntDesign } from "@expo/vector-icons";
 import ItemFavorite from "./Item";
 const windowHeight = Dimensions.get("window").height;
@@ -18,6 +18,7 @@ import a from "../home/a";
 import { FAB } from "@rneui/themed";
 export default function Index(navigation) {
   const [listFavorite, setListFavorite] = useState(a.item[1].product);
+  //const [checked, setChecked] = React.useRef({});
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isModalVisibleAccept, setIsModalVisibleAccept] = useState(false);
   const [loadingVisible, setLoadingVisible] = useState(false);
@@ -40,7 +41,7 @@ export default function Index(navigation) {
     setTimeout(() => {
       setLoadingVisible(false);
       showDeleteSuccess()
-    }, 4000);
+    }, 2000);
   };
   const showDeleteSuccess = () => {
     setIsModalVisibleAccept(true)
@@ -54,7 +55,6 @@ export default function Index(navigation) {
         flex: 1,
         justifyContent: "space-between",
         alignItems: "center",
-        padding: 20,
       }}
     >
       <View
@@ -162,6 +162,7 @@ export default function Index(navigation) {
             price={item.price}
             image={item.image}
             deleteItem={chooseDeleteItem}
+            //checked={checked[0]}
           />
         ))}
       </ScrollView>

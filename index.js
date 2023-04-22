@@ -12,8 +12,8 @@ import Chat from './screens/Profile/Chat/Index'
 import Address from './screens/Profile/Address/Index';
 import CreateAddress from './screens/Profile/Address/CreateAddress.js';
 import Favorite from './screens/Favorite/Index';
-import SignIn from './screens/auth/SignIn';
-import SignUp from './screens/auth/SignUp';
+import SignIn from './screens/Auth/SignIn';
+import SignUp from './screens/Auth/SignUp';
 import Cart from './screens/Cart/Index';
 import CheckOut from './screens/Checkout/Index';
 import AddFood  from './screens/Admin/FoodCRUD/AddFood'
