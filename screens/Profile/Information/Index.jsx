@@ -9,22 +9,23 @@ import {
   Dimensions,
   SafeAreaView,
   Pressable,
-  Imgae,
+  Modal,
+  Platform,
 } from "react-native";
 import { Ionicons, AntDesign } from "@expo/vector-icons";
 import React, { useEffect, useState, useCallback } from "react";
-import { DateTimePickerModal } from "react-native-modal-datetime-picker";
+import DateTimePicker from "@react-native-community/datetimepicker";
 import SelectDropdown from "react-native-select-dropdown";
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
 const host = "https://provinces.open-api.vn/api/";
 const Information = ({ navigation }) => {
   useEffect(() => {}, []);
-  const [selectedDate, setSelectedDate] = useState();
+  const [selectedDate, setSelectedDate] = useState(new Date());
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-  const [sex, setSex] = useState()
-  function br (sex1) {
-    setSex(sex1)
+  const [sex, setSex] = useState();
+  function br(sex1) {
+    setSex(sex1);
     console.log(sex);
   }
   const showDatePicker = () => {
@@ -35,11 +36,15 @@ const Information = ({ navigation }) => {
     setDatePickerVisibility(false);
   };
 
-  const handleConfirm = (date) => {
-    // setSelectedDate(date.toISOString().slice(0, 10));
-    setSelectedDate(date)
-    hideDatePicker();
-    console.log(date.toISOString().slice(0, 10));
+  const handleConfirm = ({ type }, selectedDate) => {
+    if (type == "set") {
+      const currentDay = selectedDate;
+      setSelectedDate(currentDay);
+      if(Platform.OS==="android"){
+       hideDatePicker()
+      }
+    }
+    console.log(selectedDate.toISOString().slice(0, 10));
   };
   return (
     <SafeAreaView
@@ -99,17 +104,61 @@ const Information = ({ navigation }) => {
           >
             <Image
               source={require("../../../assets/icon/calendar.png")}
-              style={{ position: "absolute", left: 15, bottom: 15 }}
+              style={{ position: "absolute", left: 15, bottom: 13 }}
             ></Image>
-            {selectedDate != null ? <Text style={{fontSize:17.5}}>{selectedDate.toISOString().slice(0, 10)}</Text> : null}
+            {selectedDate != null ? (
+              <Text style={{ fontSize: 17.5 }}>{selectedDate.toISOString().slice(0, 10)}</Text>
+            ) : null}
           </TouchableOpacity>
-          <DateTimePickerModal
+          {/* <DateTimePickerModal
             isVisible={isDatePickerVisible}
             mode="date"
             date={selectedDate}
             onConfirm={handleConfirm}
             onCancel={hideDatePicker}
-          />
+          /> */}
+          {isDatePickerVisible && Platform.OS==='ios'&&(
+            <Modal
+              animationType="fade"
+              transparent={true}
+              visible={isDatePickerVisible}
+            >
+              <View
+                style={styles.centeredView}
+                onPress={() => setIsModalVisibleAccept(!isModalVisibleAccept)}
+              >
+                <View style={[styles.modalView]}>
+                  <DateTimePicker
+                    mode="date"
+                    display="spinner"
+                    value={selectedDate}
+                    onChange={handleConfirm}
+                    dateFormat="day month year"
+                    style={{
+                      height:300
+                    }}
+                  ></DateTimePicker>
+                  <TouchableOpacity onPress={()=>{hideDatePicker()}}>
+                    <Text>Close</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </Modal>
+          )}
+          {
+            isDatePickerVisible && Platform.OS==="android" && (
+              <DateTimePicker
+                    mode="date"
+                    display="spinner"
+                    value={selectedDate}
+                    onChange={handleConfirm}
+                    placeholderText={"Choose date"}
+                    dateFormat="day month year"
+                    onTouchCancel={()=>{hideDatePicker()}}
+                    onPointerCancel={hideDatePicker}
+               />
+            )
+          }
         </View>
         <View style={styles.conponent}>
           <Text style={styles.conponentText}>Gender</Text>
@@ -118,7 +167,7 @@ const Information = ({ navigation }) => {
             buttonStyle={[styles.conponentInput]}
             data={["Male", "Female"]}
             onSelect={(selectedItem, index) => {
-              br(selectedItem)
+              br(selectedItem);
             }}
             buttonTextAfterSelection={(selectedItem, index) => {
               // text represented after item is selected
@@ -130,29 +179,30 @@ const Information = ({ navigation }) => {
               // if data array is an array of objects then return item.property to represent item in dropdown
               return item;
             }}
-            
           />
-        </View>
-        <Pressable
+          <View style={[styles.conponent,{alignItems:'center', justifyContent:'center'}]}>
+          <Pressable
           onPress={() => {
             InsertAdrress();
           }}
           style={({ pressed }) => [
             {
               backgroundColor: pressed ? "rgb(210, 230, 255)" : "#BFCBAE",
-              width: "80%",
+              width: "100%",
               height: windowHeight * 0.08,
               justifyContent: "center",
               alignItems: "center",
               borderRadius: 40,
-              position: "absolute",
-              bottom: 0,
+              marginTop:40
             },
-            styles.wrapperCustom,
           ]}
         >
           {<Text style={{ color: "#fff" }}>UPDATE</Text>}
         </Pressable>
+          </View>
+           
+        </View>
+       
       </View>
     </SafeAreaView>
   );
@@ -187,8 +237,10 @@ const styles = StyleSheet.create({
     left: 0,
   },
   conponent: {
-    width: "86%",
+    width: "100%",
     marginBottom: 15,
+    height:windowHeight*0.11,
+    paddingHorizontal:30
   },
   conponentText: {
     color: "#9796A1",
@@ -236,7 +288,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     alignItems: "center",
-    width: windowWidth * 0.48,
+    width: windowWidth * 0.78,
   },
   modalViewButton: {
     flexDirection: "row",

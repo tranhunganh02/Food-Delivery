@@ -12,7 +12,6 @@ import {
   StatusBar,
   Modal,
 } from "react-native";
-import ModalFavorite from "./ModalFavorite";
 import React, { useEffect, useState } from "react";
 import { Avatar } from "@rneui/themed";
 import {
@@ -29,7 +28,7 @@ const windowWidth = Dimensions.get("window").width;
 export default function Index({ navigation }) {
   useEffect(() => {
     global.users = {
-      role: 1,
+      role: 0,
     };
   });
   const [isModalVisible, setIsModalVisible] = useState(false);

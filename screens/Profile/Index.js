@@ -3,10 +3,10 @@ import {
   Text,
   StatusBar,
   Dimensions,
-  Image,
-  ImageBackground,
   TouchableOpacity,
   StyleSheet,
+  ScrollView,
+  Modal,
 } from "react-native";
 import { Avatar } from "@rneui/themed";
 import React, { useEffect, useState } from "react";
@@ -15,10 +15,13 @@ import {
   SimpleLineIcons,
   AntDesign,
   Ionicons,
+  MaterialCommunityIcons,
+  MaterialIcons
 } from "@expo/vector-icons";
 const height = Dimensions.get("window").height;
 const windowWidth = Dimensions.get("window").width;
 export default function Index({ navigation }) {
+  const [isModalVisible, setIsModalVisible] = useState(false);
   return (
     <View style={{ flex: 1, alignItems: "center" }}>
       <StatusBar barStyle={"dark-content"} />
@@ -34,93 +37,132 @@ export default function Index({ navigation }) {
           <FontAwesome name="exchange" size={24} color="#E8E8E8" />
         </TouchableOpacity>
         <Text style={styles.headerText}>Mohamed Lanh </Text>
-        <Text style={{ bottom: 10 }}>0905113115116</Text>
       </View>
-      <View
-        style={{
-          height: height * 0.5,
-          width: "100%",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <TouchableOpacity
-          style={styles.ActionButton}
-          onPress={() => {
-            navigation.navigate("Information");
+      <ScrollView>
+        <View
+          style={{
+            height: height * 0.5,
+            width: "100%",
+            justifyContent: "center",
+            alignItems: "center",
           }}
         >
-          <AntDesign name="profile" size={27} color="black" />
-          <Text style={styles.actionText}>Information</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.ActionButton}
-          onPress={() => {
-            navigation.navigate("Address");
-          }}
-        >
-          <FontAwesome name="address-book-o" size={27} color="black" />
-          <Text style={styles.actionText}>Address</Text>
-        </TouchableOpacity>
-        {global.users.role == 1 ? (
-          <>
-            <TouchableOpacity
-              style={styles.ActionButton}
-              onPress={() => {
-                navigation.navigate("Support");
-              }}
-            >
-              <Ionicons
-                name="chatbox-ellipses-outline"
-                size={27}
-                color="black"
-              />
-              <Text style={styles.actionText}>Support</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.ActionButton}
-              onPress={() => {
-                navigation.navigate("ListFood");
-              }}
-            >
-              <Ionicons name="fast-food-outline" size={27} color="black" />
-              <Text style={styles.actionText}>List Food</Text>
-            </TouchableOpacity>
-          </>
-        ) : (
-          <>
-            <TouchableOpacity
-              style={styles.ActionButton}
-              onPress={() => {
-                navigation.navigate("Chat");
-              }}
-            >
-              <Ionicons
-                name="chatbox-ellipses-outline"
-                size={27}
-                color="black"
-              />
-              <Text style={styles.actionText}>Contact admin</Text>
-            </TouchableOpacity>
-          </>
-        )}
-        <TouchableOpacity
-          style={styles.ActionButton}
-          onPress={() => {
-            navigation.navigate("SignIn");
-          }}
-        >
-          <SimpleLineIcons name="logout" size={27} color="black" />
-          <Text style={styles.actionText}>Logout</Text>
-        </TouchableOpacity>
-      </View>
+          <TouchableOpacity
+            style={styles.ActionButton}
+            onPress={() => {
+              navigation.navigate("Information");
+            }}
+          >
+            <AntDesign name="profile" size={27} color="black" />
+            <Text style={styles.actionText}>Information</Text>
+          </TouchableOpacity>
+          {global.users.role == 1 ? (
+            <>
+              <TouchableOpacity
+                style={styles.ActionButton}
+                onPress={() => {
+                  navigation.navigate("Support");
+                }}
+              >
+                <Ionicons
+                  name="chatbox-ellipses-outline"
+                  size={27}
+                  color="black"
+                />
+                <Text style={styles.actionText}>Support</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.ActionButton}
+                onPress={() => {
+                  navigation.navigate("ListFood");
+                }}
+              >
+                <Ionicons name="fast-food-outline" size={27} color="black" />
+                <Text style={styles.actionText}>List Food</Text>
+              </TouchableOpacity>
+            </>
+          ) : (
+            <>
+              <TouchableOpacity
+                style={styles.ActionButton}
+                onPress={() => {
+                  navigation.navigate("Address");
+                }}
+              >
+                <FontAwesome name="address-book-o" size={30} color="black" />
+                <Text style={styles.actionText}>Address</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.ActionButton}
+                onPress={() => {
+                  navigation.navigate("Chat");
+                }}
+              >
+                <Ionicons
+                  name="chatbox-ellipses-outline"
+                  size={30}
+                  color="black"
+                />
+                <Text style={styles.actionText}>Contact admin</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.ActionButton}
+                onPress={() => {
+                  setIsModalVisible(!isModalVisible);
+                }}
+              >
+                <MaterialCommunityIcons
+                  name="truck-delivery"
+                  size={30}
+                  color="black"
+                />
+                <Text style={styles.actionText}>Order</Text>
+              </TouchableOpacity>
+            </>
+          )}
+          <TouchableOpacity
+            style={styles.ActionButton}
+            onPress={() => {
+              navigation.navigate("SignIn");
+            }}
+          >
+            <SimpleLineIcons name="logout" size={28} color="black" />
+            <Text style={styles.actionText}>Logout</Text>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
+      <Modal animationType="slide" transparent={true} visible={isModalVisible}>
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <View style={styles.modalViewButton}>
+              <TouchableOpacity style={styles.modalViewButtonText}>
+              <MaterialIcons name="history" size={48} color="black" />
+                <Text>Order history</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.modalViewButtonText}>
+              <MaterialCommunityIcons name="truck-delivery-outline" size={50} color="black" />
+                <Text>To ship</Text>
+              </TouchableOpacity>
+            </View>
+            <View style={{}}>
+              <TouchableOpacity
+                onPress={() => {
+                  setIsModalVisible(!isModalVisible);
+                }}
+              >
+               <MaterialIcons name="cancel" size={45} color="red" />
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   headerContainer: {
-    height: height * 0.26,
+    height: height * 0.24,
     width: "60%",
     justifyContent: "space-around",
     alignItems: "center",
@@ -152,5 +194,36 @@ const styles = StyleSheet.create({
   actionText: {
     marginLeft: 30,
     top: 5,
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  modalView: {
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 40,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    justifyContent: "space-around",
+    alignItems: "center",
+    width: windowWidth * 0.62,
+  },
+  modalViewButton: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    width: windowWidth * 0.45,
+    marginBottom: 30,
+  },
+  modalViewButtonText: {
+    justifyContent:'center',
+    alignItems:'center'
   },
 });

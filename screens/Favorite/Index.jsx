@@ -99,21 +99,21 @@ export default function Index(navigation) {
                   // delete 1 item
                   onPress={() => accepctDelete(0)}
                 >
-                  <AntDesign name="checkcircle" size={37} color="red" />
+                  <AntDesign name="checkcircle" size={50} color="red" />
                 </TouchableOpacity>
               ) : (
                 <TouchableOpacity
                   //
                   onPress={() => accepctDelete(1)}
                 >
-                  <AntDesign name="checkcircle" size={37} color="red" />
+                  <AntDesign name="checkcircle" size={45} color="red" />
                 </TouchableOpacity>
               )}
 
               <TouchableOpacity
                 onPress={() => setIsModalVisible(!isModalVisible)}
               >
-                <MaterialIcons name="cancel" size={44} color="#585454" />
+                <MaterialIcons name="cancel" size={56} color="#585454" />
               </TouchableOpacity>
             </View>
           </View>
@@ -194,7 +194,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-around",
     width: windowWidth * 0.3,
-    marginTop:5
+    marginTop:15
   },
 
   button: {
