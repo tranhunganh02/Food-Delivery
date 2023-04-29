@@ -14,30 +14,30 @@ import React, { useEffect, useState } from "react";
 import Item from "./Item";
 import a from "../../home/a.js";
 import { FAB } from "@rneui/themed";
+import deleteProduct from "../../../features/Product/deleteProduct";
 const windowHeight = Dimensions.get("window").height;
 const windowWidth = Dimensions.get("window").width;
 
 const List = ({ navigation }) => {
   const [listFood, setListFood] = useState([]);
   useEffect(() => {
-    async function fetchData() {
-      const data = await getAllProduct();
-      setListFood(data);
-    }
-    fetchData();
-  }, [listFood]);
+      getAllProduct().then((data)=> {
+        setListFood(data);
+  });
+  }, []);
   const [loadingVisible, setLoadingVisible] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
-  const deleteItem = () => {
-    setLoadingVisible(!loadingVisible);
-    setTimeout(() => {
-      setLoadingVisible(false);
-      setModalVisible(true);
-      setTimeout(() => {
-        setModalVisible(false);
-      }, 3000);
-    }, 2000);
-  };
+  // const deleteItem = (idProduct) => {
+  //   console.log(idProduct);
+  //   setLoadingVisible(!loadingVisible);
+  //   setTimeout(() => {
+  //     setLoadingVisible(false);
+  //     setModalVisible(true);
+  //     setTimeout(() => {
+  //       setModalVisible(false);
+  //     }, 3000);
+  //   }, 2000);
+  // };
 
   return (
     <View
@@ -95,16 +95,15 @@ const List = ({ navigation }) => {
             price={item.data.price}
             image={item.data.image}
             quantity={item.data.quantity}
-            onPress={deleteItem}
+            onDelete={(id)=> {
+              deleteProduct(id);
+            }}
           />
         ))}
       </ScrollView>
 
       <FAB
-        // loadingStyle={{
-        //   backgroundColor:'#000'
-        // }}
-        //color="black"
+        color="green"
         loading
         visible={loadingVisible}
         size="large"

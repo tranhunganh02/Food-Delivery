@@ -11,8 +11,8 @@ import Chat from './screens/Profile/Chat/Index'
 import Address from './screens/Profile/Address/Index';
 import CreateAddress from './screens/Profile/Address/CreateAddress.js';
 import Favorite from './screens/Favorite/Index';
-import SignIn from './screens/auth/SignIn';
-import SignUp from './screens/auth/SignUp';
+import SignIn from './screens/Auth/SignIn';
+import SignUp from './screens/Auth/SignUp';
 import Cart from './screens/Cart/Index';
 import CheckOut from './screens/Checkout/Index';
 import AddFood  from './screens/Admin/FoodCRUD/AddFood'
@@ -20,11 +20,12 @@ import ListFood  from './screens/Admin/FoodCRUD/ListFood'
 import UpdateFood from './screens/Admin/FoodCRUD/UpdateFood'
 import ListChat from './screens/Admin/Chat/ListChat'
 import ChatCustomer from './screens/Admin/Chat/Chat'
+import Product from './screens/Product/Index'
+import OrderHistory from './screens/Profile/Order/OrderHistory';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
-import Product from './screens/Product/Product';
 import { useContext } from 'react';
 import { AppContext } from './component/Auth/AuthContext';
 
@@ -49,7 +50,9 @@ const Index = () => {
             <Stack.Screen name='UpdateFood' component={UpdateFood} />
             <Stack.Screen name='Chat' component={Chat} />
             <Stack.Screen name='Support' component={ListChat} />
-            <Stack.Screen name='ChatCustomer' component={ChatCustomer} />
+            <Stack.Screen name='ChatCustomer' component={ChatCustomer} /> 
+            <Stack.Screen name='Favorite' component={Favorite} /> 
+            <Stack.Screen name='OrderHistory' component={OrderHistory} /> 
         </Stack.Navigator>
     </NavigationContainer>
   );
@@ -78,7 +81,7 @@ function BottomTab() {
           ),
         }}      
       />
-      <Tab.Screen
+      {/* <Tab.Screen
         name="Favorite"
         component={Favorite}
         options={{
@@ -88,7 +91,7 @@ function BottomTab() {
             <MaterialIcons name="favorite-border" size={25} color="black" />
           ),
         }}
-      />
+      /> */}
       <Tab.Screen
         name="Profile"
         component={Profile}

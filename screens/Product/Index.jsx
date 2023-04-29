@@ -8,7 +8,9 @@ import {
   StyleSheet,
   FlatList,
   SafeAreaView,
+  Modal,
 } from "react-native";
+import { FAB } from "@rneui/themed";
 import React, { useEffect, useLayoutEffect, useState } from "react";
 import {
   Ionicons,
@@ -19,28 +21,81 @@ import {
 } from "@expo/vector-icons";
 import a from "../home/a";
 import AddProductToCart from "../../features/User/AddProductToCart";
+import { useContext } from "react";
+import { AppContext } from "../../component/Auth/AuthContext";
 const windowHeight = Dimensions.get("window").height;
 const windowWidth = Dimensions.get("window").width;
-export default function Product({ navigation, route }) {
+
+export default function Index({ navigation, route }) {
+  const { user } = useContext(AppContext);
   const [quantity, setQuantity] = useState(0 * 0);
-  const addCart = async () => {
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [loadingVisible, setLoadingVisible] = useState(false);
+  const [isInCart, setIsInCart] = useState("");
+  useEffect(() => {
+    setQuantity(1);
+  }, [route.params.id]);
+
+  function addToCart() {
     const data = {
       quantity: quantity,
       idProduct: route.params.id,
       isDelivered: false,
       created_at: Date.now(),
     };
-    await AddProductToCart(data);
-  };
+    AddProductToCart(data).then((value) => {
+      setIsInCart(value);
+    });
+    setLoadingVisible(true);
+    setTimeout(() => {
+      setLoadingVisible(false);
+      setIsModalVisible(true);
+      setTimeout(() => {
+        setIsModalVisible(false);
+      }, 3000);
+    }, 2000);
+  }
 
-  useEffect(() => {
-    setQuantity(1);
-  }, [route.params.id]);
   return (
     <SafeAreaView
       style={{ flex: 1, alignItems: "center", backgroundColor: "#FBF9F9" }}
     >
       <StatusBar barStyle={"dark-content"} />
+      {/* Animation */}
+      {loadingVisible ? (
+        <Modal animationType="fade" transparent={true} visible={loadingVisible}>
+          <View style={styles.centeredView}>
+            <FAB
+              loading={loadingVisible}
+              visible={loadingVisible}
+              icon={{ name: "add", color: "white" }}
+              color="green"
+            />
+          </View>
+        </Modal>
+      ) : (
+        <Modal animationType="fade" transparent={true} visible={isModalVisible}>
+          <TouchableOpacity
+            style={styles.centeredView}
+            onPress={() => setIsModalVisible(!isModalVisible)}
+          >
+            <View
+              style={[
+                styles.modalView,
+                {
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  width: windowWidth * 0.5,
+                },
+              ]}
+            >
+              <Text style={styles.modalText}>{isInCart}</Text>
+              <AntDesign name="checkcircle" size={37} color="green" />
+            </View>
+          </TouchableOpacity>
+        </Modal>
+      )}
       <View style={{ height: "auto", width: windowWidth }}>
         <View
           style={{
@@ -224,7 +279,16 @@ export default function Product({ navigation, route }) {
             VND
           </Text>
         </View>
-        <TouchableOpacity style={styles.bottomButton} onPress={addCart}>
+        <TouchableOpacity
+          style={styles.bottomButton}
+          onPress={() => {
+            if (user) {
+              addToCart();
+            } else {
+              navigation.navigate("SignIn");
+            }
+          }}
+        >
           <Text style={{ color: "#fff", fontSize: 18 }}>Add to cart</Text>
         </TouchableOpacity>
       </View>
@@ -235,6 +299,32 @@ export default function Product({ navigation, route }) {
 const styles = StyleSheet.create({
   Container: {},
   Image: {},
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  modalView: {
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 25,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    alignItems: "center",
+    width: windowWidth * 0.48,
+  },
+  modalViewButton: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    width: windowWidth * 0.3,
+    marginTop: 5,
+  },
   InformationContainer: {
     width: windowWidth,
     height: windowHeight * 0.195,

@@ -64,7 +64,7 @@ const SignIn = ({ navigation }) => {
           behavior={Platform.OS === "android" ? "padding" : 40}
           contentContainerStyle={{ position: "absolute" }}
         >
-          <View style={{ alignItems: "center", marginTop: 60 }}>
+          <View style={{ alignItems: "center", marginTop: 80 }}>
             <Text style={{ fontSize: 30, fontWeight: "bold" }}>Sign In</Text>
           </View>
           <View style={style.input}>

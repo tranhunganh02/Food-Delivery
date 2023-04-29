@@ -11,14 +11,13 @@ import {
   SafeAreaView,
 } from "react-native";
 import { Ionicons, AntDesign } from "@expo/vector-icons";
-import React, { useEffect, useRef, useState } from "react";
-import getProduct from "../../../features/Product/getProduct";
-import PickImageProduct from "../../../features/Product/pickImageProduct";
-import updateProduct from "../../../features/Product/updateProduct";
+import React, { useRef, useState } from "react";
+import insertProduct from "../../../features/Product/insertProduct";
 import uploadImage from "../../../features/uploadImage";
-import { useForm } from "react-hook-form";
-import AuthInput from "../../../component/User/AuthInput";
+import PickImageProduct from "../../../features/Product/pickImageProduct";
 import ValidateInput from "../../../component/Product/ValidateInput";
+import { useForm } from "react-hook-form";
+
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
 const category = [
@@ -31,23 +30,44 @@ const category = [
   { name: "Snacks", id: "7" },
   { name: "Noodles", id: "8" },
 ];
-const UpdateFood = ({ navigation,route}) => {
-//  alert(route.params?.id);
-  const [nameFood, setNameFood] = useState("");
-  const [priceFood, setPriceFood] = useState("");
+const AddFood = ({ navigation }) => {
   const [imagePicker, setImagePicker] = useState("");
   const [search, setSearch] = useState("");
   const [clicked, setClicked] = useState(false);
   const [data, setData] = useState(category);
   const [selectedCategory, setSelectedCategory] = useState("");
-  const [isPickedImage,setIsPickedImage] = useState(false);
+  const [isPickedImage, setIsPickedImage] = useState(false);
   const searchRef = useRef();
   const {
     control,
     handleSubmit,
     formState: { errors },
-    setValue
+    setValue,
   } = useForm();
+  const insert = async (data) => {
+    if (isPickedImage) {
+      let imageURL = await uploadImage({
+        image: imagePicker,
+        folder: "Product",
+      });
+      setImagePicker(imageURL);
+    }
+    const moreProps = {
+      selectedCategory: selectedCategory,
+      image: imagePicker,
+      created_at: Date.now(),
+    };
+    const finalData = Object.assign({}, data, moreProps);
+    insertProduct({ data: finalData, navigation: navigation });
+    setImagePicker(null);
+  };
+  const chooseImage = async () => {
+    let url = await PickImageProduct();
+    if (url) {
+      setIsPickedImage(true);
+      setImagePicker(url);
+    }
+  };
   const onSearch = (search) => {
     if (search !== "") {
       let tempData = data.filter((item) => {
@@ -58,39 +78,6 @@ const UpdateFood = ({ navigation,route}) => {
       setData(category);
     }
   };
-  useEffect(()=>{
-    async function getEachProduct(){
-      const data = await getProduct(route.params.id);
-        
-      setValue('name',data.name);
-      setValue('price',data.price);
-      setSelectedCategory(data.selectedCategory);
-      setImagePicker(data.image);
-      // console.log(data);
-    }
-    getEachProduct();
-  },[])
-  const update =async (data)=> 
-  {
-    if(isPickedImage)
-    {
-      let imageURL = await uploadImage({image: imagePicker,folder: "Product"});
-      setImagePicker(imageURL);
-    }
-    const moreProps = { selectedCategory: selectedCategory,image:imagePicker,id: route.params.id};
-    const finalData= Object.assign({},data,moreProps);
-    updateProduct(finalData);
-   
-    
-  }
-  async function changeImage(){
-    let url= await PickImageProduct();
-    if(url)
-    {
-      setIsPickedImage(true);
-      setImagePicker(url);
-    }
-  }
   return (
     <SafeAreaView
       style={{
@@ -99,7 +86,6 @@ const UpdateFood = ({ navigation,route}) => {
         alignItems: "center",
         justifyContent: "center",
         paddingVertical: 10,
-        backgroundColor: "#fff",
       }}
     >
       <StatusBar barStyle={"dark-content"} />
@@ -110,16 +96,9 @@ const UpdateFood = ({ navigation,route}) => {
             navigation.goBack();
           }}
         >
-          <Ionicons name="chevron-back-outline" size={33} color="black" />
+          <Ionicons name="ios-arrow-back" size={24} color="black" />
         </TouchableOpacity>
-        <Text
-          style={{
-            fontSize: 24,
-            fontWeight: "500",
-          }}
-        >
-          Update
-        </Text>
+        <Text>Add food</Text>
         <TouchableOpacity
           style={[
             styles.headerButton,
@@ -129,11 +108,8 @@ const UpdateFood = ({ navigation,route}) => {
             ex();
           }}
         >
-          <AntDesign name="plus" size={33} color="black" />
+          <AntDesign name="plus" size={24} color="black" />
         </TouchableOpacity>
-      </View>
-      <View style={styles.showImage}>
-      {imagePicker && <Image source={{ uri: imagePicker }} style={{ width: 200, height: 200 }} />}
       </View>
       <View
         style={{
@@ -142,27 +118,22 @@ const UpdateFood = ({ navigation,route}) => {
           alignItems: "center",
           height: windowHeight * 0.3,
           width: windowWidth,
-          marginTop: 15,
+          marginTop: 20,
         }}
       >
         <ValidateInput
-        name="name"
-        placeholder="Food name"
-        control={control}
-        rules={{ required: "Food name is required" }}
+          name="name"
+          placeholder="Food name"
+          control={control}
+          rules={{ required: "Food name is required" }}
         />
         <ValidateInput
-        name="price"
-        placeholder="Price"
-        control={control}
-        rules={{ required: "Price is required" }}
-        />
-        {/* <TextInput
-          style={styles.input}
+          name="price"
           placeholder="Price"
-          value={priceFood}
-          onChangeText={(number) => setPriceFood(number)}
-        /> */}
+          control={control}
+          rules={{ required: "Price is required" }}
+        />
+
         <TouchableOpacity
           style={{
             width: "80%",
@@ -177,18 +148,18 @@ const UpdateFood = ({ navigation,route}) => {
             paddingLeft: 15,
             paddingRight: 15,
           }}
-          onPress={changeImage}
+          onPress={chooseImage}
         >
-          <Text>Change image</Text>
+          <Text>Choose image</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={{
             width: "80%",
-            height: 55,
+            height: 50,
             borderRadius: 10,
             borderWidth: 0.5,
             alignSelf: "center",
-            marginTop: 15,
+            marginTop: 10,
             flexDirection: "row",
             justifyContent: "space-between",
             alignItems: "center",
@@ -284,18 +255,25 @@ const UpdateFood = ({ navigation,route}) => {
             alignItems: "center",
             marginTop: 100,
           }}
-          onPress={handleSubmit(update)}
+          onPress={handleSubmit(insert)}
         >
           <Text
             style={{
               color: "#fff",
               fontSize: 20,
             }}
-            
           >
-            Update
+            Insert
           </Text>
         </TouchableOpacity>
+      </View>
+      <View style={styles.showImage}>
+        {imagePicker && (
+          <Image
+            source={{ uri: imagePicker }}
+            style={{ width: 200, height: 200 }}
+          />
+        )}
       </View>
     </SafeAreaView>
   );
@@ -303,7 +281,7 @@ const UpdateFood = ({ navigation,route}) => {
 const styles = StyleSheet.create({
   headerContainer: {
     height: windowHeight * 0.08,
-    width: "100%",
+    width: "95%",
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
@@ -330,15 +308,15 @@ const styles = StyleSheet.create({
     padding: 10,
     borderColor: "gray",
     borderRadius: 10,
-    marginBottom: 15,
+    marginBottom: 10,
     paddingLeft: 15,
     borderWidth: 1,
-    height: 50,
   },
   showImage: {
-    width: windowWidth * 0.55,
-    height: windowHeight * 0.286,
-    position: "relative",
+    width: windowWidth * 0.5,
+    height: windowHeight * 0.3,
+    position: "absolute",
+    bottom: 0,
   },
 });
-export default UpdateFood;
+export default AddFood;

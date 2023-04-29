@@ -30,6 +30,7 @@ export default function ItemFavorite({navigation, id, name, price, image, delete
         </TouchableOpacity>
      )}
    >
+    
      <Image source={{uri:`${image}`}} style={{height:windowHeight*0.162, width:windowWidth*0.55}}></Image>
      <ListItem.Content style={{height:70, justifyContent:'space-between'}}>
        <ListItem.Title>{name}

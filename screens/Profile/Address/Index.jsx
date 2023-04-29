@@ -7,17 +7,11 @@ import {
   StatusBar,
   ScrollView,
 } from "react-native";
-import {
-  Ionicons,
-  Entypo,
-  MaterialCommunityIcons,
-  AntDesign,
-} from "@expo/vector-icons";
+import { Ionicons, FontAwesome5 } from "@expo/vector-icons";
 import a from "../a";
 import React, { useEffect, useState } from "react";
 import SelectDropdown from "react-native-select-dropdown";
 import axios from "axios";
-import ItemAddress from "./ItemAddress";
 import getUser from "../../../features/User/getUser";
 import { auth } from "../../../firebase";
 const windowHeight = Dimensions.get("window").height;
@@ -41,10 +35,9 @@ const Address = ({ navigation }) => {
     <View
       style={{
         flex: 1,
-        paddingHorizontal: 25,
+        padding: 20,
         alignItems: "center",
         justifyContent: "space-between",
-        paddingVertical: 10,
       }}
     >
       <StatusBar barStyle={"dark-content"} />
@@ -55,7 +48,7 @@ const Address = ({ navigation }) => {
             navigation.goBack();
           }}
         >
-          <Ionicons name="ios-arrow-back" size={24} color="black" />
+          <Ionicons name="ios-arrow-back" size={26} color="black" />
         </TouchableOpacity>
         <Text>Your address</Text>
         <TouchableOpacity
@@ -67,20 +60,52 @@ const Address = ({ navigation }) => {
             navigation.navigate("Create Address");
           }}
         >
-          <AntDesign name="plus" size={24} color="black" />
+          <FontAwesome5 name="exchange-alt" size={23} color="black" />
         </TouchableOpacity>
-      </View>
-
-      <ItemAddress
-        navigation={navigation}
-        name={user.name}
-        id={user.id}
-        phoneNumber={user.phoneNumber}
-        city={user.city}
-        district={user.district}
-        ward={user.ward}
-        specificAddress={user.specificAddress}
-      />
+      </View>       
+        <View  style={styles.component}>
+          <View
+            style={styles.componentInformation}
+          >
+            <Text style={styles.componentText}>Full name</Text>
+            <Text style={styles.componentText}>Tran Thi Lanh Buoi</Text>
+          </View>
+          <View
+            style={styles.componentInformation}
+          >
+            <Text style={styles.componentText}>Phone number</Text>
+            <Text style={styles.componentText}>0905113114</Text>
+          </View>
+          <View
+             style={styles.componentInformation}
+          >
+            <Text style={styles.componentText}>City</Text>
+            <Text style={styles.componentText}>MaCao city</Text>
+          </View>
+          <View
+             style={styles.componentInformation}
+          >
+            <Text style={styles.componentText}>District</Text>
+            <Text style={styles.componentText}>Nha Be district</Text>
+          </View>
+          <View
+             style={styles.componentInformation}
+          >
+            <Text style={styles.componentText}>Ward</Text>
+            <Text style={styles.componentText}>Ngu Hanh Son</Text>
+          </View>
+          <View
+             style={styles.componentInformation}
+          >
+            <Text style={styles.componentText}>Specific address</Text>
+            <Text style={styles.componentText}>9/36 Tran Duy Hung</Text>
+          </View>
+        </View>
+      <TouchableOpacity
+        style={styles.button}
+      >
+        <Text style={{ color: "#fff", fontSize: 19 }}>Update</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -90,16 +115,17 @@ export default Address;
 const styles = StyleSheet.create({
   headerContainer: {
     height: windowHeight * 0.145,
-    width: "95%",
+    width: "100%",
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginTop: 15,
+    marginTop: 10,
+    paddingHorizontal: 8,
   },
   headerButton: {
     justifyContent: "center",
     alignItems: "center",
-    borderRadius: 100,
+    borderRadius: 15,
     width: windowWidth * 0.13,
     height: windowHeight * 0.06,
     backgroundColor: "#fff",
@@ -111,4 +137,28 @@ const styles = StyleSheet.create({
       width: 0.5,
     },
   },
+  component: {
+    width: "100%",
+    height: windowHeight * 0.65,
+    paddingVertical: 35,
+    paddingHorizontal:2
+  },
+  componentInformation: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: 30,
+  },
+  componentText: {
+    fontSize: 20,
+    fontWeight: "400",
+  },
+  button:{
+    height: windowHeight * 0.08,
+          width: windowWidth * 0.6,
+          backgroundColor: "#BFCBAE",
+          marginBottom: 15,
+          borderRadius: 50,
+          justifyContent: "center",
+          alignItems: "center",
+  }
 });

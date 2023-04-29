@@ -1,9 +1,20 @@
-import { StyleSheet, Text, View, Button, TouchableOpacity, Dimensions, Image } from 'react-native'
-import React from 'react'
-import { ListItem, Icon } from '@rneui/themed';
-import { Feather, MaterialIcons } from '@expo/vector-icons';
-const windowWidth = Dimensions.get('window').width
-export default function Item({navigation, id, name, price, image, onPress}) {
+import {
+  StyleSheet,
+  Text,
+  View,
+  Button,
+  TouchableOpacity,
+  Dimensions,
+  Image,
+} from "react-native";
+import React from "react";
+import { ListItem, Icon } from "@rneui/themed";
+import { Feather, MaterialIcons } from "@expo/vector-icons";
+const windowWidth = Dimensions.get("window").width;
+export default function Item({ navigation, id, name, price, image,onDelete}) {
+  function handleDeleteProduct() {
+    onDelete(id);
+  }
   return (
      <ListItem.Swipeable
       style={{
@@ -40,7 +51,7 @@ export default function Item({navigation, id, name, price, image, onPress}) {
               alignItems: "center",
               height: "100%",
             }}
-            onPress={onPress}>
+            onPress={handleDeleteProduct}>
             <Feather name="trash-2" size={35} color="red" />
           </TouchableOpacity>
       )}
@@ -54,6 +65,12 @@ export default function Item({navigation, id, name, price, image, onPress}) {
           uri: image,
         }}
       ></Image>
+      <TouchableOpacity
+      onPress={()=>{console.log(id);}}>
+        <Text>
+          Xoá
+        </Text>
+      </TouchableOpacity>
       <ListItem.Content>
         <ListItem.Title>{name}</ListItem.Title>
         <ListItem.Subtitle>

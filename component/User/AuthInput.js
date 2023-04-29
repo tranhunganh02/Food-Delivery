@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, Text, TextInput, StyleSheet} from 'react-native';
 import {Controller} from 'react-hook-form';
-import style from '../../screens/auth/style';
+import style from '../../screens/Auth/style';
 const AuthInput = ({
   control,
   name,

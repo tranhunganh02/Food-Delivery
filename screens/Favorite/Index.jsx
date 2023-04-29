@@ -9,7 +9,7 @@ import {
   Modal,
   Alert,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { MaterialIcons, Entypo, AntDesign } from "@expo/vector-icons";
 import ItemFavorite from "./Item";
 const windowHeight = Dimensions.get("window").height;
@@ -20,8 +20,9 @@ import { useEffect } from "react";
 import getProductWithNameDoc from "../../features/User/getProductWithNameDoc";
 import { useContext } from "react";
 import { AppContext } from "../../component/Auth/AuthContext";
+
 export default function Index({navigation}) {
-  
+  const {user} =useContext(AppContext);
   const [listFavorite, setListFavorite] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isModalVisibleAccept, setIsModalVisibleAccept] = useState(false);
@@ -45,7 +46,7 @@ export default function Index({navigation}) {
     setTimeout(() => {
       setLoadingVisible(false);
       showDeleteSuccess()
-    }, 4000);
+    }, 2000);
   };
   const showDeleteSuccess = () => {
     setIsModalVisibleAccept(true)
@@ -53,19 +54,19 @@ export default function Index({navigation}) {
       setIsModalVisibleAccept(false);
     }, 1500);
   }
-  const {user} =useContext(AppContext);
+
+  async function getProduct(){
+    
+ }
   useEffect(()=> {
-    if(user){
+    if(user!=null){
       setLoadingVisible(true);
       setTimeout(() => {
         setLoadingVisible(false);
       }, 1500);
-      async function getProduct(){
-        const data= await  getProductWithNameDoc("favorites");
+      getProductWithNameDoc("favorites").then((data) => {
         setListFavorite(data);
-      }
-      getProduct();
-      
+       })
     }
     else{
       setListFavorite((...old) => {
@@ -80,7 +81,6 @@ export default function Index({navigation}) {
         flex: 1,
         justifyContent: "space-between",
         alignItems: "center",
-        padding: 20,
       }}
     >
         <Modal
@@ -138,21 +138,21 @@ export default function Index({navigation}) {
                   // delete 1 item
                   onPress={() => accepctDelete(0)}
                 >
-                  <AntDesign name="checkcircle" size={37} color="red" />
+                  <AntDesign name="checkcircle" size={50} color="red" />
                 </TouchableOpacity>
               ) : (
                 <TouchableOpacity
                   //
                   onPress={() => accepctDelete(1)}
                 >
-                  <AntDesign name="checkcircle" size={37} color="red" />
+                  <AntDesign name="checkcircle" size={45} color="red" />
                 </TouchableOpacity>
               )}
 
               <TouchableOpacity
                 onPress={() => setIsModalVisible(!isModalVisible)}
               >
-                <MaterialIcons name="cancel" size={44} color="#585454" />
+                <MaterialIcons name="cancel" size={56} color="#585454" />
               </TouchableOpacity>
             </View>
           </View>
@@ -201,6 +201,7 @@ export default function Index({navigation}) {
             price={item.price}
             image={item.image}
             deleteItem={chooseDeleteItem}
+            //checked={checked[0]}
           />
         )): (
           <View style={{justifyContent:'center', alignItems:'center'}}>
@@ -236,7 +237,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-around",
     width: windowWidth * 0.3,
-    marginTop:5
+    marginTop:15
   },
 
   button: {

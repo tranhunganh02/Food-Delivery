@@ -22,18 +22,16 @@ const AddProductToCart = async (data) => {
         },
       },
       { merge: true }
-    ).then(() => {
-      alert("Update quantity successfully");
-    });
+    )
+    return "Update Success";
   } else {
     const dataPrepare = {
       [data["idProduct"]]: data,
     };
     await setDoc(doc(dbStore, "carts", auth.currentUser.uid), dataPrepare, {
       merge: true,
-    }).then(() => {
-      alert("Add Product To Cart Success!");
-    });
+    })
+    return "Add Success"
   }
 };
 

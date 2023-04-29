@@ -1,9 +1,9 @@
 import {doc, updateDoc } from "firebase/firestore";
 import { dbStore } from "../../firebase";
 
-const updateProduct =async(data) =>{
+const updateProduct =async({data,navigation}) =>{
     await updateDoc(doc(dbStore,"products",data.id),data).then(
-        ()=> {alert("Update Product Success!");},
+        ()=> {navigation.navigate("Profile")},
     )
 }
 export default updateProduct;

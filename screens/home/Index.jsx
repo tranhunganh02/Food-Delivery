@@ -12,7 +12,7 @@ import {
   StatusBar,
   Modal,
 } from "react-native";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Avatar } from "@rneui/themed";
 import {
   Entypo,
@@ -35,11 +35,6 @@ const windowWidth = Dimensions.get("window").width;
 export default function Index({ navigation }) {
 
   const [listNewData,setListNewData] =useState([]);
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      headerShown: false,
-    });
-  });
   const {user} = useContext(AppContext);
   useEffect(()=>{
     global.users={

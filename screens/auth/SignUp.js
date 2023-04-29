@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import React from "react";
 import { FontAwesome5 } from "@expo/vector-icons";
-import style from "./style";
+// import style from "/style";
 import AuthInput from "../../component/User/AuthInput";
 import { useForm } from "react-hook-form";
 import { auth, dbFirestore, dbStore } from "../../firebase";
@@ -20,6 +20,7 @@ import {
 } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 import { useState } from "react";
+import style from "./style";
 const windowHeight = Dimensions.get("window").height;
 const windowWidth = Dimensions.get("window").width;
 const SignUp = ({ navigation }) => {

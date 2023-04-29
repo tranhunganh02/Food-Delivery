@@ -24,6 +24,7 @@ import Item from "./Item";
 import getProductCheckOut from "../../features/User/getProductCheckOut";
 import { async } from "@firebase/util";
 import getPriceProductSelected from "../../features/User/getPriceProductSelected";
+import createOrder from "../../features/User/createOrder";
 const Index = ({ navigation,route }) => {
   const [getTotal, setTotal] = useState(0);
   const [listFood,setListFood] = useState([]);
@@ -36,6 +37,10 @@ const Index = ({ navigation,route }) => {
     }
    fetchProduct();
   }, []);
+  const confirmOrder =async() => 
+  {
+    createOrder(route.params.product);
+  }
   return (
     <View
       style={{
@@ -198,7 +203,8 @@ const Index = ({ navigation,route }) => {
         <TouchableOpacity
           style={styles.checkOutButton}
           onPress={() => {
-            navigation.navigate("CheckOut");
+            confirmOrder();
+            navigation.navigate("BottomTab");
           }}
         >
           <Text style={{ color: "#fff" }}>Payment</Text>
