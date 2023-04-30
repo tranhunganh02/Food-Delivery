@@ -108,7 +108,7 @@ export default function Index({ navigation }) {
               <TouchableOpacity
                 style={styles.ActionButton}
                 onPress={() => {
-                  setIsModalVisible(!isModalVisible);
+                  navigation.navigate('Order')
                 }}
               >
                 <MaterialCommunityIcons
@@ -131,31 +131,6 @@ export default function Index({ navigation }) {
           </TouchableOpacity>
         </View>
       </ScrollView>
-      <Modal animationType="slide" transparent={true} visible={isModalVisible}>
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <View style={styles.modalViewButton}>
-              <TouchableOpacity style={styles.modalViewButtonText}>
-              <MaterialIcons name="history" size={48} color="black" />
-                <Text>Order history</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.modalViewButtonText}>
-              <MaterialCommunityIcons name="truck-delivery-outline" size={50} color="black" />
-                <Text>To ship</Text>
-              </TouchableOpacity>
-            </View>
-            <View style={{}}>
-              <TouchableOpacity
-                onPress={() => {
-                  setIsModalVisible(!isModalVisible);
-                }}
-              >
-               <MaterialIcons name="cancel" size={45} color="red" />
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
-      </Modal>
     </View>
   );
 }

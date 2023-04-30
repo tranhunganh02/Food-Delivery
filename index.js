@@ -12,6 +12,7 @@ import Chat from './screens/Profile/Chat/Index'
 import Address from './screens/Profile/Address/Index';
 import CreateAddress from './screens/Profile/Address/CreateAddress.js';
 import Favorite from './screens/Favorite/Index';
+import Order from './screens/Profile/Order/Index'
 import SignIn from './screens/Auth/SignIn';
 import SignUp from './screens/Auth/SignUp';
 import Cart from './screens/Cart/Index';
@@ -22,9 +23,7 @@ import UpdateFood from './screens/Admin/FoodCRUD/UpdateFood'
 import ListChat from './screens/Admin/Chat/ListChat'
 import ChatCustomer from './screens/Admin/Chat/Chat'
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { MaterialIcons } from '@expo/vector-icons';
-import { AntDesign } from '@expo/vector-icons';
+import { AntDesign, FontAwesome } from '@expo/vector-icons';
 
 const Stack = createNativeStackNavigator();
 
@@ -49,6 +48,7 @@ const Index = () => {
             <Stack.Screen name='Chat' component={Chat} />
             <Stack.Screen name='Support' component={ListChat} />
             <Stack.Screen name='ChatCustomer' component={ChatCustomer} />
+            <Stack.Screen name='Order' component={Order} />
         </Stack.Navigator>
     </NavigationContainer>
   )
@@ -62,40 +62,27 @@ function BottomTab() {
     <Tab.Navigator
       // barStyle={{backgroundColor: '#DAE2B6', paddingTop:10}}
       barStyle={{backgroundColor: '#8E9288', 
-      height:70}}
+      height:80}}
       initialRouteName="Favorite"
       activeColor="black"
-      inactiveColor="white"
     >
     
       <Tab.Screen
         name="Home"
         component={Home}
         options={{
-          tabBarLabel: '',
+          tabBarLabel: 'Home',
           tabBarColor: 'white',
           tabBarIcon: () => (
             <AntDesign name="home" size={25} color="black" />
           ),
         }}      
       />
-       <Tab.Screen
-        name="Favorite"
-        component={Favorite}
-        options={{
-          tabBarLabel: '',
-          tabBarColor: '#fff',
-          tabBarIcon: () => (
-            <MaterialIcons name="favorite-border" size={25} color="black" />
-          ),
-        }}
-        
-      />
       <Tab.Screen
         name="Profile"
         component={Profile}
         options={{
-          tabBarLabel: '',
+          tabBarLabel: 'Profile',
           tabBarIcon: ({ color }) => (
             <AntDesign name="user" size={25} color="black" />
           ),

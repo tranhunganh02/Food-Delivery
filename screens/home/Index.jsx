@@ -28,7 +28,7 @@ const windowWidth = Dimensions.get("window").width;
 export default function Index({ navigation }) {
   useEffect(() => {
     global.users = {
-      role: 0,
+      role: 1,
     };
   });
   const [isModalVisible, setIsModalVisible] = useState(false);
