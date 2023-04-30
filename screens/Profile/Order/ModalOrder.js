@@ -1,6 +1,7 @@
 import { View, Text, Modal, StyleSheet, TouchableOpacity, Dimensions, Image, ScrollView } from "react-native";
 import React, {useEffect, useState} from "react";
 import { AntDesign } from '@expo/vector-icons';
+import Item from "./Item";
 const windowHeight =Dimensions.get('window').height
 export default function ModalOrder({data, total}) {
   const [modalVisible, setModalVisible] = useState(false);
@@ -49,6 +50,7 @@ export default function ModalOrder({data, total}) {
            {data.map((order) => {
               return (
                 <Item
+                key={order.key}
                   name={order.name}
                   image={order.image}
                   quantity={order.quantity}
@@ -69,53 +71,7 @@ export default function ModalOrder({data, total}) {
     </TouchableOpacity>
   );
 }
-const Item = ({ name, quantity, price, image }) => {
-  return (
-    <View
-      style={{
-        borderWidth: 0.5,
-        borderColor: "#B7B7B7",
-        height: windowHeight * 0.2,
-        width: "98%",
-        borderRadius: 10,
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "space-around",
-        marginBottom:20
-      }}
-    >
-      <View
-        style={{
-          height: "80%",
-          width: "40%",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
-        <Text style={{ fontSize: 17, fontWeight: "400" }}> {name}</Text>
-        <Text>{new Intl.NumberFormat("de-DE").format(price)} VND</Text>
-      </View>
-      <View
-        style={{
-          height: "80%",
-          width: "45%",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
-        <Text>Quantity: {quantity}</Text>
-        <Image
-          source={{ uri: image }}
-          style={{
-            height: windowHeight * 0.1,
-            width: "90%",
-            borderRadius: 2,
-          }}
-        ></Image>
-      </View>
-    </View>
-  );
-};
+
 const styles = StyleSheet.create({
   orderContainer:{
     width:'90%',

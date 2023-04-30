@@ -2,13 +2,12 @@ import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
 import React, { useState } from "react";
 import { CheckBox } from "react-native-elements";
 import { useEffect } from "react";
-// import getProduct from "../../../features/Product/getProduct";
 import { Dimensions } from "react-native";
 const windowWidth = Dimensions.get('window').width
 const windowHeight = Dimensions.get('window').height
 const Item = ({
   id,
-  quantity,
+  name, quantity, price, image
   
 }) => {
     const [product,setProduct] = useState({});
@@ -18,55 +17,55 @@ const Item = ({
      //    setProduct(data))
     },[])
     
-  const [getQuantity, setQuantity] = useState(quantity);
-  const getPrice = (priceProduct,quantityProduct) => {
-    return priceProduct*quantityProduct;
-  }
+  // const [getQuantity, setQuantity] = useState(quantity);
+  // const getPrice = (priceProduct,quantityProduct) => {
+  //   return priceProduct*quantityProduct;
+  // }
 
   
   return (
     <View
       style={{
-        width: "90%",
-        backgroundColor: "#FDFDFD",
-        height: "auto",
-        marginBottom: 10,
+        borderWidth: 0.5,
+        borderColor: "#B7B7B7",
+        height: windowHeight * 0.2,
+        width: "98%",
+        borderRadius: 10,
         flexDirection: "row",
         alignItems: "center",
-        justifyContent: "space-between",      
-        height: windowHeight*0.15,
-        borderRadius:12  
+        justifyContent: "space-around",
+        marginBottom:20
       }}
     >
-      <Image
-        source={{ uri: product.image}}
+      <View
         style={{
-          height: windowHeight * 0.115,
-          width: windowWidth * 0.335,
+          height: "80%",
+          width: "40%",
+          justifyContent: "space-between",
+          alignItems: "center",
         }}
-      />
-      <View style={{flexWrap: "wrap",flexDirection:"column"}}>
-
-      
-        <View style={{marginLeft:40,marginTop:10}}>
-          <Text>{product.name}</Text>
-          <Text style={{fontWeight:'600',paddingTop:10,color:'#F56844'}}>{new Intl.NumberFormat("de-DE").format(getPrice(product.price,quantity))} VND</Text>
-        </View>
-        <View style={{alignItems:'center',flexDirection:'row',padding:10}}>
-          {/* <Text style={{padding: 10}}>{getQuantity}</Text> */}
-         
-          
-        </View>
-      </View>
-      {/* <TouchableOpacity
-      //  onPress={() => deleteSelectedElement(id, name)}
-      style={{
-        right:10,
-        padding:10,
-      }}
       >
-        <Ionicons name="trash-bin" size={24} color="red" />
-      </TouchableOpacity> */}
+        <Text style={{ fontSize: 17, fontWeight: "400" }}> {name}</Text>
+        <Text>{new Intl.NumberFormat("de-DE").format(price)} VND</Text>
+      </View>
+      <View
+        style={{
+          height: "80%",
+          width: "45%",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
+        <Text>Quantity: {quantity}</Text>
+        <Image
+          source={{ uri: image }}
+          style={{
+            height: windowHeight * 0.1,
+            width: "90%",
+            borderRadius: 2,
+          }}
+        ></Image>
+      </View>
     </View>
   );
 
