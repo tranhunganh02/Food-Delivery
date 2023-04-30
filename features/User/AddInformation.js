@@ -7,18 +7,24 @@ import { Modal } from "react-native";
 import { TextInput } from "react-native";
 import { useState } from "react";
 import { updatePassword } from "firebase/auth";
+import getUser from "./getUser";
+import ModalLoading from "../../component/User/ModalLoading";
 
 export default AddInformation = async (data) => {
-  if(data.password)
-  {
+  if (data.password) {
     updatePassword(auth.currentUser, data.password);
   }
-     await setDoc(doc(dbStore,"users",auth.currentUser.uid),{
-          name: data.name,
-          birthday: data.birthday,
-          gender: data.gender
-      },{merge: true}).then(()=>{
-          alert("Update address successfully")
-      })
+  await setDoc(
+    doc(dbStore, "users", auth.currentUser.uid),
+    {
+      name: data.name,
+      birthday: data.birthday,
+      gender: data.gender,
+    },
+    { merge: true }
+  );
 
+  const result = await getUser(auth.currentUser.uid);
+  return result;
+ 
 };

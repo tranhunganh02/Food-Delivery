@@ -7,8 +7,10 @@ import { FlatList } from "react-native";
 import { Button } from "react-native-elements";
 import getProduct from "../../../features/Product/getProduct";
 import ItemProduct from "../../../screens/Product/Item";
+import ModalLoading from "../../../component/User/ModalLoading";
 export default Index = () => {
   const [listOrder, setListOrder] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
     getOrderHistory().then((data) => {
       setListOrder(data);
@@ -16,6 +18,11 @@ export default Index = () => {
   }, []);
   return (
     <View>
+      <ModalLoading
+        visible={isLoading}
+        time={1500}
+        onLoading={(isEnd) => setIsLoading(isEnd)}
+      />
       <Text> đơn hàng của m nè th ngu</Text>
       <FlatList
         data={listOrder}

@@ -23,19 +23,20 @@ import AddInformation from "../../../features/User/AddInformation";
 import { Button } from "react-native";
 import { auth } from "../../../firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
+import ModalLoading from "../../../component/User/ModalLoading";
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
 const host = "https://provinces.open-api.vn/api/";
 const Information = ({ navigation }) => {
-  const { user } = useContext(AppContext);
+  const { user, updateUser } = useContext(AppContext);
   useEffect(() => {}, []);
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [gender, setGender] = useState();
   const [isConfirm, setConfirm] = useState(false);
-
   const [name, setName] = useState(user.name);
   const [password, setPassword] = useState("");
+  const [isModalVisible, setIsModalVisible] = useState(false);
   function br(gender1) {
     setGender(gender1);
   }
@@ -72,7 +73,10 @@ const Information = ({ navigation }) => {
                 birthday: selectedDate.toISOString().slice(0, 10),
                 gender: gender,
               };
-              await AddInformation(data);
+              await AddInformation(data).then((data) => {
+                setIsModalVisible(true);
+                updateUser(data);
+              });
             })
             .catch(() => {
               Alert.alert("Warning", "Password is valid");
@@ -82,9 +86,13 @@ const Information = ({ navigation }) => {
         const data = {
           name: name,
           birthday: selectedDate.toISOString().slice(0, 10),
-          gender: gender,
+          gender: !gender ? null : gender,
         };
-        await AddInformation(data);
+        await AddInformation(data).then((data) => {
+          setIsModalVisible(true);
+          updateUser(data);
+          
+        });
       }
     }
   };
@@ -105,6 +113,13 @@ const Information = ({ navigation }) => {
         paddingVertical: 10,
       }}
     >
+      <ModalLoading
+        visible={isModalVisible}
+        time={1500}
+        onLoading={(isEnd) => {
+          setIsModalVisible(isEnd);
+        }}
+      />
       <View>
         <Modal visible={modalVisible} animationType="slide" transparent={true}>
           <View style={styles.centeredView}>

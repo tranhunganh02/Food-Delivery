@@ -1,19 +1,33 @@
-import { collection, getDocs, orderBy, query } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  orderBy,
+  query,
+} from "firebase/firestore";
 import { auth, dbStore } from "../../firebase";
 import getProduct from "../Product/getProduct";
 import { createContext } from "react";
 
 export default getProductWithNameDoc = async (nameDoc) => {
-  const q = query(collection(dbStore, nameDoc), auth.currentUser.uid);
-  const querySnapshot = await getDocs(q);
-  const data = querySnapshot.docs.map((doc) => doc.data())[0];
-  const productIds = Object.values(data).map((item) => nameDoc == "carts" ? item.idProduct : item);
+  const docRef = doc(dbStore, "carts", auth.currentUser.uid);
 
+  const docSnap = await getDoc(docRef);
+  const data = Object.entries(docSnap.data()).map(([key, value]) => ({
+    id: key,
+    ...value,
+  }));
+  console.log(data);
+
+  const productIds = Object.values(data).map((item) =>
+    nameDoc == "carts" ? item.idProduct : item
+  );
   const propertiesToAdd = ["name", "price", "image"];
   const products = await Promise.all(
     productIds.map((productId) => getProduct(productId))
   );
-  if(nameDoc=="carts") {
+  if (nameDoc == "carts") {
     const result = Object.values(data).map((item, index) => {
       propertiesToAdd.forEach((property) => {
         item[property] = products[index][property];
@@ -23,6 +37,4 @@ export default getProductWithNameDoc = async (nameDoc) => {
     return result;
   }
   return products;
-  
 };
-

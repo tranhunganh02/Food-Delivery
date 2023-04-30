@@ -21,13 +21,13 @@ import { getStorage } from "@firebase/storage";
 //   measurementId: "G-R1G6XK8G2X"
 // };
 const firebaseConfig = {
-  apiKey: "AIzaSyCk64K4ylCJzxoSQLilaSIapiqNw74teNg",
-  authDomain: "neon-obelisk-356015.firebaseapp.com",
-  projectId: "neon-obelisk-356015",
-  storageBucket: "neon-obelisk-356015.appspot.com",
-  messagingSenderId: "683397752239",
-  appId: "1:683397752239:web:e79afcc6299bd4fdfa7b5a",
-  measurementId: "G-38728FRN6D"
+  apiKey: "AIzaSyC_o6wAakpe2rC7tn8ljgYEUN4G-V1g37g",
+  authDomain: "test-b51cf.firebaseapp.com",
+  projectId: "test-b51cf",
+  storageBucket: "test-b51cf.appspot.com",
+  messagingSenderId: "975628137560",
+  appId: "1:975628137560:web:3bf703ea588439714f862d",
+  measurementId: "G-W88X3DYM0X"
 };
 
 // Initialize Firebase

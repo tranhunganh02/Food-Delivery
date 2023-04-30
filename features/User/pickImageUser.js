@@ -19,8 +19,13 @@ import { dbStore, storage } from "../../firebase";
 import { FontAwesome } from "@expo/vector-icons";
 import { StyleSheet } from "react-native";
 import { doc, updateDoc } from "firebase/firestore";
+import { useContext } from "react";
+import { AppContext } from "../../component/Auth/AuthContext";
+import ModalLoading from "../../component/User/ModalLoading";
 const ButtonPickImage = ({ idUser }) => {
+  const { updateAvatar } = useContext(AppContext);
   const [image, setImage] = useState(null);
+  const [isModalVisible, setIsModalVisible] = useState(false);
   const pickImage = async () => {
     let result = await launchImageLibraryAsync({
       mediaTypes: MediaTypeOptions.All,
@@ -93,12 +98,12 @@ const ButtonPickImage = ({ idUser }) => {
         () => {
           // Upload completed successfully, now we can get the download URL
           getDownloadURL(uploadTask.snapshot.ref).then(async (downloadURL) => {
-            console.log("File available at", downloadURL);
             const userRef = doc(dbStore, "users", idUser);
             await updateDoc(userRef, {
               image: downloadURL,
             }).then(() => {
-              alert('Avatar changed successfully');
+              updateAvatar(downloadURL);
+              setIsModalVisible(true);
             });
           });
         }
@@ -110,9 +115,18 @@ const ButtonPickImage = ({ idUser }) => {
     }
   });
   return (
-    <TouchableOpacity onPress={pickImage} style={styles.headerButton}>
-      <FontAwesome name="exchange" size={24} color="#E8E8E8" />
-    </TouchableOpacity>
+    <>
+      <TouchableOpacity onPress={pickImage} style={styles.headerButton}>
+        <FontAwesome name="exchange" size={24} color="#E8E8E8" />
+      </TouchableOpacity>
+      <ModalLoading
+        visible={isModalVisible}
+        time={2000}
+        onLoading={(isEnd) => {
+          setIsModalVisible(isEnd);
+        }}
+      />
+    </>
   );
 };
 const styles = StyleSheet.create({

@@ -29,7 +29,6 @@ const height = Dimensions.get("window").height;
 const windowWidth = Dimensions.get("window").width;
 
 export default function Index({ navigation }) {
-  const [userData, setUserData] = useState({});
   const { user } = useContext(AppContext);
   const [isModalVisible, setIsModalVisible] = useState(false);
   useEffect(() => {}, []);
@@ -186,7 +185,19 @@ export default function Index({ navigation }) {
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
             <View style={styles.modalViewButton}>
-              <TouchableOpacity style={styles.modalViewButtonText}>
+              <TouchableOpacity style={styles.modalViewButtonText}
+              onPress={()=> {
+                if(!user) 
+                {
+                  setIsModalVisible(!isModalVisible)
+                  navigation.navigate("SignIn")
+                }
+                else
+                {
+                  setIsModalVisible(!isModalVisible)
+                  navigation.navigate("OrderHistory")
+                }
+              }}>
                 <MaterialIcons name="history" size={48} color="black" />
                 <Text>Order history</Text>
               </TouchableOpacity>

@@ -22,7 +22,15 @@ export const AppProvider= ({children})=> {
         })
         return unsubscribe;
     },[])
-    return <AppContext.Provider value={{user}}>
+    const updateUser = (newUser) => {
+        setUser(newUser);
+    };
+    const updateAvatar = (newAvatar) => {
+        const updateUser= {...user}
+        updateUser.image= newAvatar;
+        setUser(updateUser);
+    }
+    return <AppContext.Provider value={{user,updateUser,updateAvatar}}>
         {children}
     </AppContext.Provider>
 }
