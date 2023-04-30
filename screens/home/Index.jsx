@@ -137,7 +137,7 @@ export default function Index({ navigation }) {
         </View>
         <View
           style={{
-            height: windowHeight * 0.2,
+            height: windowHeight * 0.22,
             width: windowWidth * 0.9,
           }}
         >
@@ -195,10 +195,10 @@ export default function Index({ navigation }) {
                     alignItems: "center",
                     height: "auto",
                     borderRadius: 35,
-                    width: windowWidth * 0.195,
+                    width: windowWidth * 0.2,
                     marginRight: 15,
                     backgroundColor: "#fff",
-                    height: windowHeight * 0.124,
+                    height: windowHeight * 0.1255,
                     marginRight: 23.5,
                     padding: 6,
                     shadowColor: "black",

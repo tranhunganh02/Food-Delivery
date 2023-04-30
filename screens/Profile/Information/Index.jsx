@@ -24,7 +24,7 @@ const Information = ({ navigation }) => {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [sex, setSex] = useState();
-  function br(sex1) {
+const  br = (sex1) =>{
     setSex(sex1);
     console.log(sex);
   }
@@ -104,7 +104,7 @@ const Information = ({ navigation }) => {
           >
             <Image
               source={require("../../../assets/icon/calendar.png")}
-              style={{ position: "absolute", left: 15, bottom: 13 }}
+              style={{ position: "absolute", left: 15, bottom: 10 }}
             ></Image>
             {selectedDate != null ? (
               <Text style={{ fontSize: 17.5 }}>{selectedDate.toISOString().slice(0, 10)}</Text>

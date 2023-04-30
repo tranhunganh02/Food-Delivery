@@ -38,7 +38,7 @@ export default function Index({ navigation, route }) {
         setTimeout(()=>{
           setIsModalVisible(false)
   
-        }, 3000)
+        }, 1500)
       }, 2000);
   }
 
@@ -74,9 +74,9 @@ export default function Index({ navigation, route }) {
                 styles.modalView,
                 {
                   flexDirection: "row",
-                  justifyContent: "space-around",
+                  justifyContent: "space-between",
                   alignItems: "center",
-                  width: windowWidth * 0.38,
+                  width: windowWidth * 0.398,
                 },
               ]}
             >
@@ -245,7 +245,11 @@ export default function Index({ navigation, route }) {
                   {new Intl.NumberFormat("de-DE").format(item.price)} VND
                 </Text>
               </View>
-              <TouchableOpacity style={styles.otherDishesContainerCart}>
+              <TouchableOpacity style={styles.otherDishesContainerCart}
+              onPress={() => {
+                addToCart();
+              }}
+              >
                 <FontAwesome name="cart-plus" size={30} color="#fff" />
               </TouchableOpacity>
             </TouchableOpacity>
