@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity } from 'react-native'
+import { View, Text, TouchableOpacity, SafeAreaView } from 'react-native'
 import React from 'react'
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import Delivery from './Delivery';
@@ -14,6 +14,7 @@ function MyTabs() {
      tabBarAccessibilityLabel:'black'
     }}
     >
+      {/* <Tab.Screen name="Confirmation" component={OrderConfirmation} /> */}
       <Tab.Screen name="Delivery" component={Delivery} />
       <Tab.Screen name="OrderHistory" component={OrderHistory} />
     </Tab.Navigator>
@@ -21,9 +22,9 @@ function MyTabs() {
 }
 export default function Index({navigation}) {
   return (
-    <View style={{
+    <SafeAreaView style={{
      flex:1,
-     marginTop:50
+     marginTop:25
     }}>
      <View style={{flexDirection:'row', width:'60%', padding:10, paddingHorizontal:20, justifyContent:'space-between', alignItems:'center'}}>
           <TouchableOpacity  onPress={() => {
@@ -34,6 +35,6 @@ export default function Index({navigation}) {
           <View><Text style={{fontSize:18, fontWeight:'500'}}>Order</Text></View>
      </View>
       <MyTabs />
-    </View>
+    </SafeAreaView>
   )
 }
