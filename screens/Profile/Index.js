@@ -143,7 +143,14 @@ export default function Index({ navigation }) {
               <TouchableOpacity
                 style={styles.ActionButton}
                 onPress={() => {
-                  setIsModalVisible(!isModalVisible);
+                  if(user)
+                  {
+                    navigation.navigate('Order')
+                  }
+                  else{
+                    navigation.navigate("SignIn")
+                  }
+                  
                 }}
               >
                 <MaterialCommunityIcons
@@ -195,7 +202,7 @@ export default function Index({ navigation }) {
                 else
                 {
                   setIsModalVisible(!isModalVisible)
-                  navigation.navigate("OrderHistory")
+                  navigation.navigate("Order")
                 }
               }}>
                 <MaterialIcons name="history" size={48} color="black" />

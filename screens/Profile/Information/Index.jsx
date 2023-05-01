@@ -239,7 +239,7 @@ const Information = ({ navigation }) => {
           >
             <Image
               source={require("../../../assets/icon/calendar.png")}
-              style={{ position: "absolute", left: 15, bottom: 13 }}
+              style={{ position: "absolute", left: 15, bottom: 10 }}
             ></Image>
             {selectedDate != null ? (
               <Text style={{ fontSize: 17.5 }}>

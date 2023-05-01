@@ -86,7 +86,7 @@ export default function Index({ navigation, route }) {
                   flexDirection: "row",
                   justifyContent: "space-between",
                   alignItems: "center",
-                  width: windowWidth * 0.5,
+                  width: windowWidth * 0.398,
                 },
               ]}
             >
@@ -255,7 +255,11 @@ export default function Index({ navigation, route }) {
                   {new Intl.NumberFormat("de-DE").format(item.price)} VND
                 </Text>
               </View>
-              <TouchableOpacity style={styles.otherDishesContainerCart}>
+              <TouchableOpacity style={styles.otherDishesContainerCart}
+              onPress={() => {
+                addToCart();
+              }}
+              >
                 <FontAwesome name="cart-plus" size={30} color="#fff" />
               </TouchableOpacity>
             </TouchableOpacity>
