@@ -17,6 +17,8 @@ import uploadImage from "../../../features/uploadImage";
 import PickImageProduct from "../../../features/Product/pickImageProduct";
 import ValidateInput from "../../../component/Product/ValidateInput";
 import { useForm } from "react-hook-form";
+import { useContext } from "react";
+import { ProductContext } from "../../../component/Auth/Product";
 
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
@@ -38,6 +40,8 @@ const AddFood = ({ navigation }) => {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [isPickedImage, setIsPickedImage] = useState(false);
   const searchRef = useRef();
+  const {updateProduct} = useContext(ProductContext);
+ 
   const {
     control,
     handleSubmit,
@@ -59,6 +63,7 @@ const AddFood = ({ navigation }) => {
     };
     const finalData = Object.assign({}, data, moreProps);
     insertProduct({ data: finalData, navigation: navigation });
+    updateProduct();
     setImagePicker(null);
   };
   const chooseImage = async () => {

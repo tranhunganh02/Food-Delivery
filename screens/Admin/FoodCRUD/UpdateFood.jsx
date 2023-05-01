@@ -14,11 +14,13 @@ import { Ionicons, AntDesign } from "@expo/vector-icons";
 import React, { useEffect, useRef, useState } from "react";
 import getProduct from "../../../features/Product/getProduct";
 import PickImageProduct from "../../../features/Product/pickImageProduct";
-import updateProduct from "../../../features/Product/updateProduct";
+import updateEachProduct from "../../../features/Product/updateProduct";
 import uploadImage from "../../../features/uploadImage";
 import { useForm } from "react-hook-form";
 import AuthInput from "../../../component/User/AuthInput";
 import ValidateInput from "../../../component/Product/ValidateInput";
+import { useContext } from "react";
+import { ProductContext } from "../../../component/Auth/Product";
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
 const category = [
@@ -42,6 +44,7 @@ const UpdateFood = ({ navigation, route }) => {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [isPickedImage, setIsPickedImage] = useState(false);
   const searchRef = useRef();
+  const {updateProduct} = useContext(ProductContext);
   const {
     control,
     handleSubmit,
@@ -84,7 +87,8 @@ const UpdateFood = ({ navigation, route }) => {
       id: route.params.id,
     };
     const finalData = Object.assign({}, data, moreProps);
-    updateProduct({ data: finalData, navigation: navigation });
+    updateEachProduct({ data: finalData, navigation: navigation });
+    updateProduct();
   };
   async function changeImage() {
     let url = await PickImageProduct();

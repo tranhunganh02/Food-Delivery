@@ -87,7 +87,7 @@ export default function Index({ navigation }) {
             <AntDesign name="profile" size={27} color="black" />
             <Text style={styles.actionText}>Information</Text>
           </TouchableOpacity>
-          {global.users.role === 1 ? (
+          {user && user.role === 1 ? (
             <>
               <TouchableOpacity
                 style={styles.ActionButton}

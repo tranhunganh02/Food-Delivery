@@ -15,30 +15,21 @@ import Item from "./Item";
 import a from "../../home/a.js";
 import { FAB } from "@rneui/themed";
 import deleteProduct from "../../../features/Product/deleteProduct";
+import { useContext } from "react";
+import { ProductContext } from "../../../component/Auth/Product";
 const windowHeight = Dimensions.get("window").height;
 const windowWidth = Dimensions.get("window").width;
 
 const List = ({ navigation }) => {
   const [listFood, setListFood] = useState([]);
   useEffect(() => {
-      getAllProduct().then((data)=> {
-        setListFood(data);
-  });
+    getAllProduct().then((data) => {
+      setListFood(data);
+    });
   }, []);
   const [loadingVisible, setLoadingVisible] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
-  // const deleteItem = (idProduct) => {
-  //   console.log(idProduct);
-  //   setLoadingVisible(!loadingVisible);
-  //   setTimeout(() => {
-  //     setLoadingVisible(false);
-  //     setModalVisible(true);
-  //     setTimeout(() => {
-  //       setModalVisible(false);
-  //     }, 3000);
-  //   }, 2000);
-  // };
-
+  const {updateProduct} = useContext(ProductContext);
   return (
     <View
       style={{
@@ -95,8 +86,9 @@ const List = ({ navigation }) => {
             price={item.data.price}
             image={item.data.image}
             quantity={item.data.quantity}
-            onDelete={(id)=> {
+            onDelete={(id) => {
               deleteProduct(id);
+              updateProduct();
             }}
           />
         ))}

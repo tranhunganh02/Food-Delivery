@@ -18,7 +18,6 @@ export default getProductWithNameDoc = async (nameDoc) => {
     id: key,
     ...value,
   }));
-  console.log(data);
 
   const productIds = Object.values(data).map((item) =>
     nameDoc == "carts" ? item.idProduct : item

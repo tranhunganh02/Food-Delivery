@@ -25,10 +25,12 @@ import getProductCheckOut from "../../features/User/getProductCheckOut";
 import { async } from "@firebase/util";
 import getPriceProductSelected from "../../features/User/getPriceProductSelected";
 import createOrder from "../../features/User/createOrder";
+import ModalLoading from "../../component/User/ModalLoading";
 const Index = ({ navigation,route }) => {
   const [getTotal, setTotal] = useState(0);
   const [listFood,setListFood] = useState([]);
   const [price, setPrice] = useState(0);
+  const [isVisible,setIsVisible] = useState(false)
   useEffect(() => {
     async function fetchProduct(){
       let result = await  getProductCheckOut(route.params.product);
@@ -39,7 +41,8 @@ const Index = ({ navigation,route }) => {
   }, []);
   const confirmOrder =async() => 
   {
-    createOrder(route.params.product);
+    createOrder({data: route.params.product,total :new Intl.NumberFormat("de-DE").format(price) });
+    navigation.navigate("Order")
   }
   return (
     <View
@@ -204,7 +207,6 @@ const Index = ({ navigation,route }) => {
           style={styles.checkOutButton}
           onPress={() => {
             confirmOrder();
-            navigation.navigate("BottomTab");
           }}
         >
           <Text style={{ color: "#fff" }}>Payment</Text>

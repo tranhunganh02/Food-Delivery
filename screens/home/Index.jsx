@@ -30,33 +30,41 @@ import { useContext } from "react";
 import { AppContext } from "../../component/Auth/AuthContext";
 import countProduct from "../../features/User/countProductInCart";
 import AddFavoriteProduct from "../../features/User/AddFavoriteProduct";
+import { ProductContext } from "../../component/Auth/Product";
+import { useRef } from "react";
 const windowHeight = Dimensions.get("window").height;
 const windowWidth = Dimensions.get("window").width;
 export default function Index({ navigation }) {
-
-  const [listNewData,setListNewData] =useState([]);
-  const {user} = useContext(AppContext);
-  useEffect(()=>{
-    global.users={
-      role:1
-    }
-    async function fetchData(){
-
-       const data= await fetchProduct({limitProduct: 5});
-       setListNewData(data);
+  const { products } = useContext(ProductContext);
+  const [listNewData, setListNewData] = useState([]);
+  const { user } = useContext(AppContext);
+  useEffect(() => {
+    async function fetchData() {
+      const data = await fetchProduct({ limitProduct: 5 });
+      setListNewData(data);
     }
     fetchData();
-  },[listNewData])
-  
+  }, []);
+
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [modalText, setModalText] = useState("");
   const [loadingVisible, setLoadingVisible] = useState(false);
+  const [searchText, setSearchText] = useState("");
+
+  const [productSearching, setProductSearching] = useState(products);
   const toggleModal = () => {
     setIsModalVisible(!isModalVisible);
   };
 
-  const showSuccessFavorite = async(id) => {
-    if(user) {
+  const handleSearchText = (text) => {
+    setSearchText(text);
+    const searchArray = products.filter((item) =>
+      item.data.name.toLowerCase().includes(text.toLowerCase())
+    );
+    setProductSearching(searchArray);
+  };
+  const showSuccessFavorite = async (id) => {
+    if (user) {
       setIsModalVisible(true);
       setLoadingVisible(true);
       await AddFavoriteProduct(id);
@@ -66,19 +74,30 @@ export default function Index({ navigation }) {
           setIsModalVisible(false);
         }, 500);
       }, 1000);
+    } else {
+      navigation.navigate("SignIn");
     }
-    else{
-      navigation.navigate('SignIn')
-    }
-   
   };
-
- 
 
   return (
     <SafeAreaView
       style={{ alignItems: "center", flex: 1, justifyContent: "center" }}
     >
+      {productSearching.length > 0 ? (
+        <FlatList
+          data={productSearching}
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={({ item }) => (
+            <View>
+              <Text>{item.data.name}</Text>
+              <Text>{item.data.price}</Text>
+            </View>
+          )}
+        />
+      ) : (
+        <Text>No products found</Text>
+      )}
+
       {/* <SafeAreaView style={{ alignItems: "center", flex: 1, backgroundColor:'#FFFBE9'}}> */}
       <StatusBar barStyle={"dark-content"} />
       <ScrollView style={{}} showsVerticalScrollIndicator={false}>
@@ -134,21 +153,22 @@ export default function Index({ navigation }) {
           <TextInput
             placeholder="What are you craving"
             style={{ left: 45, color: "#3D405B" }}
+            onChangeText={(text) => {
+              handleSearchText(text);
+            }}
+            value={searchText}
           />
           <TouchableOpacity
             style={{ position: "absolute", right: -55, width: "auto" }}
             onPress={() => {
-              if(user){
+              if (user) {
                 navigation.navigate("CartDetails");
+              } else {
+                navigation.navigate("SignIn");
               }
-              else{
-                navigation.navigate("SignIn")
-              }
-             
             }}
           >
             <Ionicons name="cart-outline" size={44} color="black" />
-            
           </TouchableOpacity>
         </View>
         <View
@@ -175,7 +195,6 @@ export default function Index({ navigation }) {
                 size={24}
                 color="#F56844"
                 style={{ position: "absolute", right: 5, top: -3 }}
-               
               />
             </TouchableOpacity>
           </View>
@@ -185,8 +204,9 @@ export default function Index({ navigation }) {
             visible={isModalVisible}
           >
             <View style={styles.centeredView}>
-
-              {loadingVisible ? (<FAB loading visible={loadingVisible} size="large" />) : (
+              {loadingVisible ? (
+                <FAB loading visible={loadingVisible} size="large" />
+              ) : (
                 <>
                   <View style={styles.modalView}>
                     <Text>Add your favorite success</Text>
@@ -293,7 +313,7 @@ export default function Index({ navigation }) {
                   }}
                 >
                   <Image
-                    source={{ uri: item.data.image}}
+                    source={{ uri: item.data.image }}
                     style={{
                       height: windowHeight * 0.23,
                       width: "100%",
@@ -373,7 +393,8 @@ export default function Index({ navigation }) {
                         {item.data.name}
                       </Text>
                       <Text>
-                        {new Intl.NumberFormat("de-DE").format(item.data.price)}đ
+                        {new Intl.NumberFormat("de-DE").format(item.data.price)}
+                        đ
                       </Text>
                     </View>
                     <TouchableOpacity
@@ -398,12 +419,11 @@ export default function Index({ navigation }) {
                           color: "#8A8E9B",
                         }}
                       >
-                       {item.data.selectedCategory}
-                       </Text>
-                      </TouchableOpacity>
+                        {item.data.selectedCategory}
+                      </Text>
+                    </TouchableOpacity>
                   </View>
                 </TouchableOpacity>
-                
               );
             }}
           />

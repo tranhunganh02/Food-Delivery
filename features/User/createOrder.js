@@ -1,7 +1,9 @@
 import { deleteField, doc, setDoc, updateDoc } from "firebase/firestore";
 import { auth, dbStore } from "../../firebase";
+import ModalLoading from "../../component/User/ModalLoading";
+import { Alert } from "react-native";
 
-export default OrderProduct = async (data) => {
+export default OrderProduct = async ({data,total}) => {
   data.forEach(async ({ idProduct }) => {
     await updateDoc(doc(dbStore, "carts", auth.currentUser.uid), {
       [idProduct]: deleteField(),
@@ -12,9 +14,13 @@ export default OrderProduct = async (data) => {
     {
       [Date.now()]: {
         isDelivery: false,
+        total: total,
         data: data,
       },
     },
     { merge: true }
-  ).then(() => alert("order successful"));
+  ).then(() =>{
+    Alert.alert("","Order Successful! \nYou can check it here")
+  });
+  
 };

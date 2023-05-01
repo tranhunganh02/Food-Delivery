@@ -165,7 +165,8 @@ const SignIn = ({ navigation }) => {
           ></View>
         </View>
         <View style={style.socialBottom}>
-          <TouchableOpacity style={style.socialButton}>
+          <TouchableOpacity style={style.socialButton}
+          onPress={()=>{navigation.navigate("SignUp")}}>
             <FontAwesome5 name="facebook" size={45} color="#1C7DD7" />
             <Text>FaceBook</Text>
           </TouchableOpacity>

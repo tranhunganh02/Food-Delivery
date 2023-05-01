@@ -2,6 +2,7 @@ import { View, Text, Modal, StyleSheet, TouchableOpacity, Dimensions, Image, Scr
 import React, {useEffect, useState} from "react";
 import { AntDesign } from '@expo/vector-icons';
 import Item from "./Item";
+import { Alert } from "react-native";
 const windowHeight =Dimensions.get('window').height
 export default function ModalOrder({data, total}) {
   const [modalVisible, setModalVisible] = useState(false);
@@ -50,11 +51,9 @@ export default function ModalOrder({data, total}) {
            {data.map((order) => {
               return (
                 <Item
-                key={order.key}
-                  name={order.name}
-                  image={order.image}
-                  quantity={order.quantity}
-                  price={order.price}
+                key={order.id}
+                 id={order.idProduct}
+                 quantity={order.quantity}
                 />
               );
             })}

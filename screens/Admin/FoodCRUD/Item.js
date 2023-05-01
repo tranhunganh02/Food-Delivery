@@ -15,6 +15,7 @@ export default function Item({ navigation, id, name, price, image,onDelete}) {
   function handleDeleteProduct() {
     onDelete(id);
   }
+  
   return (
      <ListItem.Swipeable
       style={{
