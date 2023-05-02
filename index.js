@@ -22,6 +22,7 @@ import ListFood  from './screens/Admin/FoodCRUD/ListFood'
 import UpdateFood from './screens/Admin/FoodCRUD/UpdateFood'
 import ListChat from './screens/Admin/Chat/ListChat'
 import ChatCustomer from './screens/Admin/Chat/Chat'
+import ListDeliver from "./screens/Admin/ListDeliver/Index"
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { AntDesign, FontAwesome } from '@expo/vector-icons';
 
@@ -49,6 +50,7 @@ const Index = () => {
             <Stack.Screen name='Support' component={ListChat} />
             <Stack.Screen name='ChatCustomer' component={ChatCustomer} />
             <Stack.Screen name='Order' component={Order} />
+            <Stack.Screen name='ListDeliver' component={ListDeliver} />
         </Stack.Navigator>
     </NavigationContainer>
   )

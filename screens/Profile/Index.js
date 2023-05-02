@@ -16,7 +16,7 @@ import {
   AntDesign,
   Ionicons,
   MaterialCommunityIcons,
-  MaterialIcons
+  Feather
 } from "@expo/vector-icons";
 const height = Dimensions.get("window").height;
 const windowWidth = Dimensions.get("window").width;
@@ -79,6 +79,15 @@ export default function Index({ navigation }) {
               >
                 <Ionicons name="fast-food-outline" size={27} color="black" />
                 <Text style={styles.actionText}>List Food</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.ActionButton}
+                onPress={() => {
+                  navigation.navigate("ListDeliver");
+                }}
+              >
+                <Feather name="users" size={27} color="black" />
+                <Text style={styles.actionText}>List Deliver</Text>
               </TouchableOpacity>
             </>
           ) : (
