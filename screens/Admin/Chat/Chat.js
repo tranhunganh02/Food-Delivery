@@ -158,7 +158,7 @@ export default function ChatCustomer({ navigation, route }) {
                              rounded
                              bottom={-15}
                              left={-5}
-                             size={35}
+                             size={40}
                             source={route.params.photoURL? {uri:route.params.photoURL} : require('../../../assets/avatar/avatarNull.png')}
                           />
                       </View>
@@ -174,7 +174,7 @@ export default function ChatCustomer({ navigation, route }) {
                              bottom={-15}
                              right={-5}
                              size={40}
-                             source={route.params.photoURL? {uri:route.params.photoURL} : require('../../../assets/avatar/admin.jpeg')}
+                             source={require('../../../assets/avatar/admin.jpeg')}
                           />
                       </View>
                     </>

@@ -11,6 +11,7 @@ import Information from './screens/Profile/Information/Index';
 import Chat from './screens/Profile/Chat/Index'
 import Address from './screens/Profile/Address/Index';
 import CreateAddress from './screens/Profile/Address/CreateAddress.js';
+import UpdateAddress from './screens/Profile/Address/UpdateAddress';
 import Favorite from './screens/Favorite/Index';
 import Order from './screens/Profile/Order/Index'
 import SignIn from './screens/Auth/SignIn';
@@ -43,6 +44,7 @@ const Index = () => {
             <Stack.Screen name="Information" component={Information} />
             <Stack.Screen name="Address" component={Address} />
             <Stack.Screen name="Create Address" component={CreateAddress} />
+            <Stack.Screen name="Update Address" component={UpdateAddress} />
             <Stack.Screen name='ListFood' component={ListFood} />
             <Stack.Screen name='AddFood' component={AddFood} />
             <Stack.Screen name='UpdateFood' component={UpdateFood} />

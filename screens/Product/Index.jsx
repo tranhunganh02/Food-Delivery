@@ -153,14 +153,17 @@ export default function Index({ navigation, route }) {
       <View style={styles.InformationContainer}>
         <View style={styles.informationHeader}>
           <Text
-            style={{ fontWeight: "300", writingDirection: "ltr", fontSize: 37 }}
+            style={{ fontWeight: "300", flexDirection: "row", fontSize: 37 }}
           >
             {route.params.name}
           </Text>
-          <View style={{ marginRight: 5 }}>
+          <View style={{ marginRight: 5, marginTop:4 }}>
+            <TouchableOpacity style={{borderRadius:15, height:47, borderWidth:0.2, justifyContent:'space-around', alignItems:'center', width:windowWidth*0.15, flexDirection:'row-reverse'}}>
             <Text>
-              <Entypo name="star" size={26} color="#DECE44" /> 3.8
+             3.8
             </Text>
+            <Entypo name="star" size={23} color="#DECE44" /> 
+            </TouchableOpacity>
           </View>
         </View>
         <View style={styles.informationFooter}>

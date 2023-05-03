@@ -10,7 +10,7 @@ const Item = ({id, chatName, enterChat, photoURL, idRoom}) => {
           photoURL ? 
           (
                <Avatar
-               size={55}
+               size={115}
                 rounded
                 source={{
                   uri: photoURL 
@@ -19,7 +19,7 @@ const Item = ({id, chatName, enterChat, photoURL, idRoom}) => {
           ):
           (
                <Avatar
-               size={55}
+               size={115}
                 rounded
                 source={require('../../../assets/avatar/avatarNull.png')}
               ></Avatar>

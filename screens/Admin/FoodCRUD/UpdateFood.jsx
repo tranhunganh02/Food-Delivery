@@ -62,7 +62,7 @@ const UpdateFood = ({ navigation, id, name, price }) => {
             navigation.goBack();
           }}
         >
-          <Ionicons name="chevron-back-outline" size={33} color="black" />
+          <Ionicons name="ios-arrow-back" size={29} color="black" />
         </TouchableOpacity>
         <Text
           style={{
@@ -81,7 +81,7 @@ const UpdateFood = ({ navigation, id, name, price }) => {
             ex();
           }}
         >
-          <AntDesign name="plus" size={33} color="black" />
+          <AntDesign name="plus" size={30} color="black" />
         </TouchableOpacity>
       </View>
       <View style={styles.showImage}>
@@ -229,12 +229,13 @@ const UpdateFood = ({ navigation, id, name, price }) => {
         ) : null}
         <TouchableOpacity
           style={{
-            width: "80%",
-            height: 50,
-            backgroundColor: "#00CC00",
-            borderRadius: 10,
-            justifyContent: "center",
-            alignItems: "center",
+            height: windowHeight * 0.08,
+          width: windowWidth * 0.6,
+          backgroundColor: "#BFCBAE",
+          marginBottom: 15,
+          borderRadius: 50,
+          justifyContent: "center",
+          alignItems: "center",
             marginTop: 100,
           }}
         >

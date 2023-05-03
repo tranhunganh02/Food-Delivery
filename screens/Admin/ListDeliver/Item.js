@@ -24,6 +24,7 @@ export default function Item({ item, type }) {
           height: 120,
           marginBottom: 10,
           paddingHorizontal: 15,
+          borderWidth:0.2
         }}
       >
         <Avatar
@@ -62,7 +63,8 @@ export default function Item({ item, type }) {
             }}
           />
         ) : (
-          <Button
+        <View style={{justifyContent:'center',alignItems:'center'}}>
+            <Button
           onPress={() => {
             Delete();
           }}
@@ -70,7 +72,7 @@ export default function Item({ item, type }) {
           icon={{
             name: "plus",
             type: "font-awesome",
-            size: 15,
+            size: 12,
             color: "white",
           }}
           iconContainerStyle={{ marginRight: 10 }}
@@ -81,10 +83,33 @@ export default function Item({ item, type }) {
             borderRadius: 30,
           }}
           containerStyle={{
-            width: 100,
-            marginVertical: 10,
+            width: 70,
           }}
         />
+        <Button
+            onPress={() => {
+              Delete();
+            }}
+            title="Del"
+            icon={{
+              name: "trash",
+              type: "font-awesome",
+              size: 12,
+              color: "white",
+            }}
+            iconContainerStyle={{ marginRight: 10 }}
+            titleStyle={{ fontWeight: "700" }}
+            buttonStyle={{
+              backgroundColor: "red",
+              borderWidth: 0,
+              borderRadius: 30,
+            }}
+            containerStyle={{
+              width: 70,
+              marginVertical: 4,
+            }}
+          />
+          </View>
         )}
       </ListItem>
     </>

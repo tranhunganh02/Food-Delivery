@@ -202,12 +202,13 @@ const AddFood = ({navigation}) => {
       ) : null}
       <TouchableOpacity
         style={{
-          width:'80%',
-          height:50,
-          backgroundColor:'#00CC00',
-          borderRadius:10,
-          justifyContent: 'center',
-          alignItems:'center',
+          height: windowHeight * 0.08,
+          width: windowWidth * 0.6,
+          backgroundColor: "#BFCBAE",
+          marginBottom: 15,
+          borderRadius: 50,
+          justifyContent: "center",
+          alignItems: "center",
           marginTop:100
         }}
       >
@@ -263,13 +264,14 @@ const styles =  StyleSheet.create({
     borderRadius: 10,
     marginBottom: 10,
     paddingLeft:15,
-    borderWidth:1
+    borderWidth:1,
+    height:windowHeight*0.056
   },
   showImage:{
     width:windowWidth*0.5,
     height:windowHeight*0.3,
     position: "absolute",
-    bottom:0
+    bottom:16
   }
 })
 export default AddFood;

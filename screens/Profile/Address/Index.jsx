@@ -97,6 +97,7 @@ const Address = ({ navigation }) => {
       ))}
       <TouchableOpacity
         style={styles.button}
+        onPress={()=>{navigation.navigate("Update Address")}}
       >
         <Text style={{ color: "#fff", fontSize: 19 }}>Update</Text>
       </TouchableOpacity>
