@@ -25,19 +25,36 @@ import a from "./a";
 import { FAB } from "@rneui/themed";
 const windowHeight = Dimensions.get("window").height;
 const windowWidth = Dimensions.get("window").width;
+
 export default function Index({ navigation }) {
   useEffect(() => {
     global.users = {
-      role: 1,
+      role: 0,
     };
-  });
+    console.log(1);
+  }, []);
+  const [dataFood, setDataFood] = useState(a.item[1].product);
+  const [dataFoodSearch, setDataFoodSearch] = useState(a.item[1].product);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [modalText, setModalText] = useState("");
   const [loadingVisible, setLoadingVisible] = useState(false);
+  const [foodSearch, setFoodSearch] = useState('');
   const toggleModal = () => {
     setIsModalVisible(!isModalVisible);
   };
-
+  function handleFitler(searchTerm) {
+    if (searchTerm == "") {
+      setDataFoodSearch(dataFood)
+    } else {
+      const newData = dataFoodSearch.filter(item => {
+        const itemData = item.name.toUpperCase();
+        const textData = searchTerm.toUpperCase();
+        return itemData.indexOf(textData) > -1;
+      });
+      setDataFoodSearch(newData);
+    }
+    console.log(dataFood);
+  }
   const showSuccessFavorite = () => {
     setIsModalVisible(true);
     setLoadingVisible(true);
@@ -48,8 +65,6 @@ export default function Index({ navigation }) {
       }, 1500);
     }, 1000);
   };
-
- 
 
   return (
     <SafeAreaView
@@ -110,6 +125,11 @@ export default function Index({ navigation }) {
           <TextInput
             placeholder="What are you craving"
             style={{ left: 45, color: "#3D405B" }}
+            value={foodSearch}
+            onChangeText={(text) => {
+           handleFitler(text);
+           setFoodSearch(text)
+            }}
           />
           <TouchableOpacity
             style={{ position: "absolute", right: -55, width: "auto" }}
@@ -135,6 +155,47 @@ export default function Index({ navigation }) {
             </View>
           </TouchableOpacity>
         </View>
+        {foodSearch.length > 0 ? (
+          <View
+            style={{
+              marginTop: 10,
+              height: windowHeight * 0.25,
+              alignSelf: "center",
+              width: "95%",
+              backgroundColor: "#fff",
+              borderRadius: 10,
+              position: "relative",
+            }}
+          >
+            {dataFoodSearch.map((item) => (
+              <TouchableOpacity
+                key={item.key}
+                style={{
+                  width: "85%",
+                  alignSelf: "center",
+                  height: 65,
+                  justifyContent: "center",
+                  borderBottomWidth: 0.5,
+                  borderColor: "#8e8e8e",
+                }}
+                onPress={() => {
+                  setSelectFood(item.name);
+                  setClickedCity(!clickedCity);
+                }}
+              >
+                <Text style={{ fontWeight: "600" }}>{item.name}</Text>
+              </TouchableOpacity>
+            ))}
+            <TouchableOpacity
+              onPress={() => {
+                setFoodSearch('');
+              }}
+              style={{ justifyContent: "center", alignItems: "center", marginTop:10 }}
+            >
+              <Text>Done</Text>
+            </TouchableOpacity>
+          </View>
+        ) : null}
         <View
           style={{
             height: windowHeight * 0.22,
@@ -168,8 +229,9 @@ export default function Index({ navigation }) {
             visible={isModalVisible}
           >
             <View style={styles.centeredView}>
-
-              {loadingVisible ? (<FAB loading visible={loadingVisible} size="large" />) : (
+              {loadingVisible ? (
+                <FAB loading visible={loadingVisible} size="large" />
+              ) : (
                 <>
                   <View style={styles.modalView}>
                     <Text>Add your favorite success</Text>

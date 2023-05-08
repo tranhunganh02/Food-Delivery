@@ -61,7 +61,7 @@ const Address = ({ navigation }) => {
             style={styles.componentInformation}
           >
             <Text style={styles.componentText}>Full name</Text>
-            <Text style={styles.componentText}>Tran Thi Lanh Buoi</Text>
+            <Text style={styles.componentText}>Tran Thi Lanh</Text>
           </View>
           <View
             style={styles.componentInformation}
