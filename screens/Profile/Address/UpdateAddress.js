@@ -307,12 +307,13 @@ import {
            />
            <TouchableOpacity
              style={{
-               width: "80%",
-               height: 50,
-               backgroundColor: "#00CC00",
-               borderRadius: 10,
-               justifyContent: "center",
-               alignItems: "center",
+              height: windowHeight * 0.08,
+          width: windowWidth * 0.6,
+          backgroundColor: "#BFCBAE",
+          marginBottom: 15,
+          borderRadius: 50,
+          justifyContent: "center",
+          alignItems: "center",
                marginTop: 300,
              }}
            >

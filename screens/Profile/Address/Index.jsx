@@ -68,7 +68,7 @@ const Address = ({ navigation }) => {
             style={styles.componentInformation}
           >
             <Text style={styles.componentText}>Full name</Text>
-            <Text style={styles.componentText}>Tran Thi Lanh Buoi</Text>
+            <Text style={styles.componentText}>Tran Thi Lanh</Text>
           </View>
           <View
             style={styles.componentInformation}
@@ -103,6 +103,7 @@ const Address = ({ navigation }) => {
         </View>
       <TouchableOpacity
         style={styles.button}
+        onPress={()=>{navigation.navigate("Update Address")}}
       >
         <Text style={{ color: "#fff", fontSize: 19 }}>Update</Text>
       </TouchableOpacity>

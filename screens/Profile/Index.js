@@ -18,6 +18,7 @@ import {
   Ionicons,
   MaterialCommunityIcons,
   MaterialIcons,
+  Feather
 } from "@expo/vector-icons";
 import ButtonPickImage from "../../features/User/pickImageUser";
 import { auth, storage } from "../../firebase";
@@ -118,6 +119,15 @@ export default function Index({ navigation }) {
               >
                 <Ionicons name="fast-food-outline" size={27} color="black" />
                 <Text style={styles.actionText}>List Food</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.ActionButton}
+                onPress={() => {
+                  navigation.navigate("ListDeliver");
+                }}
+              >
+                <Feather name="users" size={27} color="black" />
+                <Text style={styles.actionText}>List Deliver</Text>
               </TouchableOpacity>
             </>
           ) : (

@@ -121,7 +121,7 @@ const Index = ({ navigation,route }) => {
             }}
           />
           <TextInput
-            placeholder="Promocode"
+            placeholder="Discount code"
             style={{
               width: windowWidth * 0.4,
               height: 40,

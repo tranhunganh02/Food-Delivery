@@ -10,6 +10,7 @@ import Information from './screens/Profile/Information/Index';
 import Chat from './screens/Profile/Chat/Index'
 import Address from './screens/Profile/Address/Index';
 import CreateAddress from './screens/Profile/Address/CreateAddress.js';
+import UpdateAddress from './screens/Profile/Address/UpdateAddress';
 import Favorite from './screens/Favorite/Index';
 import Order from './screens/Profile/Order/Index'
 import SignIn from './screens/Auth/SignIn';
@@ -21,8 +22,8 @@ import ListFood  from './screens/Admin/FoodCRUD/ListFood'
 import UpdateFood from './screens/Admin/FoodCRUD/UpdateFood'
 import ListChat from './screens/Admin/Chat/ListChat'
 import ChatCustomer from './screens/Admin/Chat/Chat'
-import Product from './screens/Product/Index'
-import Forgot from './screens/Auth/Forgot';
+import ListDeliver from "./screens/Admin/ListDeliver/Index"
+import Product from "./screens/Product/Index"
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { AntDesign, FontAwesome } from '@expo/vector-icons';
 
@@ -41,6 +42,7 @@ const Index = () => {
             <Stack.Screen name="Information" component={Information} />
             <Stack.Screen name="Address" component={Address} />
             <Stack.Screen name="Create Address" component={CreateAddress} />
+            <Stack.Screen name="Update Address" component={UpdateAddress} />
             <Stack.Screen name='ListFood' component={ListFood} />
             <Stack.Screen name='AddFood' component={AddFood} />
             <Stack.Screen name='UpdateFood' component={UpdateFood} />
@@ -48,7 +50,7 @@ const Index = () => {
             <Stack.Screen name='Support' component={ListChat} />
             <Stack.Screen name='ChatCustomer' component={ChatCustomer} />
             <Stack.Screen name='Order' component={Order} />
-            <Stack.Screen name='Forgot' component={Forgot} />
+            <Stack.Screen name='ListDeliver' component={ListDeliver} />
         </Stack.Navigator>
     </NavigationContainer>
   );

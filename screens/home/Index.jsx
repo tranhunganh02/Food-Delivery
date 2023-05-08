@@ -34,6 +34,7 @@ import { ProductContext } from "../../component/Auth/Product";
 import { useRef } from "react";
 const windowHeight = Dimensions.get("window").height;
 const windowWidth = Dimensions.get("window").width;
+
 export default function Index({ navigation }) {
   const { products } = useContext(ProductContext);
   const [listNewData, setListNewData] = useState([]);
@@ -45,24 +46,25 @@ export default function Index({ navigation }) {
     }
     fetchData();
   }, []);
-
+  const [dataFood, setDataFood] = useState(a.item[1].product);
+  const [dataFoodSearch, setDataFoodSearch] = useState(products);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [modalText, setModalText] = useState("");
   const [loadingVisible, setLoadingVisible] = useState(false);
-  const [searchText, setSearchText] = useState("");
+  const [foodSearch, setFoodSearch] = useState("");
 
-  const [productSearching, setProductSearching] = useState(products);
+  const [searchText, setSearchText] = useState("");
   const toggleModal = () => {
     setIsModalVisible(!isModalVisible);
   };
-
-  const handleSearchText = (text) => {
+  const handleFitler = (text) => {
     setSearchText(text);
     const searchArray = products.filter((item) =>
       item.data.name.toLowerCase().includes(text.toLowerCase())
     );
-    setProductSearching(searchArray);
+    setDataFoodSearch(searchArray);
   };
+
   const showSuccessFavorite = async (id) => {
     if (user) {
       setIsModalVisible(true);
@@ -78,12 +80,11 @@ export default function Index({ navigation }) {
       navigation.navigate("SignIn");
     }
   };
-
   return (
     <SafeAreaView
       style={{ alignItems: "center", flex: 1, justifyContent: "center" }}
     >
-      {productSearching.length > 0 ? (
+      {/* {productSearching.length > 0 ? (
         <FlatList
           data={productSearching}
           keyExtractor={(item) => item.id.toString()}
@@ -96,7 +97,7 @@ export default function Index({ navigation }) {
         />
       ) : (
         <Text>No products found</Text>
-      )}
+      )} */}
 
       {/* <SafeAreaView style={{ alignItems: "center", flex: 1, backgroundColor:'#FFFBE9'}}> */}
       <StatusBar barStyle={"dark-content"} />
@@ -153,10 +154,15 @@ export default function Index({ navigation }) {
           <TextInput
             placeholder="What are you craving"
             style={{ left: 45, color: "#3D405B" }}
+            // onChangeText={(text) => {
+            //   handleSearchText(text);
+            // }}
+            // value={searchText}
+            value={foodSearch}
             onChangeText={(text) => {
-              handleSearchText(text);
+              handleFitler(text);
+              setFoodSearch(text);
             }}
-            value={searchText}
           />
           <TouchableOpacity
             style={{ position: "absolute", right: -55, width: "auto" }}
@@ -171,6 +177,65 @@ export default function Index({ navigation }) {
             <Ionicons name="cart-outline" size={44} color="black" />
           </TouchableOpacity>
         </View>
+        {foodSearch.length > 0 ? (
+          <View
+            style={{
+              marginTop: 10,
+              height: windowHeight * 0.25,
+              alignSelf: "center",
+              width: "95%",
+              backgroundColor: "#fff",
+              borderRadius: 10,
+              position: "relative",
+            }}
+          >
+            {dataFoodSearch.map((item) => (
+              <TouchableOpacity
+                key={item.id}
+                style={{
+                  width: "85%",
+                  alignSelf: "center",
+                  height: 70,
+                  justifyContent: "center",
+                  borderBottomWidth: 0.5,
+                  borderColor: "#8e8e8e",
+                }}
+                onPress={() => {
+                  // setSelectFood(item.data.name);
+                  // setClickedCity(!clickedCity);
+                }}
+              >
+                <View style={{flexDirection:'row',justifyContent:'space-around'}}> 
+                <Image 
+                style={{
+                  height: 60,
+                  width: 60,
+                }}
+                source={{ uri: item.data.image }}/>
+                <View>
+                <Text style={{ padding: 10, borderColor:"#F56844",borderWidth:1,borderRadius:5}}>{item.data.name}</Text>
+                <Text style={{ textAlign: 'center' }}>{item.data.price} VND</Text>
+                </View>
+               
+                </View>
+               
+
+              </TouchableOpacity>
+            ))}
+            <TouchableOpacity
+              onPress={() => {
+                setFoodSearch("");
+              }}
+              style={{
+                justifyContent: "center",
+                alignItems: "center",
+                marginTop: 10,
+              }}
+            >
+              <Text>Done</Text>
+            </TouchableOpacity>
+          </View>
+        ) : null}
         <View
           style={{
             height: windowHeight * 0.22,

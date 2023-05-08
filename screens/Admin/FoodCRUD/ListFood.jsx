@@ -21,15 +21,15 @@ const windowHeight = Dimensions.get("window").height;
 const windowWidth = Dimensions.get("window").width;
 
 const List = ({ navigation }) => {
-  const [listFood, setListFood] = useState([]);
+  const [listFood, setListFood] = useState(products);
   useEffect(() => {
     getAllProduct().then((data) => {
       setListFood(data);
     });
-  }, []);
+  }, [products]);
   const [loadingVisible, setLoadingVisible] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
-  const {updateProduct} = useContext(ProductContext);
+  const {updateProduct,products} = useContext(ProductContext);
   return (
     <View
       style={{
@@ -77,7 +77,8 @@ const List = ({ navigation }) => {
           width: windowWidth * 0.85,
         }}
       >
-        {listFood.map((item, index) => (
+        {listFood ? 
+        (listFood.map((item, index) => (
           <Item
             navigation={navigation}
             key={index}
@@ -89,9 +90,13 @@ const List = ({ navigation }) => {
             onDelete={(id) => {
               deleteProduct(id);
               updateProduct();
+              navigation.goBack();
             }}
           />
-        ))}
+        ))):
+        (
+          <Text>No product in here</Text>
+        )}
       </ScrollView>
 
       <FAB
