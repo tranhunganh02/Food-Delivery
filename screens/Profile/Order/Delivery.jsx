@@ -5,16 +5,32 @@ import {
   Dimensions,
   Image,
   ScrollView,
+  TouchableOpacity 
 } from "react-native";
 import React, { useEffect, useState } from "react";
 const windowHeight = Dimensions.get("window").height;
 import a from "../../home/a";
+import getOrderHistory from "../../../features/User/getOrderHistory";
+import getPriceOrder from "../../../features/User/getPriceOrder";
 export default function Delivery() {
   const [product, setProduct] = useState([a.item[0].product]);
+  const [productPre, setProductPre] = useState([]);
+  const [productMid, setProductMid] = useState([]);
+  const [pricePre, setPricePre] = useState(0);
+  const [priceMid, setPriceMid] = useState(0);
   const b = [{ a: "c" }, { a: "v" }];
-  useEffect(() => {}, []);
+  useEffect(() => {
+    getOrderHistory(1).then((data) => {
+      getPriceOrder(data).then((data) => setPricePre(data));
+      setProductPre(data);
+    });
+    getOrderHistory(2).then((data) => {
+      getPriceOrder(data).then((data) => setPriceMid(data));
+      setProductMid(data);
+    });
+  }, []);
   return (
-    <View style={{padding:5}}>
+    <View style={{ padding: 5 }}>
       <ScrollView>
         {/* Order1 */}
         <View
@@ -45,7 +61,7 @@ export default function Delivery() {
             }}
           >
             <Text style={{ fontSize: 20, fontWeight: "600" }}>#2196F3</Text>
-            <Text>3 product</Text>
+            <Text>{productPre.length}</Text>
           </View>
           <View
             style={{
@@ -56,12 +72,12 @@ export default function Delivery() {
             }}
           >
             <Text style={{ fontSize: 20, fontWeight: "500" }}>Total</Text>
-            <Text>{new Intl.NumberFormat("de-DE").format(150000)} VND</Text>
+            <Text>{new Intl.NumberFormat("de-DE").format(pricePre)} VND</Text>
           </View>
           <View
             style={{ width: "100%", height: windowHeight * 0.7, marginTop: 30 }}
           >
-            {a.item[1].product.map((item, index) => {
+            {productPre.map((item, index) => {
               return (
                 <View
                   style={{
@@ -75,6 +91,7 @@ export default function Delivery() {
                     alignItems: "center",
                     justifyContent: "space-around",
                   }}
+                  key={index}
                 >
                   <View
                     style={{
@@ -86,7 +103,7 @@ export default function Delivery() {
                   >
                     <Text style={{ fontSize: 17, fontWeight: "400" }}>
                       {" "}
-                      {item.name}
+                      {item.data.name}
                     </Text>
                     <Text>
                       {new Intl.NumberFormat("de-DE").format(item.price)} VND
@@ -144,7 +161,7 @@ export default function Delivery() {
             }}
           >
             <Text style={{ fontSize: 20, fontWeight: "600" }}>#2196F3</Text>
-            <Text>{a.item[2].product.length} product</Text>
+            <Text>{productMid.length} product</Text>
           </View>
           <View
             style={{
@@ -155,12 +172,12 @@ export default function Delivery() {
             }}
           >
             <Text style={{ fontSize: 20, fontWeight: "500" }}>Total</Text>
-            <Text>{new Intl.NumberFormat("de-DE").format(150000)} VND</Text>
+            <Text>{new Intl.NumberFormat("de-DE").format(priceMid)} VND</Text>
           </View>
           <View
             style={{ width: "100%", height: windowHeight * 0.7, marginTop: 30 }}
           >
-            {a.item[2].product.map((item, index) => {
+            {productMid.map((item, index) => {
               return (
                 <View
                   style={{
@@ -174,6 +191,7 @@ export default function Delivery() {
                     alignItems: "center",
                     justifyContent: "space-around",
                   }}
+                  key={index}
                 >
                   <View
                     style={{
@@ -218,17 +236,3 @@ export default function Delivery() {
     </View>
   );
 }
-const Item = ({ name, quantity, price, image }) => {
-  return (
-    <View
-      style={{
-        borderWidth: 0.5,
-        borderColor: "grey",
-        height: 300,
-        width: "80%",
-      }}
-    >
-      <Text>HI</Text>
-    </View>
-  );
-};

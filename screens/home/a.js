@@ -112,7 +112,7 @@ export default {
       product: [
         {
           id:'1582824843444',
-          isDelivery:0,
+          status:0,
           total:350000,
           data: [
             {
@@ -145,7 +145,7 @@ export default {
         },
         {
           id:'1682824843444',
-          isDelivery:0,
+          status:0,
           total:550000,
           data: [
             {

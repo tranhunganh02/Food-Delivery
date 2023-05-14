@@ -22,14 +22,14 @@ const Item = ({
     return priceProduct * quantityProduct;
   };
   // Gọi hàm callback onQuantityChange với giá trị quantity mới khi thay đổi số lượng sản phẩm
-  const handleQuantityChange = (newQuantity) => {
+  const handleQuantityChange = (newQuantity,price) => {
     setQuantity(newQuantity);
-    onQuantityChange(id, newQuantity);
+    onQuantityChange(id, newQuantity,price);
   };
   const getCheckboxChecked = (idProduct) => {
     checked ? setChecked(false) : setChecked(true);
 
-    onClickCheckBox(idProduct, getQuantity);
+    onClickCheckBox(idProduct, getQuantity,getQuantity*price);
   };
 
   return (

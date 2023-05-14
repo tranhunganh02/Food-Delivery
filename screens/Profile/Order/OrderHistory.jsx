@@ -22,7 +22,7 @@ export default function OrderHistory() {
     setModalVisible(!modalVisible)
   }
   useEffect(() => {
-    getOrderHistory().then((data) => {
+    getOrderHistory(3).then((data) => {
       setProduct(data);
     });
   }, []);
@@ -88,6 +88,7 @@ export default function OrderHistory() {
                 <ModalOrder data={item.data} total={item.total}/>
               </>
             );
+            
           }}
         />
       </View>

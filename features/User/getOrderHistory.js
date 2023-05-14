@@ -1,14 +1,15 @@
-import { doc, getDoc } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs, query, where } from "firebase/firestore";
 import { auth, dbStore } from "../../firebase";
 
-export default getOrderHistory = async () => {
-  const docRef = doc(dbStore, "orders", auth.currentUser.uid);
+export default getOrderHistory = async (state) => {
+  const docRef = collection(dbStore, "orders");
 
-  const docSnap = await getDoc(docRef);
-
-  const data = Object.entries(docSnap.data()).map(([key, value]) => ({
-    id: key,
-    ...value,
-  }));
-  return data;
+  const q = query(docRef,where('idUser',"==",auth.currentUser.uid),where('status','==',state));
+  const data= await getDocs(q);
+  const finalData= [];
+  data.forEach((doc) => {
+    finalData.push (doc.data());
+  });
+  return finalData;
+  
 };

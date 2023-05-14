@@ -26,24 +26,38 @@ import { async } from "@firebase/util";
 import getPriceProductSelected from "../../features/User/getPriceProductSelected";
 import createOrder from "../../features/User/createOrder";
 import ModalLoading from "../../component/User/ModalLoading";
-const Index = ({ navigation,route }) => {
+import getPriceToSale from "../../features/User/getPriceToSale";
+const Index = ({ navigation, route }) => {
   const [getTotal, setTotal] = useState(0);
-  const [listFood,setListFood] = useState([]);
+  const [listFood, setListFood] = useState([]);
   const [price, setPrice] = useState(0);
-  const [isVisible,setIsVisible] = useState(false)
+  const [isVisible, setIsVisible] = useState(false);
+  const [textDiscount, setTextDiscount] = useState("");
   useEffect(() => {
-    async function fetchProduct(){
-      let result = await  getProductCheckOut(route.params.product);
+    async function fetchProduct() {
+      let result = await getProductCheckOut(route.params.product);
       setListFood(result);
       setPrice(await getPriceProductSelected(route.params.product));
     }
-   fetchProduct();
+    fetchProduct();
   }, []);
-  const confirmOrder =async() => 
-  {
-    createOrder({data: route.params.product,total :new Intl.NumberFormat("de-DE").format(price) });
-    navigation.navigate("Order")
-  }
+  const salePriceProduct = async () => {
+    let priceToSale = await getPriceToSale(textDiscount);
+    if (!priceToSale) {
+      alert("Voucher code does not exist!");
+    } else {
+      setPrice((prePrice) =>
+        prePrice - priceToSale > 0 ? prePrice - priceToSale : 0
+      );
+    }
+  };
+  const confirmOrder = async () => {
+    createOrder({
+      data: route.params.product,
+      total: new Intl.NumberFormat("de-DE").format(price),
+    });
+    navigation.navigate("Order");
+  };
   return (
     <View
       style={{
@@ -104,7 +118,7 @@ const Index = ({ navigation,route }) => {
           style={{
             backgroundColor: "#fff",
             width: "100%",
-            height: '100%',
+            height: "100%",
             flexDirection: "row",
             justifyContent: "space-between",
             alignItems: "center",
@@ -126,8 +140,9 @@ const Index = ({ navigation,route }) => {
               width: windowWidth * 0.4,
               height: 40,
               marginLeft: 25,
-              fontSize:17
+              fontSize: 17,
             }}
+            onChangeText={(text) => setTextDiscount(text)}
           />
           <TouchableOpacity
             style={{
@@ -137,6 +152,9 @@ const Index = ({ navigation,route }) => {
               height: windowHeight * 0.045,
               justifyContent: "center",
               alignItems: "center",
+            }}
+            onPress={() => {
+              salePriceProduct();
             }}
           >
             <Text
@@ -160,42 +178,50 @@ const Index = ({ navigation,route }) => {
             flexDirection: "row",
             width: "100%",
             height: windowHeight * 0.07,
-            justifyContent:'space-between'
+            justifyContent: "space-between",
           }}
         >
-          <Text 
-               style={{
-                    color:'#B6B2B2',
-                    fontSize:18
-               }}
-          >Item Total:</Text>
           <Text
-          style={{
-               color:'#B6B2B2',
-               fontSize:18
-          }}
-          >{new Intl.NumberFormat("de-DE").format(price)}</Text>
+            style={{
+              color: "#B6B2B2",
+              fontSize: 18,
+            }}
+          >
+            Item Total:
+          </Text>
+          <Text
+            style={{
+              color: "#B6B2B2",
+              fontSize: 18,
+            }}
+          >
+            {new Intl.NumberFormat("de-DE").format(price)}
+          </Text>
         </View>
         <View
           style={{
             flexDirection: "row",
             width: "100%",
             height: windowHeight * 0.07,
-            justifyContent:'space-between'
+            justifyContent: "space-between",
           }}
         >
           <Text
-               style={{
-                    color:'#B6B2B2',
-                    fontSize:18
-               }}
-          >Delivery:</Text>
+            style={{
+              color: "#B6B2B2",
+              fontSize: 18,
+            }}
+          >
+            Delivery:
+          </Text>
           <Text
-               style={{
-                    color:'#B6B2B2',
-                    fontSize:18
-               }}
-          >Free</Text>
+            style={{
+              color: "#B6B2B2",
+              fontSize: 18,
+            }}
+          >
+            Free
+          </Text>
         </View>
       </View>
       <View style={styles.checkOutContainer}>
