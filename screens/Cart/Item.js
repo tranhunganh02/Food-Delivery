@@ -29,7 +29,7 @@ const Item = ({
   const getCheckboxChecked = (idProduct) => {
     checked ? setChecked(false) : setChecked(true);
 
-    onClickCheckBox(idProduct, getQuantity,getQuantity*price);
+    onClickCheckBox(idProduct, getQuantity,getQuantity*price,image);
   };
 
   return (

@@ -4,7 +4,6 @@ const getProduct = async (idProduct) => {
   const docRef = doc(dbStore, "products", idProduct);
   const docSnap = await getDoc(docRef);
   if (docSnap.exists()) {
-    
     return docSnap.data();
   } else {
     // docSnap.data() will be undefined in this case

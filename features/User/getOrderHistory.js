@@ -7,9 +7,13 @@ export default getOrderHistory = async (state) => {
   const q = query(docRef,where('idUser',"==",auth.currentUser.uid),where('status','==',state));
   const data= await getDocs(q);
   const finalData= [];
+  
   data.forEach((doc) => {
-    finalData.push (doc.data());
+    const orderData = doc.data();
+    orderData.id = doc.id;
+    finalData.push(orderData);
   });
+  
   return finalData;
   
 };

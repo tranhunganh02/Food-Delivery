@@ -58,11 +58,11 @@ export default function OrderHistory() {
       <View
         style={{ width: "100%", height: windowHeight * 0.8, marginTop: 20 }}
       >
-        <ModalLoading
+        {/* <ModalLoading
         visible={isLoading}
         time={1500}
         onLoading={(isEnd) => setIsLoading(isEnd)}
-      />
+      /> */}
         <FlatList
           showsVerticalScrollIndicator={false}
           horizontal={false}
@@ -81,17 +81,19 @@ export default function OrderHistory() {
                   key={item.id}
                 >
                   <Text style={{ fontSize: 20, fontWeight: "600" }}>
-                    {new Date(Number(item.id)).toDateString()}
+                    {new Date(Number(Date.now())).toDateString()}
                   </Text>
                   <Text>{item.data.length} order</Text>
                 </View>
-                <ModalOrder data={item.data} total={item.total}/>
+                <ModalOrder data={item.data} total={item.total} id={item.id}/>
               </>
             );
             
           }}
         />
+       
       </View>
+      
     </View>
   );
 }

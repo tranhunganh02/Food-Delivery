@@ -27,12 +27,16 @@ import getPriceProductSelected from "../../features/User/getPriceProductSelected
 import createOrder from "../../features/User/createOrder";
 import ModalLoading from "../../component/User/ModalLoading";
 import getPriceToSale from "../../features/User/getPriceToSale";
+import { useContext } from "react";
+import { AppContext } from "../../component/Auth/AuthContext";
+import { Alert } from "react-native/types";
 const Index = ({ navigation, route }) => {
   const [getTotal, setTotal] = useState(0);
   const [listFood, setListFood] = useState([]);
   const [price, setPrice] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
   const [textDiscount, setTextDiscount] = useState("");
+  const {user} = useContext(AppContext);
   useEffect(() => {
     async function fetchProduct() {
       let result = await getProductCheckOut(route.params.product);
@@ -52,11 +56,18 @@ const Index = ({ navigation, route }) => {
     }
   };
   const confirmOrder = async () => {
-    createOrder({
-      data: route.params.product,
-      total: new Intl.NumberFormat("de-DE").format(price),
-    });
-    navigation.navigate("Order");
+    if(user.address)
+    {
+      createOrder({
+        data: route.params.product,
+        total: new Intl.NumberFormat("de-DE").format(price),
+      });
+      navigation.navigate("Order");
+    }
+    else{
+      Alert.alert("Error","Please update your address");
+    }
+    
   };
   return (
     <View

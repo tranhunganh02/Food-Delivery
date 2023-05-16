@@ -54,7 +54,9 @@ const AddFood = ({ navigation }) => {
         image: imagePicker,
         folder: "Product",
       });
+      console.log(imageURL);
       setImagePicker(imageURL);
+
     }
     const moreProps = {
       selectedCategory: selectedCategory,

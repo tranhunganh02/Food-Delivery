@@ -16,13 +16,6 @@ const Item = ({
         getProduct(id).then((data) =>
         setProduct(data))
     },[])
-    
-  // const [getQuantity, setQuantity] = useState(quantity);
-  // const getPrice = (priceProduct,quantityProduct) => {
-  //   return priceProduct*quantityProduct;
-  // }
-
-  
   return (
     <View
       style={{

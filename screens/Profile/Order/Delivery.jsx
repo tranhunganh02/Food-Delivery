@@ -21,11 +21,11 @@ export default function Delivery() {
   const b = [{ a: "c" }, { a: "v" }];
   useEffect(() => {
     getOrderHistory(1).then((data) => {
-      getPriceOrder(data).then((data) => setPricePre(data));
+      getPriceOrder(data).then((price) => setPricePre(price));
       setProductPre(data);
     });
     getOrderHistory(2).then((data) => {
-      getPriceOrder(data).then((data) => setPriceMid(data));
+      getPriceOrder(data).then((price) => setPriceMid(price));
       setProductMid(data);
     });
   }, []);

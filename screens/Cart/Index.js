@@ -27,7 +27,7 @@ const Index = ({ navigation }) => {
   const selectedProducts = useRef([]);
   const isSelectAll = useRef(false);
   const productNewState = useRef([]);
-  const handleCheckBoxClick = (idProduct, quantity,price) => {
+  const handleCheckBoxClick = (idProduct, quantity,price,image) => {
     if (selectedProducts.current.find((item) => item.idProduct === idProduct)) {
       selectedProducts.current = selectedProducts.current.filter(
         (item) => item.idProduct !== idProduct
@@ -35,7 +35,7 @@ const Index = ({ navigation }) => {
     } else {
       selectedProducts.current = [
         ...selectedProducts.current,
-        { idProduct: idProduct, quantity: quantity,price: price},
+        { idProduct: idProduct, quantity: quantity,price: price,image: image},
       ];
     }
   };
@@ -153,8 +153,8 @@ const Index = ({ navigation }) => {
                   addNewQuantity(id,newQuantity);
                   changePriceTotal();
                 }}
-                onClickCheckBox={(idProduct, quantity,price) => {
-                  handleCheckBoxClick(idProduct, quantity,price);
+                onClickCheckBox={(idProduct, quantity,price,image) => {
+                  handleCheckBoxClick(idProduct, quantity,price,image);
                   changePriceTotal();
                 }}
               />

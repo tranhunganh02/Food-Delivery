@@ -70,7 +70,6 @@ const uploadImage = async ({image,folder}) => {
         }
       );
     });
-  
     return downloadURL;
   };
   export default uploadImage;
