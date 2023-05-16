@@ -19,7 +19,7 @@ export default function OrderHistory() {
     setModalVisible(!modalVisible)
   }
   useEffect(() => {
-    console.log(1);
+  
   }, [product]);
   return (
     <View

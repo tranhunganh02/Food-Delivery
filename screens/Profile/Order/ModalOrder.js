@@ -1,7 +1,7 @@
 import { View, Text, Modal, StyleSheet, TouchableOpacity, Dimensions, Image, ScrollView } from "react-native";
 import React, {useEffect, useState} from "react";
 import { AntDesign } from '@expo/vector-icons';
-import Item from "./Item";
+import Item from "./ItemOrderHistory";
 const windowHeight =Dimensions.get('window').height
 export default function ModalOrder({data, total}) {
   const [modalVisible, setModalVisible] = useState(false);

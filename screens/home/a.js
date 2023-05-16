@@ -78,8 +78,32 @@ export default {
           name: "Smoothie strawberry",
           price: 15000,
           image:
+            "https://vn.alongwalker.co/img/post_images/04dc39cdb8fa02d013937e5ff008f76a.jpg",
+          key: "10",
+          quantity: 1,
+        },
+        {
+          name: "Smoothie strawberry",
+          price: 15000,
+          image:
             "https://i0.wp.com/sweetlycakes.com/wp-content/uploads/2022/06/smoothiefraisebanane-5.jpg?fit=1200%2C1800&ssl=1",
           key: "4",
+          quantity: 1,
+        },
+        {
+          name: "Seafood pizza",
+          price: 25000,
+          image:
+            "https://images.pexels.com/photos/1146760/pexels-photo-1146760.jpeg?auto=compress&cs=tinysrgb&w=250&h=180&dpr=2",
+          key: "6",
+          quantity: 2,
+        },
+        {
+          name: "Smoothie strawberry",
+          price: 15000,
+          image:
+            "https://vn.alongwalker.co/img/post_images/04dc39cdb8fa02d013937e5ff008f76a.jpg",
+          key: "5",
           quantity: 1,
         },
       ],
