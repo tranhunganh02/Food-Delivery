@@ -452,7 +452,7 @@ export default function Index({ navigation }) {
             }}
           />
         </View>
-        <View
+        {/* <View
           style={{
             height: windowHeight * 0.43,
             width: windowWidth * 0.9,
@@ -618,7 +618,7 @@ export default function Index({ navigation }) {
               );
             }}
           />
-        </View>
+        </View> */}
       </ScrollView>
     </SafeAreaView>
   );

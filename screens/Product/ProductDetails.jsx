@@ -292,7 +292,7 @@ const styles = StyleSheet.create({
   },
   commentContainer: {
     width: windowWidth,
-    height: 300,
+    height: 280,
     padding: 15,
     top: -50,
   },

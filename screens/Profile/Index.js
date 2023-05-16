@@ -16,7 +16,8 @@ import {
   AntDesign,
   Ionicons,
   MaterialCommunityIcons,
-  Feather
+  Feather,
+  MaterialIcons
 } from "@expo/vector-icons";
 const height = Dimensions.get("window").height;
 const windowWidth = Dimensions.get("window").width;
@@ -41,7 +42,7 @@ export default function Index({ navigation }) {
       <ScrollView>
         <View
           style={{
-            height: height * 0.5,
+            height: height * 0.6,
             width: "100%",
             justifyContent: "center",
             alignItems: "center",
@@ -100,6 +101,15 @@ export default function Index({ navigation }) {
               >
                 <FontAwesome name="address-book-o" size={30} color="black" />
                 <Text style={styles.actionText}>Address</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.ActionButton}
+                onPress={() => {
+                  navigation.navigate("Favorite");
+                }}
+              >
+                <MaterialIcons name="favorite-border" size={30} color="black" />
+                <Text style={styles.actionText}>Favorite</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.ActionButton}

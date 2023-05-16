@@ -46,6 +46,7 @@ const Index = () => {
             <Stack.Screen name="CheckOut" component={CheckOut} />
             <Stack.Screen name="Information" component={Information} />
             <Stack.Screen name="Address" component={Address} />
+            <Stack.Screen name="Favorite" component={Favorite} />
             <Stack.Screen name="Create Address" component={CreateAddress} />
             <Stack.Screen name="Update Address" component={UpdateAddress} />
             <Stack.Screen name='ListFood' component={ListFood} />
