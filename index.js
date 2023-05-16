@@ -5,6 +5,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import React, {useRef, useEffect, useState} from 'react';
 import Home from './screens/home/Index';
 import Logo from './screens/Amination/Logo';
+import Product from './screens/Product/ProductDetails';
 import Profile from './screens/Profile/Index';
 import Information from './screens/Profile/Information/Index';
 import Chat from './screens/Profile/Chat/Index'
@@ -23,15 +24,17 @@ import UpdateFood from './screens/Admin/FoodCRUD/UpdateFood'
 import ListChat from './screens/Admin/Chat/ListChat'
 import ChatCustomer from './screens/Admin/Chat/Chat'
 import ListDeliver from "./screens/Admin/ListDeliver/Index"
-import Product from "./screens/Product/Index"
+import AllProduct from './screens/Product/Index';
+import Item from './screens/Product/item';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
-import { AntDesign, FontAwesome } from '@expo/vector-icons';
+import { AntDesign, Ionicons } from '@expo/vector-icons';
 
 const Stack = createNativeStackNavigator();
 const Index = () => {
   return (
     <NavigationContainer>
         <Stack.Navigator initialRouteName="BottomTab" screenOptions={{headerShown: false}}>
+        <Stack.Screen name="null" component={Item}  />
             <Stack.Screen name="SignIn" component={SignIn}  />
             <Stack.Screen name="SignUp" component={SignUp}  />
             <Stack.Screen name="BottomTab" component={BottomTab} />
@@ -51,6 +54,7 @@ const Index = () => {
             <Stack.Screen name='ChatCustomer' component={ChatCustomer} />
             <Stack.Screen name='Order' component={Order} />
             <Stack.Screen name='ListDeliver' component={ListDeliver} />
+            <Stack.Screen name="Favorite" component={Favorite} />
         </Stack.Navigator>
     </NavigationContainer>
   );
@@ -76,6 +80,17 @@ function BottomTab() {
           tabBarColor: 'white',
           tabBarIcon: () => (
             <AntDesign name="home" size={25} color="black" />
+          ),
+        }}      
+      />
+      <Tab.Screen
+        name="AllProduct"
+        component={AllProduct}
+        options={{
+          tabBarLabel: 'Food',
+          tabBarColor: 'white',
+          tabBarIcon: () => (
+            <Ionicons name="md-fast-food-outline" size={24} color="black" />
           ),
         }}      
       />

@@ -8,6 +8,7 @@ import {
   Image,
   SwipeView,
   TextInput,
+  Alert
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import {
@@ -29,7 +30,6 @@ import ModalLoading from "../../component/User/ModalLoading";
 import getPriceToSale from "../../features/User/getPriceToSale";
 import { useContext } from "react";
 import { AppContext } from "../../component/Auth/AuthContext";
-import { Alert } from "react-native/types";
 const Index = ({ navigation, route }) => {
   const [getTotal, setTotal] = useState(0);
   const [listFood, setListFood] = useState([]);

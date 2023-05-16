@@ -7,11 +7,9 @@ import {
   query,
 } from "firebase/firestore";
 import { auth, dbStore } from "../../firebase";
-import getProduct from "../Product/getProduct";
-import { createContext } from "react";
-
+import getProduct from "../Product/getProduct"; 
 export default getProductWithNameDoc = async (nameDoc) => {
-  const docRef = doc(dbStore, "carts", auth.currentUser.uid);
+  const docRef = doc(dbStore, nameDoc, auth.currentUser.uid);
 
   const docSnap = await getDoc(docRef);
   const data = Object.entries(docSnap.data()).map(([key, value]) => ({
@@ -20,8 +18,9 @@ export default getProductWithNameDoc = async (nameDoc) => {
   }));
 
   const productIds = Object.values(data).map((item) =>
-    nameDoc == "carts" ? item.idProduct : item
+    nameDoc == "carts" ? item.idProduct : item.id
   );
+  console.log(productIds);
   const propertiesToAdd = ["name", "price", "image"];
   const products = await Promise.all(
     productIds.map((productId) => getProduct(productId))
@@ -35,5 +34,6 @@ export default getProductWithNameDoc = async (nameDoc) => {
     });
     return result;
   }
+
   return products;
 };

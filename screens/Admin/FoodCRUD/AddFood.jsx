@@ -39,6 +39,7 @@ const AddFood = ({ navigation }) => {
   const [data, setData] = useState(category);
   const [selectedCategory, setSelectedCategory] = useState("");
   const [isPickedImage, setIsPickedImage] = useState(false);
+  const linkImageNew= useRef();
   const searchRef = useRef();
   const {updateProduct} = useContext(ProductContext);
  
@@ -56,11 +57,15 @@ const AddFood = ({ navigation }) => {
       });
       console.log(imageURL);
       setImagePicker(imageURL);
-
+      linkImageNew.current= imageURL;
+    }
+    else
+    {
+      linkImageNew.current= imagePicker;
     }
     const moreProps = {
       selectedCategory: selectedCategory,
-      image: imagePicker,
+      image: linkImageNew.current,
       created_at: Date.now(),
     };
     const finalData = Object.assign({}, data, moreProps);

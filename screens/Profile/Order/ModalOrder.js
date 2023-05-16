@@ -1,3 +1,14 @@
+import React, { useContext, useEffect, useState } from "react";
+import { Alert } from "react-native";
+import StarRatingModal from "../../../component/User/StarRatingModal";
+import ratingEachProduct from "../../../features/User/ratingEachProduct";
+import getOrder from "../../../features/User/getOrder";
+import { Icon } from "react-native-elements";
+import { AppContext } from "../../../component/Auth/AuthContext";
+import { useNavigation } from "@react-navigation/native";
+const windowHeight = Dimensions.get("window").height;
+import { AntDesign } from "@expo/vector-icons";
+import Item from "./ItemOrderHistory";
 import {
   View,
   Text,
@@ -8,20 +19,9 @@ import {
   Image,
   ScrollView,
 } from "react-native";
-import React, { useContext, useEffect, useState } from "react";
-import { AntDesign } from "@expo/vector-icons";
-import Item from "./Item";
-import { Alert } from "react-native";
-import StarRatingModal from "../../../component/User/StarRatingModal";
-import ratingEachProduct from "../../../features/User/ratingEachProduct";
-import getOrder from "../../../features/User/getOrder";
-import { Icon } from "react-native-elements";
-import { AppContext } from "../../../component/Auth/AuthContext";
-import { useNavigation } from "@react-navigation/native";
-const windowHeight = Dimensions.get("window").height;
 export default function ModalOrder({ data, total, id }) {
   const [modalVisible, setModalVisible] = useState(false);
-  const {user} = useContext(AppContext);
+  const { user } = useContext(AppContext);
   const navigation = useNavigation();
   useEffect(() => {}, []);
   const [modalVisibleRating, setModalVisibleRating] = useState(false);
@@ -40,10 +40,10 @@ export default function ModalOrder({ data, total, id }) {
       star: rating,
       idOrder: null,
       idOrder: id,
-      name: user.name
+      name: user.name,
     });
     setModalVisibleRating(false);
-    navigation.navigate('Profile');
+    navigation.navigate("Profile");
   };
   useEffect(() => {
     getOrder(id).then((order) => {
@@ -105,20 +105,20 @@ export default function ModalOrder({ data, total, id }) {
                 );
               })}
               {order.isRated ? (
-                <View style={{left:0}}>
-                  <View style={{flexDirection: 'row'}}>
-                  {Array.from({ length: order.star }, (_, index) => (
-                    <Icon
-                      key={index}
-                      name={"star"}
-                      size={20}
-                      color={"#FFD700"}
-                    />
-                  ))}
+                <View style={{ left: 0 }}>
+                  <View style={{ flexDirection: "row" }}>
+                    {Array.from({ length: order.star }, (_, index) => (
+                      <Icon
+                        key={index}
+                        name={"star"}
+                        size={20}
+                        color={"#FFD700"}
+                      />
+                    ))}
                   </View>
                   <View>
                     <Text>{order.content}</Text>
-                    </View>
+                  </View>
                 </View>
               ) : (
                 <Text></Text>
@@ -127,33 +127,31 @@ export default function ModalOrder({ data, total, id }) {
           </ScrollView>
           {!order.isRated ? (
             <View>
-            <TouchableOpacity
-              onPress={() => {
-                setModalVisibleRating(true);
-              }}
-            >
-              <Text>React</Text>
-            </TouchableOpacity>
-            <StarRatingModal
-              visible={modalVisibleRating}
-              onClose={() => setModalVisibleRating(false)}
-              onRate={handleRate}
-              onSubmit={ratingOrder}
-              onHaveContent={(text) => {
-                setContentText(text);
-              }}
-            />
-            {rating > 0 && (
-              <Text style={{ fontSize: 18 }}>
-                Bạn đã đánh giá ứng dụng {rating} sao. Cảm ơn bạn đã đánh giá!
-              </Text>
-            )}
-          </View>
-          ): 
-          (
+              <TouchableOpacity
+                onPress={() => {
+                  setModalVisibleRating(true);
+                }}
+              >
+                <Text>React</Text>
+              </TouchableOpacity>
+              <StarRatingModal
+                visible={modalVisibleRating}
+                onClose={() => setModalVisibleRating(false)}
+                onRate={handleRate}
+                onSubmit={ratingOrder}
+                onHaveContent={(text) => {
+                  setContentText(text);
+                }}
+              />
+              {rating > 0 && (
+                <Text style={{ fontSize: 18 }}>
+                  Bạn đã đánh giá ứng dụng {rating} sao. Cảm ơn bạn đã đánh giá!
+                </Text>
+              )}
+            </View>
+          ) : (
             <Text></Text>
           )}
-          
 
           <TouchableOpacity
             style={[styles.button, styles.buttonClose]}

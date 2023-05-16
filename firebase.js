@@ -35,7 +35,7 @@ const auth = getAuth(app);
 const storage = getStorage(app);
 const dbStore = getFirestore(app);
 
-const dbRealTime = getDatabase(app, 'https://food-delivery-daf8c-default-rtdb.asia-southeast1.firebasedatabase.app/');
+const dbRealTime = getDatabase(app, 'https://test1-8afe3-default-rtdb.asia-southeast1.firebasedatabase.app/');
 
 //const analytics = getAnalytics(app);
 export  {auth,storage,dbStore,dbRealTime}

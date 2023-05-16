@@ -170,6 +170,26 @@ export default function Index({ navigation }) {
                 />
                 <Text style={styles.actionText}>Order</Text>
               </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.ActionButton}
+                onPress={() => {
+                  if(user)
+                  {
+                    navigation.navigate('Favorite')
+                  }
+                  else{
+                    navigation.navigate("SignIn")
+                  }
+                  
+                }}
+              >
+                <MaterialCommunityIcons
+                  name="heart"
+                  size={30}
+                  color="black"
+                />
+                <Text style={styles.actionText}>Favorite</Text>
+              </TouchableOpacity>
             </>
           )}
           {user ? (
