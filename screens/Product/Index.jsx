@@ -23,6 +23,8 @@ import a from "../home/a";
 import AddProductToCart from "../../features/User/AddProductToCart";
 import { useContext } from "react";
 import { AppContext } from "../../component/Auth/AuthContext";
+import ItemComment from "./ItemComment";
+import comment from "./comment";
 const windowHeight = Dimensions.get("window").height;
 const windowWidth = Dimensions.get("window").width;
 
@@ -34,6 +36,7 @@ export default function Index({ navigation, route }) {
   const [isInCart, setIsInCart] = useState("");
   useEffect(() => {
     setQuantity(1);
+console.log(comment.item[0].comment[0]);
   }, [route.params.id]);
 
   function addToCart() {
@@ -217,58 +220,22 @@ export default function Index({ navigation, route }) {
           </View>
         </View>
       </View>
-      <FlatList
-        style={styles.otherDishesContainer}
-        showsHorizontalScrollIndicator={false}
-        data={a.item[1].product}
-        renderItem={({ item }) => {
-          return (
-            <TouchableOpacity
-              onPress={() => {
-                navigation.navigate("ProductDetails", {
-                  id: item.key,
-                  name: item.name,
-                  image: item.image,
-                  price: item.price,
-                  number: 1,
-                });
-              }}
-              style={{
-                width: "auto",
-                backgroundColor: "#FDFDFD",
-                borderRadius: 20,
-                height: "auto",
-                marginBottom: 10,
-                flexDirection: "row",
-                alignItems: "center",
-                justifyContent: "space-between",
-              }}
-            >
-              <Image
-                source={{ uri: item.image }}
-                style={{
-                  height: windowHeight * 0.13,
-                  width: windowWidth * 0.335,
-                  borderRadius: 20,
-                }}
-              ></Image>
-              <View>
-                <Text>{item.name}</Text>
-                <Text>
-                  {new Intl.NumberFormat("de-DE").format(item.price)} VND
-                </Text>
-              </View>
-              <TouchableOpacity style={styles.otherDishesContainerCart}
-              onPress={() => {
-                addToCart();
-              }}
-              >
-                <FontAwesome name="cart-plus" size={30} color="#fff" />
-              </TouchableOpacity>
-            </TouchableOpacity>
-          );
-        }}
-      ></FlatList>
+     
+      <View style={styles.commentContainer}>
+          <View style={{height:45, justifyContent:'center', alignItems:'center'}}> 
+            <Text style={{fontWeight:'500', fontSize:20}}>Comment</Text>
+          </View>
+          <View>
+            <FlatList
+             data={comment.item[0].comment}
+             renderItem={({item, index})=>{
+              return(
+                <ItemComment key={index} avatar={item.avatar} name={item.name} content={item.content} vote={item.vote}   />
+              )
+             }}
+            />
+          </View>
+      </View>
       <View style={styles.bottomContainer}>
         <View style={{ flexDirection: "column", width: windowWidth * 0.32 }}>
           <Text
@@ -340,6 +307,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 0.3,
     borderColor: "A9A9A9",
     justifyContent: "center",
+    
   },
   informationHeader: {
     height: "48%",
@@ -355,8 +323,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+    
   },
-  otherDishesContainer: {
+  commentContainer: {
     width: windowWidth,
     height: 300,
     padding: 15,
