@@ -1,9 +1,8 @@
 import { View, Text, FlatList, Image } from "react-native";
 import React, { useEffect } from "react";
 
-const ItemDeliver = ({ id, status, total, dataFood, windowHeight }) => {
+const ItemDeliver = ({ id, status, total, dataFood, windowHeight,address }) => {
   useEffect(() => {
-    console.log(dataFood.length);
   });
   return (
     <>
@@ -52,7 +51,6 @@ const ItemDeliver = ({ id, status, total, dataFood, windowHeight }) => {
           <Text style={{ fontSize: 20, fontWeight: "600" }}>Status</Text>
           <StatusOrder status={status} />
         </View>
-
         <View
           style={{
             flexDirection: "row",
@@ -63,6 +61,18 @@ const ItemDeliver = ({ id, status, total, dataFood, windowHeight }) => {
         >
           <Text style={{ fontSize: 20, fontWeight: "500" }}>Total</Text>
           <Text>{new Intl.NumberFormat("de-DE").format(total)} VND</Text>
+        </View>
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            width: "100%",
+            marginTop: 13,
+            flexWrap:'wrap'
+          }}
+        >
+          <Text style={{ fontSize: 20, fontWeight: "500" }}>Address</Text>
+          <Text>{address} VND</Text>
         </View>
         <View
           style={{ width: "100%", height: windowHeight * 0.25, marginTop: 50 }}
@@ -125,6 +135,7 @@ const StatusOrder = ({ status }) => {
       </>
     );
   }
+  
 };
 
 const DataFood = ({ image,index, quantity }) => {

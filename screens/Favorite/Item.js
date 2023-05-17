@@ -57,42 +57,6 @@ export default function Item({navigation}) {
                       borderTopRightRadius: 20,
                     }}
                   ></Image>
-                  <View
-                    style={{
-                      position: "absolute",
-                      top: 15,
-                      left: 20,
-                      width: windowWidth * 0.2,
-                      height: windowHeight * 0.04,
-                      backgroundColor: "#fff",
-                      borderRadius: 30,
-                      flexDirection: "row",
-                      justifyContent: "center",
-                      alignItems: "center",
-                    }}
-                  >
-                    <Text
-                      style={{
-                        fontWeight: "bold",
-                      }}
-                    >
-                      4.5
-                    </Text>
-                    <Entypo
-                      name="star"
-                      size={18}
-                      color="#FFDF5C"
-                      style={{ top: -1, marginLeft: 3 }}
-                    />
-                    <Text
-                      style={{
-                        fontSize: 11,
-                        color: "grey",
-                      }}
-                    >
-                      {"(+25)"}
-                    </Text>
-                  </View>
                   <TouchableOpacity
                     style={{
                       position: "absolute",

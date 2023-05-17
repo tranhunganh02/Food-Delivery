@@ -66,12 +66,6 @@ export default function Item({ navigation, id, name, price, image,onDelete}) {
           uri: image,
         }}
       ></Image>
-      <TouchableOpacity
-      onPress={()=>{console.log(id);}}>
-        <Text>
-          Xoá
-        </Text>
-      </TouchableOpacity>
       <ListItem.Content>
         <ListItem.Title>{name}</ListItem.Title>
         <ListItem.Subtitle>

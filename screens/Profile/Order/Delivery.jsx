@@ -218,20 +218,25 @@ import a from "./a";
 //   </View>
 // );
 import ItemDeliver from "./ItemDeliver";
+import getAllOrder from "../../../features/User/getAllOrder";
+import { auth } from "../../../firebase";
 export default function Delivery() {
   const [product, setProduct] = useState([]);
   useEffect(() => {
-    //setProduct(b)
+    getAllOrder().then((order) =>
+    {
+      setProduct(order);
+    })
   }, []);
   return (
     <View style={{ padding: 10, flex:1 }}>
       <FlatList
-      data={a.item[0].order}
+      data={product}
       showsHorizontalScrollIndicator={false}
       renderItem={({item, index}) => {
      return(
       <>
-      <ItemDeliver key={index} status={item.status} total={item.total} id={item.id} dataFood={item.dataFood} windowHeight={windowHeight}/>
+      <ItemDeliver key={index} status={item.status} total={item.total} id={item.id} dataFood={item.data} address={item.address} windowHeight={windowHeight}/>
      </>
      )
       }}

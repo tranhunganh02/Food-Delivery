@@ -128,6 +128,15 @@ export default function ModalOrder({ data, total, id }) {
           {!order.isRated ? (
             <View>
               <TouchableOpacity
+              style={{
+                height: 40,
+                width: 100,
+                backgroundColor:'#fff',
+                borderRadius:15,
+                justifyContent:'center',
+                alignItems:'center',
+                marginBottom:45
+              }}
                 onPress={() => {
                   setModalVisibleRating(true);
                 }}
@@ -143,11 +152,7 @@ export default function ModalOrder({ data, total, id }) {
                   setContentText(text);
                 }}
               />
-              {rating > 0 && (
-                <Text style={{ fontSize: 18 }}>
-                  Bạn đã đánh giá ứng dụng {rating} sao. Cảm ơn bạn đã đánh giá!
-                </Text>
-              )}
+              
             </View>
           ) : (
             <Text></Text>

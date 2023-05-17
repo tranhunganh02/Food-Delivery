@@ -45,9 +45,6 @@ const CreateAddress = ({ navigation }) => {
       setWard(response.data.wards);
     });
   };
-  const InsertAdrress = (()=>{
-    console.log("city:"+selectedCity+"|district:"+selectedDistrict+"|ward:"+selectedWard+"|address:"+specificAddress+"|phone:"+phoneNumber);
-  })
   useEffect(() => {
     callAPICity();
   }, [selectedCity, selectedDistrict]);
@@ -56,6 +53,9 @@ const CreateAddress = ({ navigation }) => {
     if(selectedCity && selectedDistrict && selectedWard && specificAddress && phoneNumber) {
       const data ={ city: selectedCity,district: selectedDistrict ,ward: selectedWard,specificAddress : specificAddress,phoneNumber: phoneNumber}
       AddAddress(data);
+    }
+    else{
+      alert("Please select full address")
     }
    
   }
@@ -285,7 +285,7 @@ const CreateAddress = ({ navigation }) => {
         />
        <Pressable
         onPress={() => {
-          insertAddress
+          insertAddress()
         }}
         style={({pressed}) => [
           {

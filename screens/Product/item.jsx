@@ -85,7 +85,7 @@ export default function Item({ navigation }) {
                 fontWeight: "bold",
               }}
             >
-              4.5
+              {item.star}
             </Text>
             <Entypo
               name="star"
@@ -99,7 +99,7 @@ export default function Item({ navigation }) {
                 color: "grey",
               }}
             >
-              {"(+25)"}
+              /{(item.number > 5 ) ? '5+' : item.number }
             </Text>
           </View>
           <TouchableOpacity

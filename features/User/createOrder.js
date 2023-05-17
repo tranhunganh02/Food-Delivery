@@ -3,7 +3,7 @@ import { auth, dbStore } from "../../firebase";
 import ModalLoading from "../../component/User/ModalLoading";
 import { Alert } from "react-native";
 
-export default OrderProduct = async ({ data, total }) => {
+export default OrderProduct = async ({ data, total ,address}) => {
   data.forEach(async ({ idProduct }) => {
     await updateDoc(doc(dbStore, "carts", auth.currentUser.uid), {
       [idProduct]: deleteField(),
@@ -14,6 +14,7 @@ export default OrderProduct = async ({ data, total }) => {
     status: 0,
     total: total,
     data: data,
+    address: address
   })
     .then(() => {
       Alert.alert("", "Order Successful! \nYou can check it here");

@@ -32,12 +32,14 @@ import countProduct from "../../features/User/countProductInCart";
 import AddFavoriteProduct from "../../features/User/AddFavoriteProduct";
 import { ProductContext } from "../../component/Auth/Product";
 import { useRef } from "react";
+import getProductFeatured from "../../features/Product/getProductFeatured";
 const windowHeight = Dimensions.get("window").height;
 const windowWidth = Dimensions.get("window").width;
 
 export default function Index({ navigation }) {
   const { products } = useContext(ProductContext);
   const [listNewData, setListNewData] = useState([]);
+  const [listFeatured,setListFeatured] = useState([]);
   const { user } = useContext(AppContext);
   useEffect(() => {
     async function fetchData() {
@@ -45,6 +47,10 @@ export default function Index({ navigation }) {
       setListNewData(data);
     }
     fetchData();
+    getProductFeatured(products).then((data)=>
+    {
+      setListFeatured(data)
+    })
   }, []);
   const [dataFood, setDataFood] = useState(a.item[1].product);
   const [dataFoodSearch, setDataFoodSearch] = useState(products);
@@ -120,7 +126,7 @@ export default function Index({ navigation }) {
             size={64}
             rounded
             source={{
-              uri: "https://cdn.pixabay.com/photo/2019/11/03/20/11/portrait-4599553__340.jpg",
+              uri: user ? (user.image ? user.image : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRY3R_8hlZCdl3FOthlfWXOOLlf3Ngqp6sQvtXQhSs&s" ) : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRY3R_8hlZCdl3FOthlfWXOOLlf3Ngqp6sQvtXQhSs&s",
             }}
           />
           <Text
@@ -132,7 +138,7 @@ export default function Index({ navigation }) {
               width: "85%",
             }}
           >
-            Welcome back, Pin! Order food now!!!
+            Welcome back {user ? user.name : ''}! Order food now!!!
           </Text>
         </View>
 
@@ -344,7 +350,11 @@ export default function Index({ navigation }) {
               New foods
             </Text>
 
-            <TouchableOpacity>
+            <TouchableOpacity
+            onPress={()=>
+            {
+              // navigation.navigate("")
+            }}>
               <Text style={{ left: -35 }}>View all</Text>
               <AntDesign
                 name="arrowright"
@@ -405,7 +415,7 @@ export default function Index({ navigation }) {
                         fontWeight: "bold",
                       }}
                     >
-                      4.5
+                      {item.star}
                     </Text>
                     <Entypo
                       name="star"
@@ -419,7 +429,7 @@ export default function Index({ navigation }) {
                         color: "grey",
                       }}
                     >
-                      {"(+25)"}
+                      /{(item.number > 5 ) ? '5+' : item.number }
                     </Text>
                   </View>
                   <TouchableOpacity
@@ -525,16 +535,144 @@ export default function Index({ navigation }) {
           <FlatList
             showsHorizontalScrollIndicator={false}
             horizontal={true}
-            data={a.item[1].product}
+            data={listFeatured}
             renderItem={({ item }) => {
               return (
+                // <TouchableOpacity
+                //   onPress={() => {
+                //     navigation.navigate("ProductDetails", {
+                //       id: item.id,
+                //       name: item.data.name,
+                //       image: item.data.image,
+                //       price: item.data.price,
+                //     });
+                //   }}
+                //   style={{
+                //     width: windowWidth * 0.7,
+                //     marginRight: 10,
+                //     backgroundColor: "#fff",
+                //     borderRadius: 20,
+                //     height: "auto",
+                //   }}
+                // >
+                //   <Image
+                //     source={{ uri: item.data.image }}
+                //     style={{
+                //       height: windowHeight * 0.23,
+                //       width: "100%",
+                //       borderTopLeftRadius: 20,
+                //       borderTopRightRadius: 20,
+                //     }}
+                //   ></Image>
+                //   <View
+                //     style={{
+                //       position: "absolute",
+                //       top: 15,
+                //       left: 20,
+                //       width: windowWidth * 0.2,
+                //       height: windowHeight * 0.04,
+                //       backgroundColor: "#fff",
+                //       borderRadius: 30,
+                //       flexDirection: "row",
+                //       justifyContent: "center",
+                //       alignItems: "center",
+                //     }}
+                //   >
+                //     <Text
+                //       style={{
+                //         fontWeight: "bold",
+                //       }}
+                //     >
+                //       {item.star}
+                //     </Text>
+                //     <Entypo
+                //       name="star"
+                //       size={18}
+                //       color="#FFDF5C"
+                //       style={{ top: -1, marginLeft: 3 }}
+                //     />
+                //     <Text
+                //       style={{
+                //         fontSize: 11,
+                //         color: "grey",
+                //       }}
+                //     >
+                //        /{(item.number > 5 ) ? '5+' : item.number }
+                //     </Text>
+                //   </View>
+                //   <TouchableOpacity
+                //     style={{
+                //       position: "absolute",
+                //       top: 15,
+                //       right: 20,
+                //       width: windowWidth * 0.09,
+                //       height: windowHeight * 0.04,
+                //       backgroundColor: "#FE724C",
+                //       borderRadius: 30,
+                //       justifyContent: "center",
+                //       alignItems: "center",
+                //     }}
+                //     onPress={() => {
+                //       showSuccessFavorite();
+                //     }}
+                //   >
+                //     <MaterialIcons name="favorite" size={24} color="#fff" />
+                //   </TouchableOpacity>
+                //   <View
+                //     style={{
+                //       height: "auto",
+                //       padding: 15,
+                //     }}
+                //   >
+                //     <View
+                //       style={{
+                //         flexDirection: "row",
+                //         height: 30,
+                //         justifyContent: "space-between",
+                //         alignItems: "center",
+                //       }}
+                //     >
+                //       <Text style={{ fontWeight: "bold", fontSize: 18 }}>
+                //         {item.name}
+                //       </Text>
+                //       <Text>
+                //         {new Intl.NumberFormat("de-DE").format(item.price)}đ
+                //       </Text>
+                //     </View>
+                //     <TouchableOpacity
+                //       style={{
+                //         width: windowWidth * 0.24,
+                //         height: windowHeight * 0.04,
+                //         marginTop: 5,
+                //         backgroundColor: "#F6F6F6",
+                //         justifyContent: "center",
+                //         alignItems: "center",
+                //         borderRadius: 10,
+                //         shadowColor: "black",
+                //         shadowOffset: {
+                //           width: 0.2,
+                //           height: 0.5,
+                //         },
+                //         shadowOpacity: 0.25,
+                //       }}
+                //     >
+                //       <Text
+                //         style={{
+                //           color: "#8A8E9B",
+                //         }}
+                //       >
+                //         PIZZA
+                //       </Text>
+                //     </TouchableOpacity>
+                //   </View>
+                // </TouchableOpacity>
                 <TouchableOpacity
                   onPress={() => {
                     navigation.navigate("ProductDetails", {
-                      id: item.key,
-                      name: item.name,
-                      image: item.image,
-                      price: item.price,
+                      id: item.id,
+                      name: item.data.name,
+                      image: item.data.image,
+                      price: item.data.price,
                     });
                   }}
                   style={{
@@ -546,7 +684,7 @@ export default function Index({ navigation }) {
                   }}
                 >
                   <Image
-                    source={{ uri: item.image }}
+                    source={{ uri: item.data.image }}
                     style={{
                       height: windowHeight * 0.23,
                       width: "100%",
@@ -573,7 +711,7 @@ export default function Index({ navigation }) {
                         fontWeight: "bold",
                       }}
                     >
-                      4.5
+                      {item.star}
                     </Text>
                     <Entypo
                       name="star"
@@ -587,7 +725,7 @@ export default function Index({ navigation }) {
                         color: "grey",
                       }}
                     >
-                      {"(+25)"}
+                      /{(item.number > 5 ) ? '5+' : item.number }
                     </Text>
                   </View>
                   <TouchableOpacity
@@ -603,7 +741,7 @@ export default function Index({ navigation }) {
                       alignItems: "center",
                     }}
                     onPress={() => {
-                      showSuccessFavorite();
+                      showSuccessFavorite(item.id);
                     }}
                   >
                     <MaterialIcons name="favorite" size={24} color="#fff" />
@@ -623,10 +761,11 @@ export default function Index({ navigation }) {
                       }}
                     >
                       <Text style={{ fontWeight: "bold", fontSize: 18 }}>
-                        {item.name}
+                        {item.data.name}
                       </Text>
                       <Text>
-                        {new Intl.NumberFormat("de-DE").format(item.price)}đ
+                        {new Intl.NumberFormat("de-DE").format(item.data.price)}
+                        đ
                       </Text>
                     </View>
                     <TouchableOpacity
@@ -651,7 +790,7 @@ export default function Index({ navigation }) {
                           color: "#8A8E9B",
                         }}
                       >
-                        PIZZA
+                        {item.data.selectedCategory}
                       </Text>
                     </TouchableOpacity>
                   </View>

@@ -43,7 +43,7 @@ const AllProduct = ({ navigation }) => {
         </TouchableOpacity>
         <Text style={{ fontSize: 25, fontWeight: "400" }}>Your favorite</Text>
       </View>
-      <View
+      {/* <View
         style={{
           position: "absolute",
           flex: 1,
@@ -57,7 +57,7 @@ const AllProduct = ({ navigation }) => {
           icon={{ name: "add", color: "white" }}
           size="large"
         />
-      </View>
+      </View> */}
       <Suspense
         fallback={
           <>

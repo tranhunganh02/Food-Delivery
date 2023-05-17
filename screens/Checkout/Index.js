@@ -56,17 +56,14 @@ const Index = ({ navigation, route }) => {
     }
   };
   const confirmOrder = async () => {
-    if(user.address)
-    {
+    console.log(user);
       createOrder({
         data: route.params.product,
-        total: new Intl.NumberFormat("de-DE").format(price),
+        total: Number(price),
+        address : user.city + "- " + user.district + "- " + user.ward + "- " + user.specificAddress
       });
       navigation.navigate("Order");
-    }
-    else{
-      Alert.alert("Error","Please update your address");
-    }
+    
     
   };
   return (

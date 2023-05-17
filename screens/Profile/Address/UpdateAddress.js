@@ -13,21 +13,25 @@ import {
    import { Ionicons, AntDesign } from "@expo/vector-icons";
    import React, { useEffect, useRef, useState } from "react";
    import axios from "axios";
+import AddAddress from "../../../features/User/AddAddress";
+import { useContext } from "react";
+import { AppContext } from "../../../component/Auth/AuthContext";
    const windowWidth = Dimensions.get("window").width;
    const windowHeight = Dimensions.get("window").height;
    const host = "https://provinces.open-api.vn/api/";
    const CreateAddress = ({ navigation, route }) => {
+    const {user} = useContext(AppContext);
      const [city, setCity] = useState(null);
      const [clickedCity, setClickedCity] = useState(false);
-     const [selectedCity, setSelectedCity] = useState("");
+     const [selectedCity, setSelectedCity] = useState(user.city);
      const [district, setDistrict] = useState(null);
      const [clickedDistrict, setClickedDistrict] = useState(false);
-     const [selectedDistrict, setSelectedDistrict] = useState("");
+     const [selectedDistrict, setSelectedDistrict] = useState(user.district);
      const [ward, setWard] = useState(null);
      const [clickedWard, setClickedWard] = useState(false);
-     const [selectedWard, setSelectedWard] = useState("");
-     const [specificAddress, setSpecificAddress] = useState('')
-     const [phoneNumber, setPhoneNumber] = useState(null);
+     const [selectedWard, setSelectedWard] = useState(user.ward);
+     const [specificAddress, setSpecificAddress] = useState(user.specificAddress);
+     const [phoneNumber, setPhoneNumber] = useState(user.phoneNumber);
      var callAPICity = () => {
        axios.get("https://provinces.open-api.vn/api/?depth=1").then((response) => {
          setCity(response.data);
@@ -44,6 +48,7 @@ import {
        });
      };
      useEffect(() => {
+      callAPICity();
      }, [selectedCity, selectedDistrict]);
      return (
        <SafeAreaView
@@ -315,6 +320,15 @@ import {
           justifyContent: "center",
           alignItems: "center",
                marginTop: 300,
+             }}
+             onPress={()=>{
+              if(selectedCity && selectedDistrict && selectedWard && specificAddress && phoneNumber) {
+                const data ={ city: selectedCity,district: selectedDistrict ,ward: selectedWard,specificAddress : specificAddress,phoneNumber: phoneNumber}
+                AddAddress(data);
+              }
+              else{
+                alert("Please select full address")
+              }
              }}
            >
              <Text

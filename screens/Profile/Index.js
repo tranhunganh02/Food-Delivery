@@ -69,7 +69,7 @@ export default function Index({ navigation }) {
       <ScrollView>
         <View
           style={{
-            height: height * 0.5,
+            height: height * 0.6,
             width: "100%",
             justifyContent: "center",
             alignItems: "center",
@@ -189,6 +189,26 @@ export default function Index({ navigation }) {
                   color="black"
                 />
                 <Text style={styles.actionText}>Favorite</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.ActionButton}
+                onPress={() => {
+                  if(user)
+                  {
+                    navigation.navigate('Address')
+                  }
+                  else{
+                    navigation.navigate("SignIn")
+                  }
+                  
+                }}
+              >
+                <FontAwesome
+                  name="address-book-o"
+                  size={30}
+                  color="black"
+                />
+                <Text style={styles.actionText}>Address</Text>
               </TouchableOpacity>
             </>
           )}

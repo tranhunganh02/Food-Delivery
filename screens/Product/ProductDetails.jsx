@@ -102,6 +102,7 @@ export default function ProductDetails({ navigation, route }) {
                   justifyContent: "space-between",
                   alignItems: "center",
                   width: windowWidth * 0.398,
+                  backgroundColor:'#fff'
                 },
               ]}
             >
