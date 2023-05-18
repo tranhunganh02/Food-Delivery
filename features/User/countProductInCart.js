@@ -1,13 +1,22 @@
-import { collection, getDocs } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  where,
+} from "firebase/firestore";
 import { auth, dbStore } from "../../firebase";
 
 export default async function countProduct() {
-  const querySnapshot = await getDocs(collection(dbStore, "carts"));
-  let count = 0;
-  querySnapshot.forEach((docSnapshot) => {
-    if (docSnapshot.id === auth.currentUser.uid) {
-      count = Object.keys(docSnapshot.data()).length;
-    }
-  });
-  return count;
+  const docRef = doc(dbStore, "carts", "Y60Qcsh3ftZWTZhmnhQTOVxWXFJ2");
+
+  const docSnap = await getDoc(docRef);
+  const data = Object.entries(docSnap.data()).map(([key, value]) => ({
+    id: key,
+    ...value,
+  }));
+
+  const productIds = Object.values(data).map((item) => item.idProduct);
+  return productIds.length;
 }

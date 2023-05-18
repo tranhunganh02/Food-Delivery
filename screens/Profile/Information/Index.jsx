@@ -75,7 +75,7 @@ const Information = ({ navigation }) => {
               };
               await AddInformation(data).then((data) => {
                 setIsModalVisible(true);
-                updateUser(data);
+                updateUser();
               });
             })
             .catch(() => {
@@ -90,7 +90,7 @@ const Information = ({ navigation }) => {
         };
         await AddInformation(data).then((data) => {
           setIsModalVisible(true);
-          updateUser(data);
+          updateUser();
           
         });
       }

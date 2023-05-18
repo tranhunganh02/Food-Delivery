@@ -22,8 +22,11 @@ export const AppProvider= ({children})=> {
         })
         return unsubscribe;
     },[])
-    const updateUser = (newUser) => {
-        setUser(newUser);
+    const updateUser = () => {
+        getUser(auth.currentUser.uid).then((data)=>
+        {
+            setUser(data);
+        })
     };
     const updateAvatar = (newAvatar) => {
         const updateUser= {...user}

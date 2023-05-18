@@ -30,6 +30,7 @@ import ModalLoading from "../../component/User/ModalLoading";
 import getPriceToSale from "../../features/User/getPriceToSale";
 import { useContext } from "react";
 import { AppContext } from "../../component/Auth/AuthContext";
+import { CountContext } from "../../component/Auth/QuatityInCart";
 const Index = ({ navigation, route }) => {
   const [getTotal, setTotal] = useState(0);
   const [listFood, setListFood] = useState([]);
@@ -37,6 +38,7 @@ const Index = ({ navigation, route }) => {
   const [isVisible, setIsVisible] = useState(false);
   const [textDiscount, setTextDiscount] = useState("");
   const {user} = useContext(AppContext);
+  const {updateCount} = useContext(CountContext);
   useEffect(() => {
     async function fetchProduct() {
       let result = await getProductCheckOut(route.params.product);
@@ -56,13 +58,21 @@ const Index = ({ navigation, route }) => {
     }
   };
   const confirmOrder = async () => {
-    console.log(user);
+    if(user.city && user.district && user.ward && user.specificAddress)
+    {
       createOrder({
         data: route.params.product,
         total: Number(price),
         address : user.city + "- " + user.district + "- " + user.ward + "- " + user.specificAddress
       });
+      updateCount();
       navigation.navigate("Order");
+    }
+    else
+    {
+      Alert.alert("Warning","Please update your address");
+      navigation.navigate("Address");
+    }
     
     
   };

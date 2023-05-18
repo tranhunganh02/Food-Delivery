@@ -22,37 +22,34 @@ import {
   MaterialIcons,
 } from "@expo/vector-icons";
 import a from "./a";
-import { useLayoutEffect } from "react";
 import fetchProduct from "../../features/Product/fetchProduct";
 import { FAB } from "react-native-elements";
-import countProductInCart from "../../features/User/countProductInCart";
 import { useContext } from "react";
 import { AppContext } from "../../component/Auth/AuthContext";
-import countProduct from "../../features/User/countProductInCart";
 import AddFavoriteProduct from "../../features/User/AddFavoriteProduct";
 import { ProductContext } from "../../component/Auth/Product";
-import { useRef } from "react";
 import getProductFeatured from "../../features/Product/getProductFeatured";
+import { CountContext } from "../../component/Auth/QuatityInCart";
+import countProduct from "../../features/User/countProductInCart";
 const windowHeight = Dimensions.get("window").height;
 const windowWidth = Dimensions.get("window").width;
-
 export default function Index({ navigation }) {
   const { products } = useContext(ProductContext);
   const [listNewData, setListNewData] = useState([]);
-  const [listFeatured,setListFeatured] = useState([]);
+  const [listFeatured, setListFeatured] = useState([]);
   const { user } = useContext(AppContext);
+  const { count } = useContext(CountContext);
   useEffect(() => {
     async function fetchData() {
       const data = await fetchProduct({ limitProduct: 5 });
       setListNewData(data);
     }
     fetchData();
-    getProductFeatured(products).then((data)=>
-    {
-      setListFeatured(data)
-    })
+    getProductFeatured().then((data) => {
+      setListFeatured(data);
+    });
+    countProduct();
   }, []);
-  const [dataFood, setDataFood] = useState(a.item[1].product);
   const [dataFoodSearch, setDataFoodSearch] = useState(products);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [modalText, setModalText] = useState("");
@@ -122,13 +119,23 @@ export default function Index({ navigation }) {
             padding: 5,
           }}
         >
-          <Avatar
-            size={64}
-            rounded
-            source={{
-              uri: user ? (user.image ? user.image : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRY3R_8hlZCdl3FOthlfWXOOLlf3Ngqp6sQvtXQhSs&s" ) : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRY3R_8hlZCdl3FOthlfWXOOLlf3Ngqp6sQvtXQhSs&s",
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate("Profile");
             }}
-          />
+          >
+            <Avatar
+              size={64}
+              rounded
+              source={{
+                uri: user
+                  ? user.image
+                    ? user.image
+                    : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRY3R_8hlZCdl3FOthlfWXOOLlf3Ngqp6sQvtXQhSs&s"
+                  : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRY3R_8hlZCdl3FOthlfWXOOLlf3Ngqp6sQvtXQhSs&s",
+              }}
+            />
+          </TouchableOpacity>
           <Text
             style={{
               fontWeight: "300",
@@ -138,7 +145,7 @@ export default function Index({ navigation }) {
               width: "85%",
             }}
           >
-            Welcome back {user ? user.name : ''}! Order food now!!!
+            Welcome back {user ? user.name : ""}! Order food now!!!
           </Text>
         </View>
 
@@ -181,6 +188,21 @@ export default function Index({ navigation }) {
             }}
           >
             <Ionicons name="cart-outline" size={44} color="black" />
+            <View
+              style={{
+                backgroundColor: "red",
+                position: "absolute",
+                borderRadius: 35,
+                borderColor: "#fff",
+                borderWidth: 1,
+                width: 22,
+                height: 22,
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Text style={{ color: "#fff" }}>{count}</Text>
+            </View>
           </TouchableOpacity>
         </View>
         {foodSearch.length > 0 ? (
@@ -211,21 +233,35 @@ export default function Index({ navigation }) {
                   // setClickedCity(!clickedCity);
                 }}
               >
-                <View style={{flexDirection:'row',justifyContent:'space-around'}}> 
-                <Image 
-                style={{
-                  height: 60,
-                  width: 60,
-                }}
-                source={{ uri: item.data.image }}/>
-                <View>
-                <Text style={{ padding: 10, borderColor:"#F56844",borderWidth:1,borderRadius:5}}>{item.data.name}</Text>
-                <Text style={{ textAlign: 'center' }}>{item.data.price} VND</Text>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "space-around",
+                  }}
+                >
+                  <Image
+                    style={{
+                      height: 60,
+                      width: 60,
+                    }}
+                    source={{ uri: item.data.image }}
+                  />
+                  <View>
+                    <Text
+                      style={{
+                        padding: 10,
+                        borderColor: "#F56844",
+                        borderWidth: 1,
+                        borderRadius: 5,
+                      }}
+                    >
+                      {item.data.name}
+                    </Text>
+                    <Text style={{ textAlign: "center" }}>
+                      {item.data.price} VND
+                    </Text>
+                  </View>
                 </View>
-               
-                </View>
-               
-
               </TouchableOpacity>
             ))}
             <TouchableOpacity
@@ -351,10 +387,10 @@ export default function Index({ navigation }) {
             </Text>
 
             <TouchableOpacity
-            onPress={()=>
-            {
-              // navigation.navigate("")
-            }}>
+              onPress={() => {
+                navigation.navigate("AllProduct");
+              }}
+            >
               <Text style={{ left: -35 }}>View all</Text>
               <AntDesign
                 name="arrowright"
@@ -429,7 +465,7 @@ export default function Index({ navigation }) {
                         color: "grey",
                       }}
                     >
-                      /{(item.number > 5 ) ? '5+' : item.number }
+                      /{item.number > 5 ? "5+" : item.number}
                     </Text>
                   </View>
                   <TouchableOpacity
@@ -522,7 +558,11 @@ export default function Index({ navigation }) {
             <Text style={{ fontWeight: "400", fontSize: 30, color: "#3D405B" }}>
               Featured
             </Text>
-            <TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate("AllProduct");
+              }}
+            >
               <Text style={{ left: -35 }}>View all</Text>
               <AntDesign
                 name="arrowright"
@@ -725,7 +765,7 @@ export default function Index({ navigation }) {
                         color: "grey",
                       }}
                     >
-                      /{(item.number > 5 ) ? '5+' : item.number }
+                      /{item.number > 5 ? "5+" : item.number}
                     </Text>
                   </View>
                   <TouchableOpacity

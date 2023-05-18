@@ -15,6 +15,8 @@ import { Ionicons, AntDesign } from "@expo/vector-icons";
 import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import AddAddress from "../../../features/User/AddAddress";
+import { useContext } from "react";
+import { AppContext } from "../../../component/Auth/AuthContext";
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
 const host = "https://provinces.open-api.vn/api/";
@@ -30,6 +32,7 @@ const CreateAddress = ({ navigation }) => {
   const [selectedWard, setSelectedWard] = useState("");
   const [specificAddress, setSpecificAddress] = useState('')
   const [phoneNumber, setPhoneNumber] = useState(null);
+  const {updateUser} = useContext(AppContext);
   var callAPICity = () => {
     axios.get("https://provinces.open-api.vn/api/?depth=1").then((response) => {
       setCity(response.data);
@@ -53,6 +56,7 @@ const CreateAddress = ({ navigation }) => {
     if(selectedCity && selectedDistrict && selectedWard && specificAddress && phoneNumber) {
       const data ={ city: selectedCity,district: selectedDistrict ,ward: selectedWard,specificAddress : specificAddress,phoneNumber: phoneNumber}
       AddAddress(data);
+      updateUser();
     }
     else{
       alert("Please select full address")

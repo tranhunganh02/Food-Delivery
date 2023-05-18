@@ -32,6 +32,7 @@ import { AppContext } from "../../../component/Auth/AuthContext";
      const [selectedWard, setSelectedWard] = useState(user.ward);
      const [specificAddress, setSpecificAddress] = useState(user.specificAddress);
      const [phoneNumber, setPhoneNumber] = useState(user.phoneNumber);
+     const {updateUser} = useContext(AppContext);
      var callAPICity = () => {
        axios.get("https://provinces.open-api.vn/api/?depth=1").then((response) => {
          setCity(response.data);
@@ -325,6 +326,7 @@ import { AppContext } from "../../../component/Auth/AuthContext";
               if(selectedCity && selectedDistrict && selectedWard && specificAddress && phoneNumber) {
                 const data ={ city: selectedCity,district: selectedDistrict ,ward: selectedWard,specificAddress : specificAddress,phoneNumber: phoneNumber}
                 AddAddress(data);
+                updateUser();
               }
               else{
                 alert("Please select full address")

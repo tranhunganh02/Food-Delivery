@@ -55,6 +55,8 @@ const Index = () => {
             <Stack.Screen name='Order' component={Order} />
             <Stack.Screen name='ListDeliver' component={ListDeliver} />
             <Stack.Screen name="Favorite" component={Favorite} />
+            <Stack.Screen name="AllProduct" component={AllProduct} />
+            <Stack.Screen name="Profile" component={Profile} />
         </Stack.Navigator>
     </NavigationContainer>
   );

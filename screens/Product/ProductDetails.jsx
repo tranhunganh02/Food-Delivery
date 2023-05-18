@@ -26,6 +26,7 @@ import { useContext } from "react";
 import { AppContext } from "../../component/Auth/AuthContext";
 import getStarProduct from "../../features/Product/getStarProduct";
 import getComment from "../../features/Product/getComment";
+import { CountContext } from "../../component/Auth/QuatityInCart";
 const windowHeight = Dimensions.get("window").height;
 const windowWidth = Dimensions.get("window").width;
 export default function ProductDetails({ navigation, route }) {
@@ -36,6 +37,7 @@ export default function ProductDetails({ navigation, route }) {
   const [star,setStar] = useState(0);
   const [comment,setComment] = useState([]);
   const {user} = useContext(AppContext);
+  const {count,updateCount} = useContext(CountContext);
 
   useEffect(() => {
     setQuantity(1);
@@ -57,6 +59,7 @@ export default function ProductDetails({ navigation, route }) {
     };
     AddProductToCart(data).then((value) => {
       setTextReturn(value);
+      updateCount();
     });
     setLoadingVisible(true);
     setTimeout(() => {
@@ -66,6 +69,7 @@ export default function ProductDetails({ navigation, route }) {
         setIsModalVisible(false);
       }, 3000);
     }, 2000);
+   
   }
   return (
     <SafeAreaView

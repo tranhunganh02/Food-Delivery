@@ -20,7 +20,6 @@ export default getProductWithNameDoc = async (nameDoc) => {
   const productIds = Object.values(data).map((item) =>
     nameDoc == "carts" ? item.idProduct : item.id
   );
-  console.log(productIds);
   const propertiesToAdd = ["name", "price", "image"];
   const products = await Promise.all(
     productIds.map((productId) => getProduct(productId))

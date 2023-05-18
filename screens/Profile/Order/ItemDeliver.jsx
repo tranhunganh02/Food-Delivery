@@ -1,9 +1,19 @@
-import { View, Text, FlatList, Image } from "react-native";
+import { View, Text, FlatList, Image, TouchableOpacity } from "react-native";
 import React, { useEffect } from "react";
+import { color } from "react-native-elements/dist/helpers";
+import orderCancel from "../../../features/Product/orderCancel";
+import { useNavigation } from "@react-navigation/native";
 
-const ItemDeliver = ({ id, status, total, dataFood, windowHeight,address }) => {
-  useEffect(() => {
-  });
+const ItemDeliver = ({
+  id,
+  status,
+  total,
+  dataFood,
+  windowHeight,
+  address,
+}) => {
+  const navigation = useNavigation();
+  useEffect(() => {});
   return (
     <>
       <View
@@ -68,44 +78,69 @@ const ItemDeliver = ({ id, status, total, dataFood, windowHeight,address }) => {
             justifyContent: "space-between",
             width: "100%",
             marginTop: 13,
-            flexWrap:'wrap'
+            flexWrap: "wrap",
           }}
         >
           <Text style={{ fontSize: 20, fontWeight: "500" }}>Address</Text>
-          <Text>{address} VND</Text>
+          <Text>{address}</Text>
         </View>
         <View
           style={{ width: "100%", height: windowHeight * 0.25, marginTop: 50 }}
         >
           <View
             style={{
-              flexDirection:'row',
-              justifyContent:'space-between',
-              alignItems:'center',
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignItems: "center",
               borderColor: "#B7B7B7",
               height: 100,
               width: "100%",
-              borderBottomWidth:1,
-              paddingBottom:5
+              borderBottomWidth: 1,
+              paddingBottom: 5,
             }}
           >
-               <Text style={{ fontSize: 19, fontWeight: "500", top:-5}}>Product    </Text>
-           <View>
-           <FlatList
-              data={dataFood}
-              horizontal={true}
-              showsHorizontalScrollIndicator={false}
-              renderItem={({ item, index }) => {
-                return (
-                   <DataFood
+            <Text style={{ fontSize: 19, fontWeight: "500", top: -5 }}>
+              Product{" "}
+            </Text>
+            <View>
+              <FlatList
+                data={dataFood}
+                horizontal={true}
+                showsHorizontalScrollIndicator={false}
+                renderItem={({ item, index }) => {
+                  return (
+                    <DataFood
                       image={item.image}
                       quantity={item.quantity}
                       index={index}
                     />
-                );
-              }}
-            />
-           </View>
+                  );
+                }}
+              />
+              {status === 0 ? (
+                <TouchableOpacity
+                style={{
+                  borderColor: "#fff",
+                  borderWidth: 1,
+                  padding: 5,
+                  borderRadius: 10,
+                  backgroundColor: 'red',
+                }}
+                onPress={()=>
+                {
+                  orderCancel(id);
+                  navigation.navigate("Profile")
+                  
+                }}
+              >
+                <Text style={{color: 'white'}}>Order Cancel</Text>
+              </TouchableOpacity>
+              ) :
+              (
+                <Text></Text>
+              ) }
+              
+            </View>
           </View>
         </View>
       </View>
@@ -135,23 +170,25 @@ const StatusOrder = ({ status }) => {
       </>
     );
   }
-  
 };
 
-const DataFood = ({ image,index, quantity }) => {
+const DataFood = ({ image, index, quantity }) => {
   if (index <= 2) {
     return (
-     <>
-     <View style={{justifyContent:'center', alignItems:'center'}}>
-     <Image source={{ uri: image }} style={{ height: 70, width: 50, margin:5 }} />
-     <Text>x {quantity}</Text>
-     </View>
-     </>
+      <>
+        <View style={{ justifyContent: "center", alignItems: "center" }}>
+          <Image
+            source={{ uri: image }}
+            style={{ height: 70, width: 50, margin: 5 }}
+          />
+          <Text>x {quantity}</Text>
+        </View>
+      </>
     );
   } else if (index == 3)
     return (
       <>
-        <Text style={{top:25}}> +More</Text>
+        <Text style={{ top: 25 }}> +More</Text>
       </>
     );
 };
