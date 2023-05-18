@@ -105,8 +105,10 @@ export default function ProductDetails({ navigation, route }) {
                   flexDirection: "row",
                   justifyContent: "space-between",
                   alignItems: "center",
-                  width: windowWidth * 0.398,
-                  backgroundColor:'#fff'
+                  width: windowWidth * 0.4,
+                  backgroundColor:'#fff',
+                  height:70,
+                  borderRadius:15
                 },
               ]}
             >

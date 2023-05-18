@@ -41,26 +41,28 @@ const Item = ({
         marginBottom: 10,
         flexDirection: "row",
         alignItems: "center",
-        justifyContent: "space-between",
-        padding: 20,
-        paddingLeft: 10,
+        justifyContent: "space-around",
+        padding: 10,
       }}
     >
+      <View>
       <CheckBox
         onPress={() => {
           getCheckboxChecked(id);
         }}
         checked={checked}
+
       />
+      </View>
       <Image
         source={{ uri: image }}
         style={{
           height: windowHeight * 0.115,
-          width: windowWidth * 0.335,
+          width: windowWidth * 0.34,
         }}
       />
-      <View style={{ flexWrap: "wrap", flexDirection: "column" }}>
-        <View style={{ marginLeft: 40, marginTop: 10 }}>
+      <View style={{ flexWrap: "wrap", flexDirection: "column", }}>
+        <View style={{ marginLeft: 5, marginTop: 10 }}>
           <Text>{name.toUpperCase()}</Text>
           <Text style={{ fontWeight: "600", paddingTop: 10, color: "#F56844" }}>
             {new Intl.NumberFormat("de-DE").format(
@@ -70,7 +72,7 @@ const Item = ({
           </Text>
         </View>
         <View
-          style={{ alignItems: "center", flexDirection: "row", padding: 10 }}
+          style={{ alignItems: "center", flexDirection: "row",}}
         >
           <TouchableOpacity
             style={styles.foodButton}
