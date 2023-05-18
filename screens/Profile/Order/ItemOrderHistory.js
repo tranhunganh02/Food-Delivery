@@ -3,26 +3,19 @@ import React, { useState } from "react";
 import { CheckBox } from "react-native-elements";
 import { useEffect } from "react";
 import { Dimensions } from "react-native";
+import getProduct from "../../../features/Product/getProduct";
 const windowWidth = Dimensions.get('window').width
 const windowHeight = Dimensions.get('window').height
 const Item = ({
-  id,
-  name, quantity, price, image
+  id,quantity
   
 }) => {
     const [product,setProduct] = useState({});
     useEffect(()=> 
     {
-     //    getProduct(id).then((data) =>
-     //    setProduct(data))
+        getProduct(id).then((data) =>
+        setProduct(data))
     },[])
-    
-  // const [getQuantity, setQuantity] = useState(quantity);
-  // const getPrice = (priceProduct,quantityProduct) => {
-  //   return priceProduct*quantityProduct;
-  // }
-
-  
   return (
     <View
       style={{
@@ -45,8 +38,8 @@ const Item = ({
           alignItems: "center",
         }}
       >
-        <Text style={{ fontSize: 17, fontWeight: "400" }}> {name}</Text>
-        <Text>{new Intl.NumberFormat("de-DE").format(price)} VND</Text>
+        <Text style={{ fontSize: 17, fontWeight: "400" }}> {product.name}</Text>
+        <Text>{new Intl.NumberFormat("de-DE").format(product.price)} VND</Text>
       </View>
       <View
         style={{
@@ -58,7 +51,7 @@ const Item = ({
       >
         <Text>Quantity: {quantity}</Text>
         <Image
-          source={{ uri: image }}
+          source={{ uri: product.image }}
           style={{
             height: windowHeight * 0.1,
             width: "90%",

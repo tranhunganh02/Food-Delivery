@@ -1,7 +1,9 @@
 import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
 import React, { useState } from "react";
 import { AntDesign } from "@expo/vector-icons";
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons } from "@expo/vector-icons";
+import FastImage from "react-native-fast-image";
+import { CheckBox } from "react-native-elements";
 const Item = ({
   id,
   name,
@@ -11,55 +13,87 @@ const Item = ({
   windowHeight,
   windowWidth,
   deleteSelectedElement,
+  onQuantityChange,
+  onClickCheckBox
 }) => {
   const [getQuantity, setQuantity] = useState(quantity);
+  const [checked, setChecked] = useState(false);
+  const getPrice = (priceProduct, quantityProduct) => {
+    return priceProduct * quantityProduct;
+  };
+  // Gọi hàm callback onQuantityChange với giá trị quantity mới khi thay đổi số lượng sản phẩm
+  const handleQuantityChange = (newQuantity,price) => {
+    setQuantity(newQuantity);
+    onQuantityChange(id, newQuantity,price);
+  };
+  const getCheckboxChecked = (idProduct) => {
+    checked ? setChecked(false) : setChecked(true);
+
+    onClickCheckBox(idProduct, getQuantity,getQuantity*price,image);
+  };
 
   return (
     <View
       style={{
         width: "100%",
         backgroundColor: "#FDFDFD",
-        borderRadius: 20,
         height: "auto",
         marginBottom: 10,
         flexDirection: "row",
         alignItems: "center",
-        justifyContent: "space-between",
-        
+        justifyContent: "space-around",
+        padding: 10,
       }}
     >
+      <View>
+      <CheckBox
+        onPress={() => {
+          getCheckboxChecked(id);
+        }}
+        checked={checked}
+
+      />
+      </View>
       <Image
         source={{ uri: image }}
         style={{
           height: windowHeight * 0.115,
-          width: windowWidth * 0.335,
-          borderRadius: 20,
+          width: windowWidth * 0.34,
         }}
-      ></Image>
-      <View style={{}}>
-        <Text>{name}</Text>
-        <Text style={{fontWeight:'600'}}>{new Intl.NumberFormat("de-DE").format(price)} VND</Text>
-      </View>
-      <View style={{alignItems:'center'}}>
-        <TouchableOpacity
-          style={styles.foodButton}
-          onPress={() => {
-            setQuantity(getQuantity + 1);
-          }}
+      />
+      <View style={{ flexWrap: "wrap", flexDirection: "column", }}>
+        <View style={{ marginLeft: 5, marginTop: 10 }}>
+          <Text>{name.toUpperCase()}</Text>
+          <Text style={{ fontWeight: "600", paddingTop: 10, color: "#F56844" }}>
+            {new Intl.NumberFormat("de-DE").format(
+              getPrice(price, getQuantity)
+            )}{" "}
+            VND
+          </Text>
+        </View>
+        <View
+          style={{ alignItems: "center", flexDirection: "row",}}
         >
-          <AntDesign name="plus" size={20} color="black" />
-        </TouchableOpacity>
-        <Text>{getQuantity}</Text>
-        <TouchableOpacity
-          style={styles.foodButton}
-          onPress={() => {
-            if (getQuantity > 1) setQuantity(getQuantity - 1);
-          }}
-        >
-          <AntDesign name="minus" size={20} color="black" />
-        </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.foodButton}
+            onPress={() => {
+              if (getQuantity > 1) handleQuantityChange(getQuantity - 1);
+            }}
+          >
+            <AntDesign name="minus" size={20} color="black" />
+          </TouchableOpacity>
+          <Text style={{ padding: 10 }}>{getQuantity}</Text>
+          <TouchableOpacity
+            style={styles.foodButton}
+            onPress={() => {
+              handleQuantityChange(getQuantity + 1);
+            }}
+          >
+            <AntDesign name="plus" size={20} color="black" />
+          </TouchableOpacity>
+        </View>
       </View>
-      <TouchableOpacity
+      {/* <TouchableOpacity
       //  onPress={() => deleteSelectedElement(id, name)}
       style={{
         right:10,
@@ -67,7 +101,7 @@ const Item = ({
       }}
       >
         <Ionicons name="trash-bin" size={24} color="red" />
-      </TouchableOpacity>
+      </TouchableOpacity> */}
     </View>
   );
 };
@@ -77,8 +111,7 @@ const styles = StyleSheet.create({
     padding: 4,
     borderWidth: 0.4,
     borderColor: "#E2E2E2",
-    borderRadius:10,
-    marginHorizontal:5
+    marginHorizontal: 5,
   },
 });
 

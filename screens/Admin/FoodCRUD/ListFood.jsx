@@ -6,37 +6,30 @@ import {
   TouchableOpacity,
   StatusBar,
   ScrollView,
-  Modal
+  Modal,
 } from "react-native";
-import {
-  Ionicons,
-  Entypo,
-  AntDesign,
-  MaterialIcons
-} from "@expo/vector-icons";
-
+import { Ionicons, Entypo, AntDesign, MaterialIcons } from "@expo/vector-icons";
+import getAllProduct from "../../../features/Product/getAllProduct";
 import React, { useEffect, useState } from "react";
 import Item from "./Item";
 import a from "../../home/a.js";
 import { FAB } from "@rneui/themed";
+import deleteProduct from "../../../features/Product/deleteProduct";
+import { useContext } from "react";
+import { ProductContext } from "../../../component/Auth/Product";
 const windowHeight = Dimensions.get("window").height;
 const windowWidth = Dimensions.get("window").width;
 
 const List = ({ navigation }) => {
+  const [listFood, setListFood] = useState(products);
+  useEffect(() => {
+    getAllProduct().then((data) => {
+      setListFood(data);
+    });
+  }, [products]);
   const [loadingVisible, setLoadingVisible] = useState(false);
-  const [listFood, setListFood] = useState(a.item[2].product);
   const [modalVisible, setModalVisible] = useState(false);
-  const deleteItem = ()=>{
-    setLoadingVisible(!loadingVisible)
-    setTimeout(() => {
-      setLoadingVisible(false)   
-      setModalVisible(true)   
-      setTimeout(()=>{
-        setModalVisible(false)
-      },3000)     
-   }, 2000);
-  }
-
+  const {updateProduct,products} = useContext(ProductContext);
   return (
     <View
       style={{
@@ -47,21 +40,12 @@ const List = ({ navigation }) => {
         paddingVertical: 10,
       }}
     >
-      
       <StatusBar barStyle={"dark-content"} />
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={modalVisible}
-       >
+      <Modal animationType="slide" transparent={true} visible={modalVisible}>
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
             <Text style={styles.modalText}>Delete success!</Text>
-            <MaterialIcons
-                  name="library-add-check"
-                  size={35}
-                  color="green"
-                />
+            <MaterialIcons name="library-add-check" size={35} color="green" />
           </View>
         </View>
       </Modal>
@@ -93,19 +77,28 @@ const List = ({ navigation }) => {
           width: windowWidth * 0.85,
         }}
       >
-        {listFood.map((item, index) => (
+        {listFood ? 
+        (listFood.map((item, index) => (
           <Item
             navigation={navigation}
             key={index}
-            id={item.key}
-            name={item.name}
-            price={item.price}
-            image={item.image}
-            quantity={item.quantity}
-            onPress={deleteItem}
+            id={item.id}
+            name={item.data.name}
+            price={item.data.price}
+            image={item.data.image}
+            quantity={item.data.quantity}
+            onDelete={(id) => {
+              deleteProduct(id);
+              updateProduct();
+              navigation.goBack();
+            }}
           />
-        ))}
+        ))):
+        (
+          <Text>No product in here</Text>
+        )}
       </ScrollView>
+
       <FAB
         color="green"
         loading
@@ -148,8 +141,8 @@ const styles = StyleSheet.create({
   },
   centeredView: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   modalView: {
     backgroundColor: "white",
@@ -163,9 +156,9 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.25,
     shadowRadius: 4,
-    flexDirection:'row',
-    justifyContent:'space-around',
-    alignItems:'center',
-    width:windowWidth*0.7,
+    flexDirection: "row",
+    justifyContent: "space-around",
+    alignItems: "center",
+    width: windowWidth * 0.7,
   },
 });

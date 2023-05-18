@@ -21,29 +21,56 @@ import {
 } from "@expo/vector-icons";
 import ItemComment from "./ItemComment";
 import comment from "./comment";
+import AddProductToCart from "../../features/User/AddProductToCart";
+import { useContext } from "react";
+import { AppContext } from "../../component/Auth/AuthContext";
+import getStarProduct from "../../features/Product/getStarProduct";
+import getComment from "../../features/Product/getComment";
+import { CountContext } from "../../component/Auth/QuatityInCart";
 const windowHeight = Dimensions.get("window").height;
 const windowWidth = Dimensions.get("window").width;
 export default function ProductDetails({ navigation, route }) {
   const [quantity, setQuantity] = useState(0 * 0);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [loadingVisible, setLoadingVisible] = useState(false);
+  const [textReturn,setTextReturn] = useState("");
+  const [star,setStar] = useState(0);
+  const [comment,setComment] = useState([]);
+  const {user} = useContext(AppContext);
+  const {count,updateCount} = useContext(CountContext);
+
   useEffect(() => {
-    setQuantity(0);
-console.log(comment.item[0].comment[0]);
+    setQuantity(1);
+    getStarProduct(route.params.id)
+    .then((star)=>
+    {
+     setStar(star);
+    })
+    getComment(route.params.id).then((data)=> {
+      setComment(data);
+    })
   }, [route.params.id]);
-
   function addToCart() {
-      setLoadingVisible(true)
+    const data = {
+      quantity: quantity,
+      idProduct: route.params.id,
+      isDelivered: false,
+      created_at: Date.now(),
+    };
+    AddProductToCart(data).then((value) => {
+      setTextReturn(value);
+      updateCount();
+    });
+    setLoadingVisible(true);
+    setTimeout(() => {
+      setLoadingVisible(false);
+      setIsModalVisible(true);
       setTimeout(() => {
-        setLoadingVisible(false);
-        setIsModalVisible(true)
-        setTimeout(()=>{
-          setIsModalVisible(false)
-  
-        }, 1500)
-      }, 2000);
+        setIsModalVisible(false);
+      }, 3000);
+    }, 2000);
+   
   }
-
   return (
     <SafeAreaView
       style={{ flex: 1, alignItems: "center", backgroundColor: "#FBF9F9" }}
@@ -78,11 +105,14 @@ console.log(comment.item[0].comment[0]);
                   flexDirection: "row",
                   justifyContent: "space-between",
                   alignItems: "center",
-                  width: windowWidth * 0.398,
+                  width: windowWidth * 0.4,
+                  backgroundColor:'#fff',
+                  height:70,
+                  borderRadius:15
                 },
               ]}
             >
-              <Text style={styles.modalText}>Success</Text>
+              <Text style={styles.modalText}>{textReturn}</Text>
               <AntDesign name="checkcircle" size={37} color="green" />
             </View>
           </TouchableOpacity>
@@ -162,7 +192,7 @@ console.log(comment.item[0].comment[0]);
           <View style={{ marginRight: 5, marginTop:4 }}>
             <TouchableOpacity style={{height:47,  justifyContent:'space-around', alignItems:'center', width:windowWidth*0.15, flexDirection:'row-reverse'}}>
             <Text>
-             3.8
+             {star? star : 0}
             </Text>
             <Entypo name="star" size={23} color="#DECE44" /> 
             </TouchableOpacity>
@@ -216,10 +246,10 @@ console.log(comment.item[0].comment[0]);
           </View>
           <View>
             <FlatList
-             data={comment.item[0].comment}
+             data={comment}
              renderItem={({item, index})=>{
               return(
-                <ItemComment key={index} avatar={item.avatar} name={item.name} content={item.content} vote={item.vote}   />
+                <ItemComment key={index} avatar={item.avatar} name={item.name} content={item.content} star={item.star}   />
               )
              }}
             />
@@ -245,7 +275,15 @@ console.log(comment.item[0].comment[0]);
         <TouchableOpacity
           style={styles.bottomButton}
           onPress={() => {
-            addToCart();
+            if(user)
+            {
+              addToCart();
+            }
+            else
+            {
+              navigation.navigate("SignIn");
+            }
+            
           }}
         >
           <Text style={{ color: "#fff", fontSize: 18 }}>Add to cart</Text>

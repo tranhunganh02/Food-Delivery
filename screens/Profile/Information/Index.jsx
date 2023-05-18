@@ -16,17 +16,29 @@ import { Ionicons, AntDesign } from "@expo/vector-icons";
 import React, { useEffect, useState, useCallback } from "react";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import SelectDropdown from "react-native-select-dropdown";
+import { useContext } from "react";
+import { AppContext } from "../../../component/Auth/AuthContext";
+import { Alert } from "react-native";
+import AddInformation from "../../../features/User/AddInformation";
+import { Button } from "react-native";
+import { auth } from "../../../firebase";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import ModalLoading from "../../../component/User/ModalLoading";
 const windowWidth = Dimensions.get("window").width;
 const windowHeight = Dimensions.get("window").height;
 const host = "https://provinces.open-api.vn/api/";
 const Information = ({ navigation }) => {
+  const { user, updateUser } = useContext(AppContext);
   useEffect(() => {}, []);
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-  const [sex, setSex] = useState();
-const  br = (sex1) =>{
-    setSex(sex1);
-    console.log(sex);
+  const [gender, setGender] = useState();
+  const [isConfirm, setConfirm] = useState(false);
+  const [name, setName] = useState(user.name);
+  const [password, setPassword] = useState("");
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  function br(gender1) {
+    setGender(gender1);
   }
   const showDatePicker = () => {
     setDatePickerVisibility(true);
@@ -40,11 +52,56 @@ const  br = (sex1) =>{
     if (type == "set") {
       const currentDay = selectedDate;
       setSelectedDate(currentDay);
-      if(Platform.OS==="android"){
-       hideDatePicker()
+      if (Platform.OS === "android") {
+        hideDatePicker();
       }
     }
     console.log(selectedDate.toISOString().slice(0, 10));
+  };
+  const InsertInformation = async () => {
+    if (!name) {
+      Alert.alert("Warning", "Name is required");
+    } else {
+      if (password) {
+        setModalVisible(true);
+        if (isConfirm) {
+          signInWithEmailAndPassword(auth, auth.currentUser.email, password)
+            .then(async () => {
+              const data = {
+                name: name,
+                password: password,
+                birthday: selectedDate.toISOString().slice(0, 10),
+                gender: gender,
+              };
+              await AddInformation(data).then((data) => {
+                setIsModalVisible(true);
+                updateUser();
+              });
+            })
+            .catch(() => {
+              Alert.alert("Warning", "Password is valid");
+            });
+        }
+      } else {
+        const data = {
+          name: name,
+          birthday: selectedDate.toISOString().slice(0, 10),
+          gender: !gender ? null : gender,
+        };
+        await AddInformation(data).then((data) => {
+          setIsModalVisible(true);
+          updateUser();
+          
+        });
+      }
+    }
+  };
+  const [modalVisible, setModalVisible] = useState(false);
+  const [textInputValue, setTextInputValue] = useState("");
+
+  const handleSave = () => {
+    // Xử lý giá trị nhập vào đây
+    setModalVisible(false);
   };
   return (
     <SafeAreaView
@@ -56,6 +113,76 @@ const  br = (sex1) =>{
         paddingVertical: 10,
       }}
     >
+      <ModalLoading
+        visible={isModalVisible}
+        time={1500}
+        onLoading={(isEnd) => {
+          setIsModalVisible(isEnd);
+        }}
+      />
+      <View>
+        <Modal visible={modalVisible} animationType="slide" transparent={true}>
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <View
+                style={{
+                  alignItems: "center",
+                }}
+              >
+                <TextInput
+                  style={{
+                    height: 40,
+                    borderRadius: 10,
+                    borderWidth: 1,
+                    borderColor: "#000",
+                    paddingHorizontal: 10,
+                    width: 200,
+                  }}
+                  secureTextEntry
+                  value={textInputValue}
+                  onChangeText={(text) => setTextInputValue(text)}
+                  placeholder="Nhập mật khẩu"
+                />
+              </View>
+              <View
+                style={[
+                  {
+                    flexDirection: "row",
+                    justifyContent: "space-evenly",
+                    alignItems: "center",
+                  },
+                ]}
+              >
+                <TouchableOpacity
+                  onPress={handleSave}
+                  style={[
+                    styles.button,
+                    {
+                      backgroundColor: "green",
+                    },
+                  ]}
+                >
+                  <Text style={{ color: "white" }}>Confirm</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => {
+                    setModalVisible(false);
+                    setConfirm(true);
+                  }}
+                  style={[
+                    styles.button,
+                    {
+                      backgroundColor: "red",
+                    },
+                  ]}
+                >
+                  <Text style={{ color: "white" }}>Cancel</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
+        </Modal>
+      </View>
       <StatusBar barStyle={"dark-content"} />
       <View style={styles.headerContainer}>
         <TouchableOpacity
@@ -83,6 +210,10 @@ const  br = (sex1) =>{
           <TextInput
             style={[styles.conponentInput]}
             placeholder={"Name"}
+            value={name}
+            onChangeText={(name) => {
+              setName(name);
+            }}
           ></TextInput>
         </View>
         <View style={styles.conponent}>
@@ -90,6 +221,10 @@ const  br = (sex1) =>{
           <TextInput
             style={styles.conponentInput}
             placeholder="Password"
+            value={password}
+            onChangeText={(password) => {
+              setPassword(password);
+            }}
           ></TextInput>
         </View>
         <View style={styles.conponent}>
@@ -107,7 +242,9 @@ const  br = (sex1) =>{
               style={{ position: "absolute", left: 15, bottom: 10 }}
             ></Image>
             {selectedDate != null ? (
-              <Text style={{ fontSize: 17.5 }}>{selectedDate.toISOString().slice(0, 10)}</Text>
+              <Text style={{ fontSize: 17.5 }}>
+                {selectedDate.toISOString().slice(0, 10)}
+              </Text>
             ) : null}
           </TouchableOpacity>
           {/* <DateTimePickerModal
@@ -117,7 +254,7 @@ const  br = (sex1) =>{
             onConfirm={handleConfirm}
             onCancel={hideDatePicker}
           /> */}
-          {isDatePickerVisible && Platform.OS==='ios'&&(
+          {isDatePickerVisible && Platform.OS === "ios" && (
             <Modal
               animationType="fade"
               transparent={true}
@@ -135,30 +272,34 @@ const  br = (sex1) =>{
                     onChange={handleConfirm}
                     dateFormat="day month year"
                     style={{
-                      height:300
+                      height: 300,
                     }}
                   ></DateTimePicker>
-                  <TouchableOpacity onPress={()=>{hideDatePicker()}}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      hideDatePicker();
+                    }}
+                  >
                     <Text>Close</Text>
                   </TouchableOpacity>
                 </View>
               </View>
             </Modal>
           )}
-          {
-            isDatePickerVisible && Platform.OS==="android" && (
-              <DateTimePicker
-                    mode="date"
-                    display="spinner"
-                    value={selectedDate}
-                    onChange={handleConfirm}
-                    placeholderText={"Choose date"}
-                    dateFormat="day month year"
-                    onTouchCancel={()=>{hideDatePicker()}}
-                    onPointerCancel={hideDatePicker}
-               />
-            )
-          }
+          {isDatePickerVisible && Platform.OS === "android" && (
+            <DateTimePicker
+              mode="date"
+              display="spinner"
+              value={selectedDate}
+              onChange={handleConfirm}
+              placeholderText={"Choose date"}
+              dateFormat="day month year"
+              onTouchCancel={() => {
+                hideDatePicker();
+              }}
+              onPointerCancel={hideDatePicker}
+            />
+          )}
         </View>
         <View style={styles.conponent}>
           <Text style={styles.conponentText}>Gender</Text>
@@ -180,29 +321,32 @@ const  br = (sex1) =>{
               return item;
             }}
           />
-          <View style={[styles.conponent,{alignItems:'center', justifyContent:'center'}]}>
-          <Pressable
-          onPress={() => {
-            InsertAdrress();
-          }}
-          style={({ pressed }) => [
-            {
-              backgroundColor: pressed ? "rgb(210, 230, 255)" : "#BFCBAE",
-              width: "100%",
-              height: windowHeight * 0.08,
-              justifyContent: "center",
-              alignItems: "center",
-              borderRadius: 40,
-              marginTop:40
-            },
-          ]}
-        >
-          {<Text style={{ color: "#fff" }}>UPDATE</Text>}
-        </Pressable>
+          <View
+            style={[
+              styles.conponent,
+              { alignItems: "center", justifyContent: "center" },
+            ]}
+          >
+            <Pressable
+              onPress={() => {
+                InsertInformation();
+              }}
+              style={({ pressed }) => [
+                {
+                  backgroundColor: pressed ? "rgb(210, 230, 255)" : "#BFCBAE",
+                  width: "100%",
+                  height: windowHeight * 0.08,
+                  justifyContent: "center",
+                  alignItems: "center",
+                  borderRadius: 40,
+                  marginTop: 40,
+                },
+              ]}
+            >
+              <Text style={{ color: "#fff" }}>UPDATE</Text>
+            </Pressable>
           </View>
-           
         </View>
-       
       </View>
     </SafeAreaView>
   );
@@ -211,6 +355,12 @@ const  br = (sex1) =>{
 export default Information;
 
 const styles = StyleSheet.create({
+  button: {
+    backgroundColor: "#0066cc",
+    borderRadius: 10,
+    padding: 10,
+    margin: 15,
+  },
   headerContainer: {
     height: windowHeight * 0.08,
     width: "82%",
@@ -239,8 +389,8 @@ const styles = StyleSheet.create({
   conponent: {
     width: "100%",
     marginBottom: 15,
-    height:windowHeight*0.11,
-    paddingHorizontal:30
+    height: windowHeight * 0.11,
+    paddingHorizontal: 30,
   },
   conponentText: {
     color: "#9796A1",
@@ -274,6 +424,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    borderColor: "black",
   },
   modalView: {
     backgroundColor: "white",
@@ -281,6 +432,7 @@ const styles = StyleSheet.create({
     padding: 25,
     alignItems: "center",
     shadowColor: "#000",
+    alignSelf: "center",
     shadowOffset: {
       width: 0,
       height: 2,

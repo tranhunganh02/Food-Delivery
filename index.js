@@ -30,9 +30,7 @@ import { createMaterialBottomTabNavigator } from '@react-navigation/material-bot
 import { AntDesign, Ionicons } from '@expo/vector-icons';
 
 const Stack = createNativeStackNavigator();
-
 const Index = () => {
-
   return (
     <NavigationContainer>
         <Stack.Navigator initialRouteName="BottomTab" screenOptions={{headerShown: false}}>
@@ -57,24 +55,26 @@ const Index = () => {
             <Stack.Screen name='ChatCustomer' component={ChatCustomer} />
             <Stack.Screen name='Order' component={Order} />
             <Stack.Screen name='ListDeliver' component={ListDeliver} />
+            <Stack.Screen name="Favorite" component={Favorite} />
+            <Stack.Screen name="AllProduct" component={AllProduct} />
+            <Stack.Screen name="Profile" component={Profile} />
         </Stack.Navigator>
     </NavigationContainer>
-  )
-}
-
+  );
+};
 
 const Tab = createMaterialBottomTabNavigator();
 
 function BottomTab() {
   return (
+    
     <Tab.Navigator
       // barStyle={{backgroundColor: '#DAE2B6', paddingTop:10}}
       barStyle={{backgroundColor: '#8E9288', 
-      height:80}}
-      initialRouteName="Favorite"
+      height:70}}
+      initialRouteName="Home"
       activeColor="black"
     >
-    
       <Tab.Screen
         name="Home"
         component={Home}
@@ -114,9 +114,9 @@ function BottomTab() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
   },
 });
 export default Index;

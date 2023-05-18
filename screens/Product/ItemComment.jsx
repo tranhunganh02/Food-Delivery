@@ -2,9 +2,9 @@ import { View, Text } from "react-native";
 import React, { useEffect } from "react";
 import { Card, Icon, Avatar, ListItem } from "@rneui/themed";
 import { AntDesign } from "@expo/vector-icons";
-const ItemComment = ({ avatar, name, content, vote }) => {
+const ItemComment = ({ avatar, name, content, star }) => {
   useEffect(() => {
-    console.log(name);
+    // console.log(name);
   });
   return (
     <>
@@ -30,8 +30,9 @@ const ItemComment = ({ avatar, name, content, vote }) => {
             >
               <Text>{name}</Text>
               <View style={{ flexDirection: "row", alignContent:'space-around' }}>
-                <Text>Vote {vote} </Text>
-                <AntDesign name="star" size={24} color="#ACD175" style={{top:-5}}/>
+                {Array.from({ length:star }, (_, index) => (
+                <AntDesign key={index} name="star" size={10} color="#ACD175" style={{}}/>
+                ))}
               </View>
             </View>
           </ListItem.Title>

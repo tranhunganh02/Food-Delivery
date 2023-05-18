@@ -11,9 +11,13 @@ import React from "react";
 import { ListItem, Icon } from "@rneui/themed";
 import { Feather, MaterialIcons } from "@expo/vector-icons";
 const windowWidth = Dimensions.get("window").width;
-export default function Item({ navigation, id, name, price, image, onPress }) {
+export default function Item({ navigation, id, name, price, image,onDelete}) {
+  function handleDeleteProduct() {
+    onDelete(id);
+  }
+  
   return (
-    <ListItem.Swipeable
+     <ListItem.Swipeable
       style={{
         height: 150,
         width: windowWidth * 0.87,
@@ -32,24 +36,25 @@ export default function Item({ navigation, id, name, price, image, onPress }) {
             height: "100%",
           }}
           onPress={() => {
-            navigation.navigate("UpdateFood");
+            navigation.navigate("UpdateFood", {
+              id: id,
+            });
           }}
         >
           <MaterialIcons name="system-update-alt" size={24} color="black" />
         </TouchableOpacity>
       )}
       rightContent={(action) => (
-        <TouchableOpacity
-          style={{
-            justifyContent: "center",
-            backgroundColor: "#f4f4f4",
-            alignItems: "center",
-            height: "100%",
-          }}
-          onPress={onPress}
-        >
-          <Feather name="trash-2" size={35} color="red" />
-        </TouchableOpacity>
+          <TouchableOpacity
+            style={{
+              justifyContent: "center",
+              backgroundColor: "#f4f4f4",
+              alignItems: "center",
+              height: "100%",
+            }}
+            onPress={handleDeleteProduct}>
+            <Feather name="trash-2" size={35} color="red" />
+          </TouchableOpacity>
       )}
     >
       <Image

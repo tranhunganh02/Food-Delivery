@@ -12,16 +12,41 @@ import React, { useEffect, useState } from "react";
 const windowHeight = Dimensions.get("window").height;
 import a from "../../home/a";
 import ModalOrder from "./ModalOrder";
+import ModalLoading from "../../../component/User/ModalLoading";
+import getOrderHistory from "../../../features/User/getOrderHistory";
 export default function OrderHistory() {
   const [product, setProduct] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   function ModalVisible () {
     setModalVisible(!modalVisible)
   }
   useEffect(() => {
-  
-  }, [product]);
+    getOrderHistory(3).then((data) => {
+      setProduct(data);
+    });
+  }, []);
   return (
+    // <FlatList
+    //     data={listOrder}
+    //     renderItem={({ item, index }) => {
+    //       return (
+    //         <View>
+    //           <Text>ngày {index}</Text>
+    //           {item.data.map((order) => {
+    //             return (
+    //               <View>
+    //                 <ItemProduct
+    //                   id={order.idProduct}
+    //                   quantity={order.quantity}
+    //                 />
+    //               </View>
+    //             );
+    //           })}
+    //         </View>
+    //       );
+    //     }}
+    //   />
     <View
       style={{
         flex: 1,
@@ -33,10 +58,15 @@ export default function OrderHistory() {
       <View
         style={{ width: "100%", height: windowHeight * 0.8, marginTop: 20 }}
       >
+        {/* <ModalLoading
+        visible={isLoading}
+        time={1500}
+        onLoading={(isEnd) => setIsLoading(isEnd)}
+      /> */}
         <FlatList
           showsVerticalScrollIndicator={false}
           horizontal={false}
-          data={a.item[3].product}
+          data={product}
           renderItem={({ item }) => {
             return (
               <>
@@ -51,16 +81,19 @@ export default function OrderHistory() {
                   key={item.id}
                 >
                   <Text style={{ fontSize: 20, fontWeight: "600" }}>
-                    {new Date(Number(item.id)).toDateString()}
+                    {new Date(Number(Date.now())).toDateString()}
                   </Text>
                   <Text>{item.data.length} order</Text>
                 </View>
-                <ModalOrder data={item.data} total={item.total}/>
+                <ModalOrder data={item.data} total={item.total} id={item.id}/>
               </>
             );
+            
           }}
         />
+       
       </View>
+      
     </View>
   );
 }

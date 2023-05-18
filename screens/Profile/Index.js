@@ -8,6 +8,7 @@ import {
   ScrollView,
   Modal,
 } from "react-native";
+
 import { Avatar } from "@rneui/themed";
 import React, { useEffect, useState } from "react";
 import {
@@ -16,28 +17,59 @@ import {
   AntDesign,
   Ionicons,
   MaterialCommunityIcons,
+<<<<<<< HEAD
   Feather,
   MaterialIcons
+=======
+  MaterialIcons,
+  Feather
+>>>>>>> product
 } from "@expo/vector-icons";
+import ButtonPickImage from "../../features/User/pickImageUser";
+import { auth, storage } from "../../firebase";
+import getUser from "../../features/User/getUser";
+import { signOut } from "firebase/auth";
+import { useContext } from "react";
+import { AppContext } from "../../component/Auth/AuthContext";
 const height = Dimensions.get("window").height;
 const windowWidth = Dimensions.get("window").width;
+
 export default function Index({ navigation }) {
+  const { user } = useContext(AppContext);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  useEffect(() => {}, []);
+
   return (
     <View style={{ flex: 1, alignItems: "center" }}>
       <StatusBar barStyle={"dark-content"} />
       <View style={styles.headerContainer}>
-        <Avatar
-          size={125}
-          rounded
-          source={{
-            uri: "https://cdn.pixabay.com/photo/2016/11/21/12/42/beard-1845166_1280.jpg",
-          }}
-        />
-        <TouchableOpacity style={styles.headerButton}>
-          <FontAwesome name="exchange" size={24} color="#E8E8E8" />
-        </TouchableOpacity>
-        <Text style={styles.headerText}>Mohamed Lanh </Text>
+        {user ? (
+          <Avatar
+            size={125}
+            rounded
+            source={{
+              uri: user.image
+                ? user.image
+                : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRY3R_8hlZCdl3FOthlfWXOOLlf3Ngqp6sQvtXQhSs&s",
+            }}
+          />
+        ) : (
+          <Avatar
+            size={125}
+            rounded
+            source={{
+              uri: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRY3R_8hlZCdl3FOthlfWXOOLlf3Ngqp6sQvtXQhSs&s",
+            }}
+          />
+        )}
+        {user ? (
+          <>
+            <ButtonPickImage idUser={auth.currentUser.uid} />
+            <Text style={styles.headerText}>{user.name} </Text>
+          </>
+        ) : (
+          <Text style={styles.headerText}>No name</Text>
+        )}
       </View>
       <ScrollView>
         <View
@@ -51,18 +83,26 @@ export default function Index({ navigation }) {
           <TouchableOpacity
             style={styles.ActionButton}
             onPress={() => {
-              navigation.navigate("Information");
+              if (user) {
+                navigation.navigate("Information");
+              } else {
+                navigation.navigate("SignIn");
+              }
             }}
           >
             <AntDesign name="profile" size={27} color="black" />
             <Text style={styles.actionText}>Information</Text>
           </TouchableOpacity>
-          {global.users.role == 1 ? (
+          {user && user.role === 1 ? (
             <>
               <TouchableOpacity
                 style={styles.ActionButton}
                 onPress={() => {
-                  navigation.navigate("Support");
+                  if (user) {
+                    navigation.navigate("Support");
+                  } else {
+                    navigation.navigate("SignIn");
+                  }
                 }}
               >
                 <Ionicons
@@ -75,7 +115,11 @@ export default function Index({ navigation }) {
               <TouchableOpacity
                 style={styles.ActionButton}
                 onPress={() => {
-                  navigation.navigate("ListFood");
+                  if (user) {
+                    navigation.navigate("ListFood");
+                  } else {
+                    navigation.navigate("SignIn");
+                  }
                 }}
               >
                 <Ionicons name="fast-food-outline" size={27} color="black" />
@@ -96,6 +140,7 @@ export default function Index({ navigation }) {
               <TouchableOpacity
                 style={styles.ActionButton}
                 onPress={() => {
+<<<<<<< HEAD
                   navigation.navigate("Address");
                 }}
               >
@@ -115,19 +160,34 @@ export default function Index({ navigation }) {
                 style={styles.ActionButton}
                 onPress={() => {
                   navigation.navigate("Chat");
+=======
+                  if (user) {
+                    navigation.navigate("Chat");
+                  } else {
+                    navigation.navigate("SignIn");
+                  }
+>>>>>>> product
                 }}
               >
                 <Ionicons
                   name="chatbox-ellipses-outline"
-                  size={30}
+                  size={27}
                   color="black"
                 />
                 <Text style={styles.actionText}>Contact admin</Text>
               </TouchableOpacity>
+
               <TouchableOpacity
                 style={styles.ActionButton}
                 onPress={() => {
-                  navigation.navigate('Order')
+                  if(user)
+                  {
+                    navigation.navigate('Order')
+                  }
+                  else{
+                    navigation.navigate("SignIn")
+                  }
+                  
                 }}
               >
                 <MaterialCommunityIcons
@@ -137,19 +197,115 @@ export default function Index({ navigation }) {
                 />
                 <Text style={styles.actionText}>Order</Text>
               </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.ActionButton}
+                onPress={() => {
+                  if(user)
+                  {
+                    navigation.navigate('Favorite')
+                  }
+                  else{
+                    navigation.navigate("SignIn")
+                  }
+                  
+                }}
+              >
+                <MaterialCommunityIcons
+                  name="heart"
+                  size={30}
+                  color="black"
+                />
+                <Text style={styles.actionText}>Favorite</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.ActionButton}
+                onPress={() => {
+                  if(user)
+                  {
+                    navigation.navigate('Address')
+                  }
+                  else{
+                    navigation.navigate("SignIn")
+                  }
+                  
+                }}
+              >
+                <FontAwesome
+                  name="address-book-o"
+                  size={30}
+                  color="black"
+                />
+                <Text style={styles.actionText}>Address</Text>
+              </TouchableOpacity>
             </>
           )}
-          <TouchableOpacity
-            style={styles.ActionButton}
-            onPress={() => {
-              navigation.navigate("SignIn");
-            }}
-          >
-            <SimpleLineIcons name="logout" size={28} color="black" />
-            <Text style={styles.actionText}>Logout</Text>
-          </TouchableOpacity>
+          {user ? (
+            <TouchableOpacity
+              style={styles.ActionButton}
+              onPress={() => {
+                signOut(auth).then(() => {
+                  alert("You have been signed out");
+                  navigation.navigate("BottomTab");
+                });
+              }}
+            >
+              <SimpleLineIcons name="logout" size={27} color="black" />
+              <Text style={styles.actionText}>Logout</Text>
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity
+              style={styles.ActionButton}
+              onPress={() => {
+                navigation.navigate("SignIn");
+              }}
+            >
+              <SimpleLineIcons name="login" size={27} color="black" />
+              <Text style={styles.actionText}>SignIn</Text>
+            </TouchableOpacity>
+          )}
         </View>
       </ScrollView>
+      <Modal animationType="slide" transparent={true} visible={isModalVisible}>
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <View style={styles.modalViewButton}>
+              <TouchableOpacity style={styles.modalViewButtonText}
+              onPress={()=> {
+                if(!user) 
+                {
+                  setIsModalVisible(!isModalVisible)
+                  navigation.navigate("SignIn")
+                }
+                else
+                {
+                  setIsModalVisible(!isModalVisible)
+                  navigation.navigate("Order")
+                }
+              }}>
+                <MaterialIcons name="history" size={48} color="black" />
+                <Text>Order history</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.modalViewButtonText}>
+                <MaterialCommunityIcons
+                  name="truck-delivery-outline"
+                  size={50}
+                  color="black"
+                />
+                <Text>To ship</Text>
+              </TouchableOpacity>
+            </View>
+            <View style={{}}>
+              <TouchableOpacity
+                onPress={() => {
+                  setIsModalVisible(!isModalVisible);
+                }}
+              >
+                <MaterialIcons name="cancel" size={45} color="red" />
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 }
@@ -217,7 +373,7 @@ const styles = StyleSheet.create({
     marginBottom: 30,
   },
   modalViewButtonText: {
-    justifyContent:'center',
-    alignItems:'center'
+    justifyContent: "center",
+    alignItems: "center",
   },
 });

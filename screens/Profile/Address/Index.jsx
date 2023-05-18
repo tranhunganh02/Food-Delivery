@@ -12,6 +12,8 @@ import a from "../a";
 import React, { useEffect, useState } from "react";
 import SelectDropdown from "react-native-select-dropdown";
 import axios from "axios";
+import getUser from "../../../features/User/getUser";
+import { auth } from "../../../firebase";
 const windowHeight = Dimensions.get("window").height;
 const windowWidth = Dimensions.get("window").width;
 
@@ -21,7 +23,14 @@ const Address = ({ navigation }) => {
     const json = await response.json();
     updateBooks(json.data);
   }
-  const [listAddress, setListAddress] = useState(a.user);
+  const [user,setUser] =useState({});
+  useEffect(()=> {
+    async function getAddress(){
+      var result =await getUser(auth.currentUser.uid);
+      setUser(result);
+    }
+    getAddress();
+  },[])
   return (
     <View
       style={{
@@ -53,48 +62,45 @@ const Address = ({ navigation }) => {
         >
           <FontAwesome5 name="exchange-alt" size={23} color="black" />
         </TouchableOpacity>
-      </View>
-
-      {listAddress.map((item, index) => (
-        <View key={item.id} style={styles.component}>
+      </View>       
+        <View  style={styles.component}>
           <View
             style={styles.componentInformation}
           >
             <Text style={styles.componentText}>Full name</Text>
-            <Text style={styles.componentText}>Tran Thi Lanh</Text>
+            <Text style={styles.componentText}>{user.name}</Text>
           </View>
           <View
             style={styles.componentInformation}
           >
             <Text style={styles.componentText}>Phone number</Text>
-            <Text style={styles.componentText}>0905113114</Text>
+            <Text style={styles.componentText}>{user.phoneNumber}</Text>
           </View>
           <View
              style={styles.componentInformation}
           >
             <Text style={styles.componentText}>City</Text>
-            <Text style={styles.componentText}>MaCao city</Text>
+            <Text style={styles.componentText}>{user.city}</Text>
           </View>
           <View
              style={styles.componentInformation}
           >
             <Text style={styles.componentText}>District</Text>
-            <Text style={styles.componentText}>Nha Be district</Text>
+            <Text style={styles.componentText}>{user.district}</Text>
           </View>
           <View
              style={styles.componentInformation}
           >
             <Text style={styles.componentText}>Ward</Text>
-            <Text style={styles.componentText}>Ngu Hanh Son</Text>
+            <Text style={styles.componentText}>{user.ward}</Text>
           </View>
           <View
              style={styles.componentInformation}
           >
             <Text style={styles.componentText}>Specific address</Text>
-            <Text style={styles.componentText}>9/36 Tran Duy Hung</Text>
+            <Text style={styles.componentText}>{user.specificAddress}</Text>
           </View>
         </View>
-      ))}
       <TouchableOpacity
         style={styles.button}
         onPress={()=>{navigation.navigate("Update Address")}}

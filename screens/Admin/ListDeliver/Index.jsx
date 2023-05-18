@@ -4,9 +4,22 @@ import { Button, Dialog } from "@rneui/themed";
 import { Feather, Ionicons } from "@expo/vector-icons";
 import Item from "./Item";
 import a from "./a.json";
+import { useEffect } from "react";
+import getListUser from "../../../features/User/getListUser";
 export default function Index({navigation}) {
   const [listNew, setListnew] = useState(["a", "a"]);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [delivers,setDelivers] = useState([]);
+  const [users,setUsers] = useState([]);
+  useEffect(()=>
+  {
+    getListUser(2).then((data)=>{
+      setDelivers(data);
+    })
+    getListUser(0).then((data)=>{
+      setUsers(data);
+    })
+  },[])
   return (
     <View style={{ flex: 1, paddingTop: 35 }}>
       <View
@@ -41,7 +54,7 @@ export default function Index({navigation}) {
               <FlatList
                 showsHorizontalScrollIndicator={false}
                 horizontal={false}
-                data={a}
+                data={users}
                 renderItem={({ item }) => {
                   return <Item item={item} type={"add"} />;
                 }}
@@ -64,7 +77,7 @@ export default function Index({navigation}) {
         <FlatList
           showsHorizontalScrollIndicator={false}
           horizontal={false}
-          data={a}
+          data={delivers}
           renderItem={({ item }) => {
             return <Item item={item} type={"delete"} />;
           }}

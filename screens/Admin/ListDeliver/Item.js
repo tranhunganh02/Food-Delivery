@@ -1,16 +1,30 @@
 import { View, Text, Alert } from "react-native";
 import React, { useState } from "react";
 import { ListItem, Avatar, Button, Dialog } from "@rneui/themed";
+import changeRole from "../../../features/User/changeRole";
+import { useNavigation } from "@react-navigation/native";
 export default function Item({ item, type }) {
   const [visible1, setVisible1] = useState(false);
   const toggleDialog = () => {
     setVisible1(!visible1);
   };
+  const navigation = useNavigation();
   function Delete() {
     setVisible1(true);
     setTimeout(() => {
       setVisible1(false);
-      Alert.alert("Success");
+      changeRole({idUser:item.id, role : 0})
+      Alert.alert("Success","Remove " + item.name + " from Deliver list");
+      navigation.navigate("Profile");
+    }, 2000);
+  }
+  function Add() {
+    setVisible1(true);
+    setTimeout(() => {
+      setVisible1(false);
+      changeRole({idUser:item.id, role : 2})
+      Alert.alert("Success","Add " + item.name + " to Deliver list");
+      navigation.navigate("Profile");
     }, 2000);
   }
   return (
@@ -30,7 +44,7 @@ export default function Item({ item, type }) {
         <Avatar
           rounded
           source={{
-            uri: "https://randomuser.me/api/portraits/men/36.jpg",
+            uri: item.image ? item.image : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRY3R_8hlZCdl3FOthlfWXOOLlf3Ngqp6sQvtXQhSs&s',
           }}
           size={100}
         />
@@ -66,7 +80,7 @@ export default function Item({ item, type }) {
         <View style={{justifyContent:'center',alignItems:'center'}}>
             <Button
           onPress={() => {
-            Delete();
+            Add();
           }}
           title="Add"
           icon={{
@@ -86,29 +100,7 @@ export default function Item({ item, type }) {
             width: 70,
           }}
         />
-        <Button
-            onPress={() => {
-              Delete();
-            }}
-            title="Del"
-            icon={{
-              name: "trash",
-              type: "font-awesome",
-              size: 12,
-              color: "white",
-            }}
-            iconContainerStyle={{ marginRight: 10 }}
-            titleStyle={{ fontWeight: "700" }}
-            buttonStyle={{
-              backgroundColor: "red",
-              borderWidth: 0,
-              borderRadius: 30,
-            }}
-            containerStyle={{
-              width: 70,
-              marginVertical: 4,
-            }}
-          />
+        
           </View>
         )}
       </ListItem>

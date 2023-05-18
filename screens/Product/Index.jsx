@@ -37,12 +37,12 @@ const AllProduct = ({ navigation }) => {
       <View style={{ width: "100%", alignItems: "center" }}>
         <Text style={{ fontSize: 25, fontWeight: "400" }}>All Product</Text>
       </View>
-      <View
+      {/* <View
         style={{
-          position: "",
           flex: 1,
           justifyContent: "center",
           alignItems: "center",
+          position:'absolute'
         }}
       >
         <FAB
@@ -51,7 +51,7 @@ const AllProduct = ({ navigation }) => {
           icon={{ name: "add", color: "white" }}
           size="small"
         />
-      </View>
+      </View> */}
       <Suspense
         fallback={
           <>

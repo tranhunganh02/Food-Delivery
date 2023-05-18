@@ -5,6 +5,10 @@ const windowWidth = Dimensions.get('window').width;
 import { Entypo, MaterialIcons } from '@expo/vector-icons';
 import { FAB } from "@rneui/themed";
 import a from '../home/a'
+<<<<<<< HEAD
+=======
+import getProductWithNameDoc from '../../features/User/getProductWithNameDoc';
+>>>>>>> product
 export default function Item({navigation}) {
      const [data, setData] = useState([])
      const [isModalVisible, setIsModalVisible] = useState(false);
@@ -19,11 +23,20 @@ export default function Item({navigation}) {
             }, 1500);
           }, 1000);
         };
+<<<<<<< HEAD
      const getData = async () =>{
           setData(a.item[1].product)
      }
      useEffect(()=>{
           getData()
+=======
+     useEffect(()=>{
+      getProductWithNameDoc("favorites")
+      .then((products) =>
+      {
+        setData(products);
+      })
+>>>>>>> product
      }, [])
 
      const renderItem = ({item}) => {
@@ -32,7 +45,11 @@ export default function Item({navigation}) {
                <TouchableOpacity
                   onPress={() => {
                     navigation.navigate("ProductDetails", {
+<<<<<<< HEAD
                       id: item.key,
+=======
+                      id: item.id,
+>>>>>>> product
                       name: item.name,
                       image: item.image,
                       price: item.price,
@@ -55,6 +72,7 @@ export default function Item({navigation}) {
                       borderTopRightRadius: 20,
                     }}
                   ></Image>
+<<<<<<< HEAD
                   <View
                     style={{
                       position: "absolute",
@@ -91,6 +109,8 @@ export default function Item({navigation}) {
                       {"(+25)"}
                     </Text>
                   </View>
+=======
+>>>>>>> product
                   <TouchableOpacity
                     style={{
                       position: "absolute",

@@ -15,16 +15,19 @@ import { Avatar } from "@rneui/themed";
 import { auth, dbRealTime } from "../../../firebase";
 import { set, ref, child, get, serverTimestamp } from "firebase/database";
 import { ImageBackground } from "react-native";
+import { useContext } from "react";
+import { AppContext } from "../../../component/Auth/AuthContext";
 const height = Dimensions.get("window").height;
 const width = Dimensions.get("window").width;
 export default function Index({navigation,}) {
   const [inputChat, setInputChat] = useState("");
+  const {user} = useContext(AppContext);
   var [historyMessage, setHistoryMessage] = React.useState([{}]);
   var currentdate = new Date();
   //get message history
   function getMessage() {
     const dbRef = ref(dbRealTime);
-    get(child(dbRef, `ChatRoom/${'t0MbXkc480ZZ8ZgsidDTSYcykZg1'}`))
+    get(child(dbRef, `ChatRoom/${auth.currentUser.uid}`))
       .then((snapshot) => {
         if (snapshot.exists()) {
           let a = [];
@@ -51,11 +54,12 @@ export default function Index({navigation,}) {
 
       let idChat = currentdate.getTime()
       // import module crypto-jshi
-      set(ref(dbRealTime, `ChatRoom/${'t0MbXkc480ZZ8ZgsidDTSYcykZg1'}/${idChat}`), {
-        idUser: 't0MbXkc480ZZ8ZgsidDTSYcykZg1',
+      set(ref(dbRealTime, `ChatRoom/${auth.currentUser.uid}/${idChat}`), {
+        idUser: auth.currentUser.uid,
         message: inputChat,
         timeStamp: timeNow,
-        photoURL: 'https://cdn.pixabay.com/photo/2019/11/03/20/11/portrait-4599553__340.jpg',
+        photoURL: user.image ? user.image :
+        'https://cdn.pixabay.com/photo/2019/11/03/20/11/portrait-4599553__340.jpg',
       })
         .then(() => {
           setInputChat('');
@@ -145,8 +149,8 @@ export default function Index({navigation,}) {
                       renderItem={({item}) => {
                             return (
                                 <View key={item.id} style={[
-                              //     item.idUser === auth.currentUser.uid ?
-                                     item.idUser === 't0MbXkc480ZZ8ZgsidDTSYcykZg1' ?
+                                   item.idUser === auth.currentUser.uid ?
+                                    
                                       styles.sender
                                       :
                                       [styles.reciever]

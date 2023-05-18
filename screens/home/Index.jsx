@@ -22,54 +22,86 @@ import {
   MaterialIcons,
 } from "@expo/vector-icons";
 import a from "./a";
-import { FAB } from "@rneui/themed";
+import fetchProduct from "../../features/Product/fetchProduct";
+import { FAB } from "react-native-elements";
+import { useContext } from "react";
+import { AppContext } from "../../component/Auth/AuthContext";
+import AddFavoriteProduct from "../../features/User/AddFavoriteProduct";
+import { ProductContext } from "../../component/Auth/Product";
+import getProductFeatured from "../../features/Product/getProductFeatured";
+import { CountContext } from "../../component/Auth/QuatityInCart";
+import countProduct from "../../features/User/countProductInCart";
 const windowHeight = Dimensions.get("window").height;
 const windowWidth = Dimensions.get("window").width;
-
 export default function Index({ navigation }) {
+  const { products } = useContext(ProductContext);
+  const [listNewData, setListNewData] = useState([]);
+  const [listFeatured, setListFeatured] = useState([]);
+  const { user } = useContext(AppContext);
+  const { count } = useContext(CountContext);
   useEffect(() => {
-    global.users = {
-      role: 0,
-    };
-    console.log(1);
+    async function fetchData() {
+      const data = await fetchProduct({ limitProduct: 5 });
+      setListNewData(data);
+    }
+    fetchData();
+    getProductFeatured().then((data) => {
+      setListFeatured(data);
+    });
+    countProduct();
   }, []);
-  const [dataFood, setDataFood] = useState(a.item[1].product);
-  const [dataFoodSearch, setDataFoodSearch] = useState(a.item[1].product);
+  const [dataFoodSearch, setDataFoodSearch] = useState(products);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [modalText, setModalText] = useState("");
   const [loadingVisible, setLoadingVisible] = useState(false);
-  const [foodSearch, setFoodSearch] = useState('');
+  const [foodSearch, setFoodSearch] = useState("");
+
+  const [searchText, setSearchText] = useState("");
   const toggleModal = () => {
     setIsModalVisible(!isModalVisible);
   };
-  function handleFitler(searchTerm) {
-    if (searchTerm == "") {
-      setDataFoodSearch(dataFood)
-    } else {
-      const newData = dataFoodSearch.filter(item => {
-        const itemData = item.name.toUpperCase();
-        const textData = searchTerm.toUpperCase();
-        return itemData.indexOf(textData) > -1;
-      });
-      setDataFoodSearch(newData);
-    }
-    console.log(dataFood);
-  }
-  const showSuccessFavorite = () => {
-    setIsModalVisible(true);
-    setLoadingVisible(true);
-    setTimeout(() => {
-      setLoadingVisible(false);
-      setTimeout(() => {
-        setIsModalVisible(false);
-      }, 1500);
-    }, 1000);
+  const handleFitler = (text) => {
+    setSearchText(text);
+    const searchArray = products.filter((item) =>
+      item.data.name.toLowerCase().includes(text.toLowerCase())
+    );
+    setDataFoodSearch(searchArray);
   };
 
+  const showSuccessFavorite = async (id) => {
+    if (user) {
+      setIsModalVisible(true);
+      setLoadingVisible(true);
+      await AddFavoriteProduct(id);
+      setTimeout(() => {
+        setLoadingVisible(false);
+        setTimeout(() => {
+          setIsModalVisible(false);
+        }, 500);
+      }, 1000);
+    } else {
+      navigation.navigate("SignIn");
+    }
+  };
   return (
     <SafeAreaView
       style={{ alignItems: "center", flex: 1, justifyContent: "center" }}
     >
+      {/* {productSearching.length > 0 ? (
+        <FlatList
+          data={productSearching}
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={({ item }) => (
+            <View>
+              <Text>{item.data.name}</Text>
+              <Text>{item.data.price}</Text>
+            </View>
+          )}
+        />
+      ) : (
+        <Text>No products found</Text>
+      )} */}
+
       {/* <SafeAreaView style={{ alignItems: "center", flex: 1, backgroundColor:'#FFFBE9'}}> */}
       <StatusBar barStyle={"dark-content"} />
       <ScrollView style={{}} showsVerticalScrollIndicator={false}>
@@ -87,13 +119,23 @@ export default function Index({ navigation }) {
             padding: 5,
           }}
         >
-          <Avatar
-            size={64}
-            rounded
-            source={{
-              uri: "https://cdn.pixabay.com/photo/2019/11/03/20/11/portrait-4599553__340.jpg",
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate("Profile");
             }}
-          />
+          >
+            <Avatar
+              size={64}
+              rounded
+              source={{
+                uri: user
+                  ? user.image
+                    ? user.image
+                    : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRY3R_8hlZCdl3FOthlfWXOOLlf3Ngqp6sQvtXQhSs&s"
+                  : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRY3R_8hlZCdl3FOthlfWXOOLlf3Ngqp6sQvtXQhSs&s",
+              }}
+            />
+          </TouchableOpacity>
           <Text
             style={{
               fontWeight: "300",
@@ -103,7 +145,7 @@ export default function Index({ navigation }) {
               width: "85%",
             }}
           >
-            Welcome back, Pin! Order food now!!!
+            Welcome back {user ? user.name : ""}! Order food now!!!
           </Text>
         </View>
 
@@ -125,16 +167,24 @@ export default function Index({ navigation }) {
           <TextInput
             placeholder="What are you craving"
             style={{ left: 45, color: "#3D405B" }}
+            // onChangeText={(text) => {
+            //   handleSearchText(text);
+            // }}
+            // value={searchText}
             value={foodSearch}
             onChangeText={(text) => {
-           handleFitler(text);
-           setFoodSearch(text)
+              handleFitler(text);
+              setFoodSearch(text);
             }}
           />
           <TouchableOpacity
             style={{ position: "absolute", right: -55, width: "auto" }}
             onPress={() => {
-              navigation.navigate("CartDetails");
+              if (user) {
+                navigation.navigate("CartDetails");
+              } else {
+                navigation.navigate("SignIn");
+              }
             }}
           >
             <Ionicons name="cart-outline" size={44} color="black" />
@@ -151,7 +201,7 @@ export default function Index({ navigation }) {
                 alignItems: "center",
               }}
             >
-              <Text style={{ color: "#fff" }}>{10}</Text>
+              <Text style={{ color: "#fff" }}>{count}</Text>
             </View>
           </TouchableOpacity>
         </View>
@@ -169,28 +219,60 @@ export default function Index({ navigation }) {
           >
             {dataFoodSearch.map((item) => (
               <TouchableOpacity
-                key={item.key}
+                key={item.id}
                 style={{
                   width: "85%",
                   alignSelf: "center",
-                  height: 65,
+                  height: 70,
                   justifyContent: "center",
                   borderBottomWidth: 0.5,
                   borderColor: "#8e8e8e",
                 }}
                 onPress={() => {
-                  setSelectFood(item.name);
-                  setClickedCity(!clickedCity);
+                  // setSelectFood(item.data.name);
+                  // setClickedCity(!clickedCity);
                 }}
               >
-                <Text style={{ fontWeight: "600" }}>{item.name}</Text>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "space-around",
+                  }}
+                >
+                  <Image
+                    style={{
+                      height: 60,
+                      width: 60,
+                    }}
+                    source={{ uri: item.data.image }}
+                  />
+                  <View>
+                    <Text
+                      style={{
+                        padding: 10,
+                        borderColor: "#F56844",
+                        borderWidth: 1,
+                        borderRadius: 5,
+                      }}
+                    >
+                      {item.data.name}
+                    </Text>
+                    <Text style={{ textAlign: "center" }}>
+                      {item.data.price} VND
+                    </Text>
+                  </View>
+                </View>
               </TouchableOpacity>
             ))}
             <TouchableOpacity
               onPress={() => {
-                setFoodSearch('');
+                setFoodSearch("");
               }}
-              style={{ justifyContent: "center", alignItems: "center", marginTop:10 }}
+              style={{
+                justifyContent: "center",
+                alignItems: "center",
+                marginTop: 10,
+              }}
             >
               <Text>Done</Text>
             </TouchableOpacity>
@@ -304,7 +386,11 @@ export default function Index({ navigation }) {
               New foods
             </Text>
 
-            <TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate("AllProduct");
+              }}
+            >
               <Text style={{ left: -35 }}>View all</Text>
               <AntDesign
                 name="arrowright"
@@ -317,16 +403,16 @@ export default function Index({ navigation }) {
           <FlatList
             showsHorizontalScrollIndicator={false}
             horizontal={true}
-            data={a.item[1].product}
+            data={listNewData}
             renderItem={({ item }) => {
               return (
                 <TouchableOpacity
                   onPress={() => {
                     navigation.navigate("ProductDetails", {
-                      id: item.key,
-                      name: item.name,
-                      image: item.image,
-                      price: item.price,
+                      id: item.id,
+                      name: item.data.name,
+                      image: item.data.image,
+                      price: item.data.price,
                     });
                   }}
                   style={{
@@ -338,7 +424,7 @@ export default function Index({ navigation }) {
                   }}
                 >
                   <Image
-                    source={{ uri: item.image }}
+                    source={{ uri: item.data.image }}
                     style={{
                       height: windowHeight * 0.23,
                       width: "100%",
@@ -365,7 +451,7 @@ export default function Index({ navigation }) {
                         fontWeight: "bold",
                       }}
                     >
-                      4.5
+                      {item.star}
                     </Text>
                     <Entypo
                       name="star"
@@ -379,7 +465,7 @@ export default function Index({ navigation }) {
                         color: "grey",
                       }}
                     >
-                      {"(+25)"}
+                      /{item.number > 5 ? "5+" : item.number}
                     </Text>
                   </View>
                   <TouchableOpacity
@@ -395,7 +481,7 @@ export default function Index({ navigation }) {
                       alignItems: "center",
                     }}
                     onPress={() => {
-                      showSuccessFavorite();
+                      showSuccessFavorite(item.id);
                     }}
                   >
                     <MaterialIcons name="favorite" size={24} color="#fff" />
@@ -415,10 +501,11 @@ export default function Index({ navigation }) {
                       }}
                     >
                       <Text style={{ fontWeight: "bold", fontSize: 18 }}>
-                        {item.name}
+                        {item.data.name}
                       </Text>
                       <Text>
-                        {new Intl.NumberFormat("de-DE").format(item.price)}đ
+                        {new Intl.NumberFormat("de-DE").format(item.data.price)}
+                        đ
                       </Text>
                     </View>
                     <TouchableOpacity
@@ -443,7 +530,7 @@ export default function Index({ navigation }) {
                           color: "#8A8E9B",
                         }}
                       >
-                        PIZZA
+                        {item.data.selectedCategory}
                       </Text>
                     </TouchableOpacity>
                   </View>
@@ -471,7 +558,11 @@ export default function Index({ navigation }) {
             <Text style={{ fontWeight: "400", fontSize: 30, color: "#3D405B" }}>
               Featured
             </Text>
-            <TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate("AllProduct");
+              }}
+            >
               <Text style={{ left: -35 }}>View all</Text>
               <AntDesign
                 name="arrowright"
@@ -484,16 +575,144 @@ export default function Index({ navigation }) {
           <FlatList
             showsHorizontalScrollIndicator={false}
             horizontal={true}
-            data={a.item[1].product}
+            data={listFeatured}
             renderItem={({ item }) => {
               return (
+                // <TouchableOpacity
+                //   onPress={() => {
+                //     navigation.navigate("ProductDetails", {
+                //       id: item.id,
+                //       name: item.data.name,
+                //       image: item.data.image,
+                //       price: item.data.price,
+                //     });
+                //   }}
+                //   style={{
+                //     width: windowWidth * 0.7,
+                //     marginRight: 10,
+                //     backgroundColor: "#fff",
+                //     borderRadius: 20,
+                //     height: "auto",
+                //   }}
+                // >
+                //   <Image
+                //     source={{ uri: item.data.image }}
+                //     style={{
+                //       height: windowHeight * 0.23,
+                //       width: "100%",
+                //       borderTopLeftRadius: 20,
+                //       borderTopRightRadius: 20,
+                //     }}
+                //   ></Image>
+                //   <View
+                //     style={{
+                //       position: "absolute",
+                //       top: 15,
+                //       left: 20,
+                //       width: windowWidth * 0.2,
+                //       height: windowHeight * 0.04,
+                //       backgroundColor: "#fff",
+                //       borderRadius: 30,
+                //       flexDirection: "row",
+                //       justifyContent: "center",
+                //       alignItems: "center",
+                //     }}
+                //   >
+                //     <Text
+                //       style={{
+                //         fontWeight: "bold",
+                //       }}
+                //     >
+                //       {item.star}
+                //     </Text>
+                //     <Entypo
+                //       name="star"
+                //       size={18}
+                //       color="#FFDF5C"
+                //       style={{ top: -1, marginLeft: 3 }}
+                //     />
+                //     <Text
+                //       style={{
+                //         fontSize: 11,
+                //         color: "grey",
+                //       }}
+                //     >
+                //        /{(item.number > 5 ) ? '5+' : item.number }
+                //     </Text>
+                //   </View>
+                //   <TouchableOpacity
+                //     style={{
+                //       position: "absolute",
+                //       top: 15,
+                //       right: 20,
+                //       width: windowWidth * 0.09,
+                //       height: windowHeight * 0.04,
+                //       backgroundColor: "#FE724C",
+                //       borderRadius: 30,
+                //       justifyContent: "center",
+                //       alignItems: "center",
+                //     }}
+                //     onPress={() => {
+                //       showSuccessFavorite();
+                //     }}
+                //   >
+                //     <MaterialIcons name="favorite" size={24} color="#fff" />
+                //   </TouchableOpacity>
+                //   <View
+                //     style={{
+                //       height: "auto",
+                //       padding: 15,
+                //     }}
+                //   >
+                //     <View
+                //       style={{
+                //         flexDirection: "row",
+                //         height: 30,
+                //         justifyContent: "space-between",
+                //         alignItems: "center",
+                //       }}
+                //     >
+                //       <Text style={{ fontWeight: "bold", fontSize: 18 }}>
+                //         {item.name}
+                //       </Text>
+                //       <Text>
+                //         {new Intl.NumberFormat("de-DE").format(item.price)}đ
+                //       </Text>
+                //     </View>
+                //     <TouchableOpacity
+                //       style={{
+                //         width: windowWidth * 0.24,
+                //         height: windowHeight * 0.04,
+                //         marginTop: 5,
+                //         backgroundColor: "#F6F6F6",
+                //         justifyContent: "center",
+                //         alignItems: "center",
+                //         borderRadius: 10,
+                //         shadowColor: "black",
+                //         shadowOffset: {
+                //           width: 0.2,
+                //           height: 0.5,
+                //         },
+                //         shadowOpacity: 0.25,
+                //       }}
+                //     >
+                //       <Text
+                //         style={{
+                //           color: "#8A8E9B",
+                //         }}
+                //       >
+                //         PIZZA
+                //       </Text>
+                //     </TouchableOpacity>
+                //   </View>
+                // </TouchableOpacity>
                 <TouchableOpacity
                   onPress={() => {
                     navigation.navigate("ProductDetails", {
-                      id: item.key,
-                      name: item.name,
-                      image: item.image,
-                      price: item.price,
+                      id: item.id,
+                      name: item.data.name,
+                      image: item.data.image,
+                      price: item.data.price,
                     });
                   }}
                   style={{
@@ -505,7 +724,7 @@ export default function Index({ navigation }) {
                   }}
                 >
                   <Image
-                    source={{ uri: item.image }}
+                    source={{ uri: item.data.image }}
                     style={{
                       height: windowHeight * 0.23,
                       width: "100%",
@@ -532,7 +751,7 @@ export default function Index({ navigation }) {
                         fontWeight: "bold",
                       }}
                     >
-                      4.5
+                      {item.star}
                     </Text>
                     <Entypo
                       name="star"
@@ -546,7 +765,7 @@ export default function Index({ navigation }) {
                         color: "grey",
                       }}
                     >
-                      {"(+25)"}
+                      /{item.number > 5 ? "5+" : item.number}
                     </Text>
                   </View>
                   <TouchableOpacity
@@ -562,7 +781,7 @@ export default function Index({ navigation }) {
                       alignItems: "center",
                     }}
                     onPress={() => {
-                      showSuccessFavorite();
+                      showSuccessFavorite(item.id);
                     }}
                   >
                     <MaterialIcons name="favorite" size={24} color="#fff" />
@@ -582,10 +801,11 @@ export default function Index({ navigation }) {
                       }}
                     >
                       <Text style={{ fontWeight: "bold", fontSize: 18 }}>
-                        {item.name}
+                        {item.data.name}
                       </Text>
                       <Text>
-                        {new Intl.NumberFormat("de-DE").format(item.price)}đ
+                        {new Intl.NumberFormat("de-DE").format(item.data.price)}
+                        đ
                       </Text>
                     </View>
                     <TouchableOpacity
@@ -610,7 +830,7 @@ export default function Index({ navigation }) {
                           color: "#8A8E9B",
                         }}
                       >
-                        PIZZA
+                        {item.data.selectedCategory}
                       </Text>
                     </TouchableOpacity>
                   </View>

@@ -8,6 +8,7 @@ import {
   Image,
   SwipeView,
   TextInput,
+  Alert
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import {
@@ -21,16 +22,60 @@ const windowHeight = Dimensions.get("window").height;
 const windowWidth = Dimensions.get("window").width;
 import a from "../home/a";
 import Item from "./Item";
-const Index = ({ navigation }) => {
+import getProductCheckOut from "../../features/User/getProductCheckOut";
+import { async } from "@firebase/util";
+import getPriceProductSelected from "../../features/User/getPriceProductSelected";
+import createOrder from "../../features/User/createOrder";
+import ModalLoading from "../../component/User/ModalLoading";
+import getPriceToSale from "../../features/User/getPriceToSale";
+import { useContext } from "react";
+import { AppContext } from "../../component/Auth/AuthContext";
+import { CountContext } from "../../component/Auth/QuatityInCart";
+const Index = ({ navigation, route }) => {
   const [getTotal, setTotal] = useState(0);
-  const getTotolFood = () => {
-    for (var key in a.item[2].product) {
-      setTotal(getTotal + key.price);
+  const [listFood, setListFood] = useState([]);
+  const [price, setPrice] = useState(0);
+  const [isVisible, setIsVisible] = useState(false);
+  const [textDiscount, setTextDiscount] = useState("");
+  const {user} = useContext(AppContext);
+  const {updateCount} = useContext(CountContext);
+  useEffect(() => {
+    async function fetchProduct() {
+      let result = await getProductCheckOut(route.params.product);
+      setListFood(result);
+      setPrice(await getPriceProductSelected(route.params.product));
+    }
+    fetchProduct();
+  }, []);
+  const salePriceProduct = async () => {
+    let priceToSale = await getPriceToSale(textDiscount);
+    if (!priceToSale) {
+      alert("Voucher code does not exist!");
+    } else {
+      setPrice((prePrice) =>
+        prePrice - priceToSale > 0 ? prePrice - priceToSale : 0
+      );
     }
   };
-  useEffect(() => {
-    getTotolFood();
-  }, [a]);
+  const confirmOrder = async () => {
+    if(user.city && user.district && user.ward && user.specificAddress)
+    {
+      createOrder({
+        data: route.params.product,
+        total: Number(price),
+        address : user.city + "- " + user.district + "- " + user.ward + "- " + user.specificAddress
+      });
+      updateCount();
+      navigation.navigate("Order");
+    }
+    else
+    {
+      Alert.alert("Warning","Please update your address");
+      navigation.navigate("Address");
+    }
+    
+    
+  };
   return (
     <View
       style={{
@@ -65,7 +110,7 @@ const Index = ({ navigation }) => {
         <FlatList
           showsHorizontalScrollIndicator={false}
           showsVerticalScrollIndicator={false}
-          data={a.item[2].product}
+          data={listFood}
           renderItem={({ item }) => {
             return (
               <Item
@@ -91,7 +136,7 @@ const Index = ({ navigation }) => {
           style={{
             backgroundColor: "#fff",
             width: "100%",
-            height: '100%',
+            height: "100%",
             flexDirection: "row",
             justifyContent: "space-between",
             alignItems: "center",
@@ -113,8 +158,9 @@ const Index = ({ navigation }) => {
               width: windowWidth * 0.4,
               height: 40,
               marginLeft: 25,
-              fontSize:17
+              fontSize: 17,
             }}
+            onChangeText={(text) => setTextDiscount(text)}
           />
           <TouchableOpacity
             style={{
@@ -124,6 +170,9 @@ const Index = ({ navigation }) => {
               height: windowHeight * 0.045,
               justifyContent: "center",
               alignItems: "center",
+            }}
+            onPress={() => {
+              salePriceProduct();
             }}
           >
             <Text
@@ -147,53 +196,61 @@ const Index = ({ navigation }) => {
             flexDirection: "row",
             width: "100%",
             height: windowHeight * 0.07,
-            justifyContent:'space-between'
+            justifyContent: "space-between",
           }}
         >
-          <Text 
-               style={{
-                    color:'#B6B2B2',
-                    fontSize:18
-               }}
-          >Item Total:</Text>
           <Text
-          style={{
-               color:'#B6B2B2',
-               fontSize:18
-          }}
-          >{new Intl.NumberFormat("de-DE").format(60000)}</Text>
+            style={{
+              color: "#B6B2B2",
+              fontSize: 18,
+            }}
+          >
+            Item Total:
+          </Text>
+          <Text
+            style={{
+              color: "#B6B2B2",
+              fontSize: 18,
+            }}
+          >
+            {new Intl.NumberFormat("de-DE").format(price)}
+          </Text>
         </View>
         <View
           style={{
             flexDirection: "row",
             width: "100%",
             height: windowHeight * 0.07,
-            justifyContent:'space-between'
+            justifyContent: "space-between",
           }}
         >
           <Text
-               style={{
-                    color:'#B6B2B2',
-                    fontSize:18
-               }}
-          >Delivery:</Text>
+            style={{
+              color: "#B6B2B2",
+              fontSize: 18,
+            }}
+          >
+            Delivery:
+          </Text>
           <Text
-               style={{
-                    color:'#B6B2B2',
-                    fontSize:18
-               }}
-          >Free</Text>
+            style={{
+              color: "#B6B2B2",
+              fontSize: 18,
+            }}
+          >
+            Free
+          </Text>
         </View>
       </View>
       <View style={styles.checkOutContainer}>
         <View style={styles.checkOutTotal}>
           <Text style={{ fontWeight: "500", fontSize: 19 }}>Total</Text>
-          <Text>{new Intl.NumberFormat("de-DE").format(60000)} VND</Text>
+          <Text>{new Intl.NumberFormat("de-DE").format(price)} VND</Text>
         </View>
         <TouchableOpacity
           style={styles.checkOutButton}
           onPress={() => {
-            navigation.navigate("CheckOut");
+            confirmOrder();
           }}
         >
           <Text style={{ color: "#fff" }}>Payment</Text>
