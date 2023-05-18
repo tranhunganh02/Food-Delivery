@@ -129,7 +129,7 @@ const ItemDeliver = ({
                 onPress={()=>
                 {
                   orderCancel(id);
-                  navigation.navigate("Profile")
+                  navigation.navigate("BottomTab");
                   
                 }}
               >

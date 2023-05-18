@@ -27,26 +27,6 @@ export default function OrderHistory() {
     });
   }, []);
   return (
-    // <FlatList
-    //     data={listOrder}
-    //     renderItem={({ item, index }) => {
-    //       return (
-    //         <View>
-    //           <Text>ngày {index}</Text>
-    //           {item.data.map((order) => {
-    //             return (
-    //               <View>
-    //                 <ItemProduct
-    //                   id={order.idProduct}
-    //                   quantity={order.quantity}
-    //                 />
-    //               </View>
-    //             );
-    //           })}
-    //         </View>
-    //       );
-    //     }}
-    //   />
     <View
       style={{
         flex: 1,
@@ -58,11 +38,11 @@ export default function OrderHistory() {
       <View
         style={{ width: "100%", height: windowHeight * 0.8, marginTop: 20 }}
       >
-        {/* <ModalLoading
+        <ModalLoading
         visible={isLoading}
         time={1500}
         onLoading={(isEnd) => setIsLoading(isEnd)}
-      /> */}
+      />
         <FlatList
           showsVerticalScrollIndicator={false}
           horizontal={false}

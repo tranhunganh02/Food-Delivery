@@ -119,12 +119,9 @@ const Index = ({ navigation }) => {
     });
     console.log(quantity);
   };
-
-  //cai moi ne tk db
   const handleClickOptionView = () => {
     setIsModalVisible(true);
   };
-  //cai moi ne tk db
   const deleteItemSelect = () => {
     if (selectedProducts.current.length > 0) {
       alert("Delete item")
@@ -133,7 +130,6 @@ const Index = ({ navigation }) => {
       Alert.alert("Please choose item")
     }
   };
-  //cai moi ne tk db
   const deleteAll = async () => {
     alert("Delete all")
   };

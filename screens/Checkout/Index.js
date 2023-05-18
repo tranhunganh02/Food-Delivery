@@ -8,7 +8,8 @@ import {
   Image,
   SwipeView,
   TextInput,
-  Alert
+  Alert,
+  Modal,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import {
@@ -31,14 +32,33 @@ import getPriceToSale from "../../features/User/getPriceToSale";
 import { useContext } from "react";
 import { AppContext } from "../../component/Auth/AuthContext";
 import { CountContext } from "../../component/Auth/QuatityInCart";
+import PaymentModal from "../../component/User/PaymentModal";
+
 const Index = ({ navigation, route }) => {
   const [getTotal, setTotal] = useState(0);
   const [listFood, setListFood] = useState([]);
   const [price, setPrice] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
   const [textDiscount, setTextDiscount] = useState("");
-  const {user} = useContext(AppContext);
-  const {updateCount} = useContext(CountContext);
+  const { user } = useContext(AppContext);
+  const { updateCount } = useContext(CountContext);
+  const [paymentMethod, setPaymentMethod] = useState("COD");
+  const [modalVisible, setModalVisible] = useState(false);
+  const [modalVisibleImage, setModalVisibleImage] = useState(false);
+  const toggleModal = async () => {
+    setModalVisibleImage(false);
+    setPaymentMethod("COD");
+    setPrice(await getPriceProductSelected(route.params.product));
+  };
+  const handlePaymentMethod = async (method) => {
+    setModalVisible(false);
+    setPaymentMethod(method);
+    if (method == "Online") {
+      setModalVisibleImage(true);
+    } else {
+      setPrice(await getPriceProductSelected(route.params.product));
+    }
+  };
   useEffect(() => {
     async function fetchProduct() {
       let result = await getProductCheckOut(route.params.product);
@@ -58,23 +78,26 @@ const Index = ({ navigation, route }) => {
     }
   };
   const confirmOrder = async () => {
-    if(user.city && user.district && user.ward && user.specificAddress)
-    {
+    if (user.city && user.district && user.ward && user.specificAddress) {
       createOrder({
         data: route.params.product,
         total: Number(price),
-        address : user.city + "- " + user.district + "- " + user.ward + "- " + user.specificAddress
+        address:
+          user.city +
+          "- " +
+          user.district +
+          "- " +
+          user.ward +
+          "- " +
+          user.specificAddress,
+        methodPay: paymentMethod,
       });
       updateCount();
       navigation.navigate("Order");
-    }
-    else
-    {
-      Alert.alert("Warning","Please update your address");
+    } else {
+      Alert.alert("Warning", "Please update your address");
       navigation.navigate("Address");
     }
-    
-    
   };
   return (
     <View
@@ -241,6 +264,82 @@ const Index = ({ navigation, route }) => {
             Free
           </Text>
         </View>
+        <View
+          style={{
+            flexDirection: "row",
+            width: "100%",
+            height: windowHeight * 0.07,
+            justifyContent: "space-between",
+          }}
+        >
+          <TouchableOpacity onPress={() => setModalVisible(true)}>
+            <Text style={{ fontSize: 20 }}>Choose a payment method</Text>
+          </TouchableOpacity>
+          <Text
+            style={{
+              color: "#B6B2B2",
+              fontSize: 18,
+            }}
+          >
+            {paymentMethod}
+          </Text>
+        </View>
+      </View>
+      {/* Modal display image QR code bank */}
+      <View>
+        <Modal
+          animationType="fade"
+          transparent={true}
+          visible={modalVisibleImage}
+          onRequestClose={() => {
+            setModalVisibleImage(false);
+          }}
+        >
+          <View style={styles.modal}>
+            <Image
+              style={styles.image}
+              resizeMode="contain" // chỉnh hiển thị ảnh
+              source={require("../../assets/image/qrcode.jpg")}
+            />
+            <TouchableOpacity style={styles.closeButton} onPress={toggleModal}>
+              <Text style={styles.closeButtonText}>X</Text>
+            </TouchableOpacity>
+            <View
+              style={{
+                width: "100%",
+                flexDirection: "row",
+                marginTop: -50,
+                justifyContent: "center",
+              }}
+            >
+              <TouchableOpacity
+                style={{ padding: 10, marginLeft: -20 }}
+                onPress={() => {
+                  toggleModal();
+                }}
+              >
+                <Text style={[styles.text, { color: "red", fontSize: 19 }]}>
+                  Cancel
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={{ padding: 10, marginRight: -20 }}
+                onPress={() => {
+                  setPrice(0);
+                  setModalVisibleImage(false);
+                }}
+              >
+                <Text style={[styles.text, { color: "green", fontSize: 19 }]}>
+                  Done
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
+      </View>
+      {/* Choose method pay */}
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <PaymentModal visible={modalVisible} onClose={handlePaymentMethod} />
       </View>
       <View style={styles.checkOutContainer}>
         <View style={styles.checkOutTotal}>
@@ -313,5 +412,28 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 40,
+  },
+  modal: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0,0,0,0.5)",
+  },
+  image: {
+    width: "80%",
+    height: "80%",
+  },
+  closeButton: {
+    position: "absolute",
+    top: 20,
+    right: 20,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 10,
+  },
+  closeButtonText: {
+    color: "black",
+    fontWeight: "bold",
+    fontSize: 20,
   },
 });

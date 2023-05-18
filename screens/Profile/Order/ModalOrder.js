@@ -38,12 +38,11 @@ export default function ModalOrder({ data, total, id }) {
       data: idProducts,
       content: contentText,
       star: rating,
-      idOrder: null,
       idOrder: id,
       name: user.name,
     });
     setModalVisibleRating(false);
-    navigation.navigate("Profile");
+    navigation.navigate("BottomTab");
   };
   useEffect(() => {
     getOrder(id).then((order) => {
