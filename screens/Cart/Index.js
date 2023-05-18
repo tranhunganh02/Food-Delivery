@@ -28,6 +28,9 @@ import { useRef } from "react";
 import { Alert } from "react-native";
 import changeStateProduct from "../../features/Product/changeStateProduct";
 import getProductWithNameDoc from "../../features/User/getProductWithNameDoc";
+import deleteProductInCart from "../../features/User/deleteProductInCart";
+import { useContext } from "react";
+import { CountContext } from "../../component/Auth/QuatityInCart";
 const Index = ({ navigation }) => {
   const [getTotal, setTotal] = useState(0);
   const [listProduct, setListProduct] = useState({});
@@ -35,6 +38,7 @@ const Index = ({ navigation }) => {
   const isSelectAll = useRef(false);
   const productNewState = useRef([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const {updateCount}= useContext(CountContext);
   const handleCheckBoxClick = (idProduct, quantity, price, image) => {
     if (selectedProducts.current.find((item) => item.idProduct === idProduct)) {
       selectedProducts.current = selectedProducts.current.filter(
@@ -124,14 +128,17 @@ const Index = ({ navigation }) => {
   };
   const deleteItemSelect = () => {
     if (selectedProducts.current.length > 0) {
-      alert("Delete item")
-    }
-    else{
-      Alert.alert("Please choose item")
+      deleteProductInCart(selectedProducts.current);
+      updateCount();
+      navigation.goBack();
+    } else {
+      Alert.alert("Please choose item");
     }
   };
-  const deleteAll = async () => {
-    alert("Delete all")
+  const deleteAll = () => {
+    deleteProductInCart(listProduct);
+    updateCount();
+    navigation.goBack();
   };
 
   return (
@@ -161,7 +168,7 @@ const Index = ({ navigation }) => {
             { justifyContent: "center", alignItems: "center" },
           ]}
           onPress={() => {
-           handleClickOptionView();
+            handleClickOptionView();
           }}
         >
           <Entypo name="dots-three-vertical" size={20} color="black" />
@@ -171,35 +178,42 @@ const Index = ({ navigation }) => {
       <Modal animationType="slide" transparent={true} visible={isModalVisible}>
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
-           <View style={{
-            flexDirection:'row',
-            justifyContent:'space-between',
-            alignItems:'center',
-            width:'95%'
-           }}>
-           <View > 
-              <TouchableOpacity style={styles.modalViewButton}
-              onPress={()=>{deleteItemSelect()}}
-              >
-
-              <Text>Delete selected</Text>
-              </TouchableOpacity>
-            </View>
-            <View >
-              <TouchableOpacity style={styles.modalViewButton}
-              onPress={()=>{deleteAll()}}
-              >
-              <Text>Delete all</Text>
-              </TouchableOpacity>
-            </View>
-           </View>
-            <View >
-              <TouchableOpacity
-              onPress={()=>{
-                setIsModalVisible(false)
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "center",
+                alignItems: "center",
+                width: "95%",
               }}
+            >
+              <View>
+                <TouchableOpacity
+                  style={styles.modalViewButton}
+                  onPress={() => {
+                    deleteItemSelect();
+                  }}
+                >
+                  <Text>Delete selected</Text>
+                </TouchableOpacity>
+              </View>
+              <View>
+                <TouchableOpacity
+                  style={styles.modalViewButton}
+                  onPress={() => {
+                    deleteAll();
+                  }}
+                >
+                  <Text>Delete all</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+            <View>
+              <TouchableOpacity
+                onPress={() => {
+                  setIsModalVisible(false);
+                }}
               >
-              <AntDesign name="closecircle" size={45} color="red" />
+                <AntDesign name="closecircle" size={45} color="red" />
               </TouchableOpacity>
             </View>
           </View>
@@ -355,10 +369,10 @@ const styles = StyleSheet.create({
   modalViewButton: {
     height: 100,
     width: 140,
-    justifyContent:'center',
-    alignItems:'center',
-    backgroundColor:'#D6DBCF',
-    margin:10,
-    borderRadius:20
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#D6DBCF",
+    margin: 10,
+    borderRadius: 20,
   },
 });

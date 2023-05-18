@@ -48,7 +48,6 @@ export default function Index({ navigation }) {
     getProductFeatured().then((data) => {
       setListFeatured(data);
     });
-    countProduct();
   }, []);
   const [dataFoodSearch, setDataFoodSearch] = useState(products);
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -217,32 +216,41 @@ export default function Index({ navigation }) {
               position: "relative",
             }}
           >
+            <ScrollView>
             {dataFoodSearch.map((item) => (
               <TouchableOpacity
                 key={item.id}
                 style={{
                   width: "85%",
                   alignSelf: "center",
-                  height: 70,
+                  height: 80,
                   justifyContent: "center",
-                  borderBottomWidth: 0.5,
                   borderColor: "#8e8e8e",
+                  marginBottom:20
                 }}
                 onPress={() => {
                   // setSelectFood(item.data.name);
                   // setClickedCity(!clickedCity);
+                  navigation.navigate("ProductDetails", {
+                    id: item.id,
+                    name: item.data.name,
+                    image: item.data.image,
+                    price: item.data.price,
+                  });
+                  setFoodSearch("")
                 }}
               >
                 <View
                   style={{
                     flexDirection: "row",
-                    justifyContent: "space-around",
+                    justifyContent: "space-between",
+                    alignItems:'center'
                   }}
                 >
                   <Image
                     style={{
-                      height: 60,
-                      width: 60,
+                      height: 80,
+                      width: 135,
                     }}
                     source={{ uri: item.data.image }}
                   />
@@ -256,9 +264,6 @@ export default function Index({ navigation }) {
                       }}
                     >
                       {item.data.name}
-                    </Text>
-                    <Text style={{ textAlign: "center" }}>
-                      {item.data.price} VND
                     </Text>
                   </View>
                 </View>
@@ -276,6 +281,7 @@ export default function Index({ navigation }) {
             >
               <Text>Done</Text>
             </TouchableOpacity>
+            </ScrollView>
           </View>
         ) : null}
         <View

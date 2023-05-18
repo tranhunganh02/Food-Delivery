@@ -117,29 +117,6 @@ const ItemDeliver = ({
                   );
                 }}
               />
-              {status === 0 ? (
-                <TouchableOpacity
-                style={{
-                  borderColor: "#fff",
-                  borderWidth: 1,
-                  padding: 5,
-                  borderRadius: 10,
-                  backgroundColor: 'red',
-                }}
-                onPress={()=>
-                {
-                  orderCancel(id);
-                  navigation.navigate("BottomTab");
-                  
-                }}
-              >
-                <Text style={{color: 'white'}}>Order Cancel</Text>
-              </TouchableOpacity>
-              ) :
-              (
-                <Text></Text>
-              ) }
-              
             </View>
           </View>
         </View>
@@ -154,7 +131,21 @@ const StatusOrder = ({ status }) => {
   if (status == 0) {
     return (
       <>
-        <Text>Unconfirmed</Text>
+        <TouchableOpacity
+          style={{
+            borderColor: "#fff",
+            borderWidth: 1,
+            padding: 5,
+            borderRadius: 10,
+            backgroundColor: "red",
+          }}
+          onPress={() => {
+            orderCancel(id);
+            navigation.navigate("BottomTab");
+          }}
+        >
+          <Text style={{ color: "white" }}>Order Cancel</Text>
+        </TouchableOpacity>
       </>
     );
   } else if (status == 1) {

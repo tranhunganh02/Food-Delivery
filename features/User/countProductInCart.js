@@ -9,7 +9,7 @@ import {
 import { auth, dbStore } from "../../firebase";
 
 export default async function countProduct() {
-  const docRef = doc(dbStore, "carts", "Y60Qcsh3ftZWTZhmnhQTOVxWXFJ2");
+  const docRef = doc(dbStore, "carts", auth.currentUser.uid);
 
   const docSnap = await getDoc(docRef);
   const data = Object.entries(docSnap.data()).map(([key, value]) => ({
